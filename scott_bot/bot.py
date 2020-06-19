@@ -2,6 +2,7 @@ from discord.ext import commands
 import asyncio
 import asyncpg
 import aiohttp
+from scott_bot.util.config import DataBase
 from typing import Optional
 
 
@@ -21,7 +22,7 @@ class Bot(commands.Bot):
 
     async def _create(self) -> None:
         self.http_session = aiohttp.ClientSession()
-        self.db_conn = await asyncpg.connect(self.conf.get('db_link'))
+        self.db_conn = await asyncpg.connect(DataBase.db_url)
 
     async def _close(self) -> None:
         print("closing")
