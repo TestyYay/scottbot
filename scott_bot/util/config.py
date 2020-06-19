@@ -1,8 +1,8 @@
 import os
-
-import yaml
-import discord
 from typing import Any, Optional
+
+import discord
+import yaml
 
 with open(os.path.join(os.path.dirname(__file__), "../config.yml"), encoding="UTF-8") as f:
     _CONFIG_YAML = yaml.safe_load(f)
@@ -19,9 +19,10 @@ class _Config:
         if self.guild is not None:
             if self.bot.db_conn is not None:
                 ret = await self.bot.db_conn.fetchrow(
-                    'SELECT $1 FROM guilds WHERE guild_id = $2',
+                    'SELECT $1 FROM $3 WHERE guild_id = $2',
                     self.name,
-                    self.guild.id
+                    self.guild.id,
+                    DataBase.main_tablename
                 )
                 self._value = ret
                 return self._value
@@ -101,6 +102,16 @@ class DataBase(metaclass=YAMLGetter):
     section = "database"
 
     db_url: str
+    main_tablename: str
+    nickname_tablename: str
+
+
+class Defaults(metaclass=YAMLGetter):
+    section = "database"
+    subsection = "defaults"
+
+    prefix: str
+    dad_name: str
 
 
 class Emojis(metaclass=YAMLGetter):

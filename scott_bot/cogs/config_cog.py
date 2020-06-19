@@ -1,14 +1,40 @@
 from discord.ext import commands
 from discord.ext.commands import Context
+import discord
 
 from scott_bot.converters import ConfigConverter
 
 from scott_bot.bot import ScottBot
+from scott_bot.util.config import DataBase, Defaults
+
+
+INSERT_SQL = """
+INSERT INTO $1 ($2)
+    VALUES ($3)
+ON CONFLICT ON CONSTRAINT guilds_pkey
+DO NOTHING;"""
 
 
 class Config(commands.Cog):
     def __init__(self, bot: ScottBot):
         self.bot = bot
+
+    @commands.Cog.listener("on_guild_join")
+    async def add_guild_db(self, guild: discord.Guild):
+        if self.bot.db_conn is not None:
+            defaults = {
+                'guild_id': guild.id,
+                'prefix': Defaults.prefix,
+                'dad_name': Defaults.dad_name,
+                'swearing': False
+            }
+            x = await self.bot.db_conn.execute(
+                INSERT_SQL,
+                DataBase.main_tablename,
+                list(defaults.keys()),
+                ', '.join(defaults.values())
+                )
+            print(x)
 
     @commands.group(name='config', aliases=('cfg',), invoke_without_command=True)
     async def config_group(self, ctx: Context, option: str, new: str):
