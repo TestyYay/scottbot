@@ -9,11 +9,13 @@ class Config(commands.Cog):
         self.bot = bot
 
     @commands.group(name='config', aliases=('cfg',), invoke_without_command=True)
-    async def config_group(self, ctx: Context):
+    async def config_group(self, ctx: Context, option: str, new: str):
         print("config")
+        print(option, new)
 
     @config_group.command(name='help')
-    async def config_help(self, ctx: Context):
+    async def config_help(self, ctx: Context, config_option: str):
+        print(config_option)
         print("help")
 
 
