@@ -3,14 +3,13 @@ import os
 import yaml
 import discord
 from typing import Any
-from scott_bot.bot import ScottBot
 
 with open(os.path.join(os.path.dirname(__file__), "../config.yml"), encoding="UTF-8") as f:
     _CONFIG_YAML = yaml.safe_load(f)
 
 
 class _Config:
-    def __init__(self, name: str, bot: ScottBot, guild: Optional[discord.guild] = None):
+    def __init__(self, name: str, bot, guild: Optional[discord.guild] = None):
         self.name = name
         self.bot = bot
         self.guild = guild
