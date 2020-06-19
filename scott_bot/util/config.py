@@ -1,8 +1,37 @@
-import yaml
 import os
+
+import yaml
+import discord
+from typing import Any
+from scott_bot.bot import Bot
 
 with open(os.path.join(os.path.dirname(__file__), "../config.yml"), encoding="UTF-8") as f:
     _CONFIG_YAML = yaml.safe_load(f)
+
+
+class _Config:
+    def __init__(self, name: str, bot: Bot, guild: Optional[discord.guild] = None):
+        self.name = name
+        self.bot = bot
+        self.guild = guild
+        self._value = None
+
+    async def get(self) -> Any:
+        if self.guild is not None:
+            if self.bot.db_conn is not None:
+                ret = await self.bot.db_conn.fetchrow(
+                    'SELECT $1 FROM guilds WHERE guild_id = $2',
+                    self.name,
+                    self.guild.id
+                )
+                self._value = ret
+                return self._value
+        else:
+            print("DM")
+
+    @property
+    async def value(self):
+        return self._value
 
 
 class YAMLGetter(type):
