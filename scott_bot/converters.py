@@ -2,7 +2,7 @@ from typing import Optional
 
 from discord.ext.commands import Converter, Command, Context
 
-from scott_bot.util.config import Config
+from scott_bot.util.config import _Config
 
 
 class CommandConverter(Converter):
@@ -15,7 +15,7 @@ class CommandConverter(Converter):
 
 class ConfigConverter(Converter):
 
-    async def convert(self, ctx: Context, option: str) -> Optional[Config]:
+    async def convert(self, ctx: Context, option: str) -> Optional[_Config]:
         if ctx.bot.db_conn is not None:
             cols = await ctx.bot.db_conn.fetch(
                 "SELECT * FROM information_schema.columns WHERE table_name = guilds"
