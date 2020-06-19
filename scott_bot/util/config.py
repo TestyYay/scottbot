@@ -2,7 +2,7 @@ import os
 
 import yaml
 import discord
-from typing import Any
+from typing import Any, Optional
 
 with open(os.path.join(os.path.dirname(__file__), "../config.yml"), encoding="UTF-8") as f:
     _CONFIG_YAML = yaml.safe_load(f)
