@@ -18,6 +18,6 @@ class ConfigConverter(Converter):
     async def convert(self, ctx: Context, option: str) -> Optional[_Config]:
         if ctx.bot.db_conn is not None:
             cols = await ctx.bot.db_conn.fetch(
-                "SELECT * FROM information_schema.columns WHERE table_name = guilds"
+                "SELECT column_name FROM information_schema.columns WHERE table_name = 'guilds';"
             )
             return cols
