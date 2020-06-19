@@ -9,7 +9,7 @@ with open(os.path.join(os.path.dirname(__file__), "../config.yml"), encoding="UT
 
 
 class _Config:
-    def __init__(self, name: str, bot, guild: Optional[discord.guild] = None):
+    def __init__(self, name: str, bot, guild: Optional[discord.Guild] = None):
         self.name = name
         self.bot = bot
         self.guild = guild
