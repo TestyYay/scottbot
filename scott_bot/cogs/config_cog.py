@@ -3,11 +3,11 @@ from discord.ext.commands import Context
 
 from scott_bot.converters import ConfigConverter
 
-from scott_bot.bot import Bot
+from scott_bot.bot import ScottBot
 
 
 class Config(commands.Cog):
-    def __init__(self, bot: Bot):
+    def __init__(self, bot: ScottBot):
         self.bot = bot
 
     @commands.group(name='config', aliases=('cfg',), invoke_without_command=True)
@@ -21,5 +21,5 @@ class Config(commands.Cog):
         print("help")
 
 
-def setup(bot: Bot):
+def setup(bot: ScottBot):
     bot.add_cog(Config(bot))

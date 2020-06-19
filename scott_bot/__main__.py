@@ -1,9 +1,9 @@
 import yaml
 from discord.ext import commands
-from scott_bot.bot import Bot
+from scott_bot.bot import ScottBot
 from scott_bot.util import config
 
-bot = Bot(command_prefix=config.Bot.default_prefix, description='ScottBot', case_insensitive=True)
+bot = ScottBot(command_prefix=config.Bot.default_prefix, description='ScottBot', case_insensitive=True)
 
 bot.remove_command("help")
 

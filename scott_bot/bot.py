@@ -6,7 +6,7 @@ from scott_bot.util.config import DataBase
 from typing import Optional
 
 
-class Bot(commands.Bot):
+class ScottBot(commands.Bot):
     def __init__(self, command_prefix, **options):
         super().__init__(command_prefix, **options)
         self.http_session: Optional[aiohttp.ClientSession] = None

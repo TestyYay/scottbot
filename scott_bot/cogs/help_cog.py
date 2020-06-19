@@ -5,7 +5,7 @@ import discord
 from discord.ext import commands
 from discord.ext.commands import Command, Cog, Context
 from scott_bot.converters import CommandConverter
-from scott_bot.bot import Bot
+from scott_bot.bot import ScottBot
 from scott_bot.util.pagination import HelpPaginator
 from scott_bot.util import config
 from scott_bot.util.messages import wait_for_deletion
@@ -31,7 +31,7 @@ def _get_code_lines():
 class Help(Cog):
 
     def __init__(self, bot):
-        self.bot: Bot = bot
+        self.bot: ScottBot = bot
 
     @commands.command(name="help", brief="Shows help for a command.")
     async def _help(self, ctx: Context, command: CommandConverter = None):
@@ -92,5 +92,5 @@ class Help(Cog):
             await ctx.send(msg, embed=embed)
 
 
-def setup(bot: Bot):
+def setup(bot: ScottBot):
     bot.add_cog(Help(bot))
