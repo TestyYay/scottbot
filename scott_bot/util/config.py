@@ -16,6 +16,29 @@ class _Config:
         self.guild = guild
         self._value = None
 
+    @staticmethod
+    def _format_type(typ: str) -> Any:
+        type_dict = {
+            "bigint": int,
+            "boolean": bool,
+            "bool": bool,
+            "anyarray": list,
+            "varchar": str,
+            "text": str,
+            "integer": int,
+            "character varying": str
+        }
+        return type_dict.get(typ)
+
+    async def get_type(self):
+        if self.bot.db_conn is not None:
+            x = await self.bot.db_conn.fetchrow(
+                "SELECT data_type FROM information_schema.columns WHERE table_name = $1 AND column_name = $2;",
+                DataBase.main_tablename,
+                self.name
+            )
+            return x.get("data_type")
+
     async def get(self) -> Any:
         if self.guild is not None:
             if self.bot.db_conn is not None:
@@ -31,6 +54,8 @@ class _Config:
     async def set(self, new):
         if self.guild is not None:
             if self.bot.db_conn is not None:
+                typ = await self.get_type()
+                new = _Config._format_type(typ)(new)
                 await self.bot.db_conn.execute(
                     f"""UPDATE {DataBase.main_tablename}
                             SET {self.name} = $1
