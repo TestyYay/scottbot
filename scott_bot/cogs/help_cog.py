@@ -68,7 +68,7 @@ class Help(Cog):
             comms = (
                 [command] + get_group_commands(command)
                 if isinstance(command, Group)
-                else command
+                else [command]
             )
             pages = [
                 help_format.format(comm=comm, dashes='-' * len(comm.name), help=comm.help.format(prefix=ctx.prefix))
