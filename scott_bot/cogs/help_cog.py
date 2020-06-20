@@ -71,7 +71,7 @@ class Help(Cog):
                 else command
             )
             pages = [
-                help_format.format(comm=comm, prefix=ctx.prefix, dashes='-' * len(comm.name), help=comm.help.format(prefix=prefix))
+                help_format.format(comm=comm, dashes='-' * len(comm.name), help=comm.help.format(prefix=ctx.prefix))
                 for comm in comms
             ]
             message = await ctx.send(embed=embed)
