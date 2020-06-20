@@ -56,12 +56,11 @@ class Config(commands.Cog):
             await config_option.set(new)
             await ctx.send(f"Changed config option {config_option.name} to {new}")
         else:
-            print("else")
             cols = await self.bot.db_conn.fetch(
                 "SELECT column_name FROM information_schema.columns WHERE table_name = $1;",
                 config.DataBase.main_tablename
             )
-            print("after")
+            print(cols)
             print(config.Config.bad)
             columns = [column.get("column_name") for column in cols if column not in config.Config.bad]
             print(columns)
