@@ -110,6 +110,7 @@ class HelpPaginator:
             paginator.add_page(help_page)
 
         paginator.page_num = 0
+        print(paginator.pages)
 
         embed.description = paginator.page
 

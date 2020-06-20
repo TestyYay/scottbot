@@ -51,6 +51,7 @@ async def bad_arg_error(cog: Cog, ctx: Context, error: DiscordException):
 
 
 def get_group_commands(group: Group, name: str):
+    print("getting group")
     commands = []
     for command in group.commands:
         new_name = name + " " + command.name
