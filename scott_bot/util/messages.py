@@ -46,8 +46,9 @@ async def wait_for_deletion(
 
 
 async def bad_arg_error(cog: Cog, ctx: Context, error: DiscordException):
-    if isinstance(error, BadArgument):
-        await ctx.send(str(error.args[0]))
+    print(error)
+    # if isinstance(error, BadArgument):
+    await ctx.send(str(error.args[0]))
 
 
 def get_group_commands(group: Group, name: str):
