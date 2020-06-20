@@ -1,9 +1,10 @@
-from discord.ext import commands
-import asyncio
-import asyncpg
-import aiohttp
-from scott_bot.util.config import DataBase
 from typing import Optional
+
+import aiohttp
+import asyncpg
+from discord.ext import commands
+
+from scott_bot.util.config import DataBase
 
 
 class ScottBot(commands.Bot):
@@ -22,7 +23,7 @@ class ScottBot(commands.Bot):
 
     async def _create(self) -> None:
         self.http_session = aiohttp.ClientSession()
-        self.db_conn = await asyncpg.connect(DataBase.db_url)
+        self.db_conn = await asyncpg.create_pool(DataBase.db_url)
 
     async def _close(self) -> None:
         if self.http_session:
