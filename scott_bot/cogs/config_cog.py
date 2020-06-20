@@ -79,13 +79,13 @@ class Config(commands.Cog):
                 s += f"{option:{i}} : {getattr(config.Config.ConfigHelp, option, 'None')}\n"
         return s
 
-    @_config_group.error
-    async def _config_group_error(self, ctx: Context, error):
-        if hasattr(error, "original"):
-            if isinstance(error.original, AttributeError):
-                await ctx.send("You can't change that option.")
-        else:
-            await bad_arg_error(None, ctx, error)
+    # @_config_group.error
+    # async def _config_group_error(self, ctx: Context, error):
+    #     if hasattr(error, "original"):
+    #         if isinstance(error.original, AttributeError):
+    #             await ctx.send("You can't change that option.")
+    #     else:
+    #         await bad_arg_error(None, ctx, error)
 
     @_config_group.command(name='help', brief="Shows help for a config option")
     async def _config_help(self, ctx: Context, config_option: ConfigConverter):
