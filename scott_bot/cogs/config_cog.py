@@ -17,7 +17,7 @@ DO NOTHING;"""
 class Config(commands.Cog):
     def __init__(self, bot: ScottBot):
         self.bot = bot
-        self._config_group.error(bad_arg_error)
+        # self._config_group.error(bad_arg_error)
         self._config_help.error(bad_arg_error)
 
     @commands.Cog.listener("on_guild_join")
@@ -46,11 +46,12 @@ class Config(commands.Cog):
             {prefix}config
             {prefix}config <option> <new>
 
+
         Example:
             {prefix}config dad_name "dad_bot"
         """
         await config_option.set(new)
-        await ctx.send(f"Config option {config_option.name} to {new}")
+        await ctx.send(f"Changed config option {config_option.name} to {new}")
 
     @_config_group.error
     async def _config_group_error(self, cog, ctx: Context, error):
