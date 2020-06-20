@@ -42,11 +42,30 @@ class Config(commands.Cog):
 
     @commands.group(name='config', aliases=('cfg',), invoke_without_command=True)
     async def _config_group(self, ctx: Context, config_option: ConfigConverter, new: str):
+        """
+        Change config for your server. You have to have Manage Server permissions to run this command.
+
+        Usage:
+            {prefix}config
+            {prefix}config <option> <new>
+
+        Example:
+            {prefix}config dad_name "dad_bot"
+        """
         await config_option.set(new)
         await ctx.send(f"Set to {new}")
 
     @_config_group.command(name='help')
     async def _config_help(self, ctx: Context, config_option: ConfigConverter):
+        """
+        Shows help for a particular config option.
+
+        Usage:
+            {prefix}config help <option>
+
+        Example:
+            {prefix}config help dad_name
+        """
         x = await config_option.get()
         await ctx.send(str(x))
 

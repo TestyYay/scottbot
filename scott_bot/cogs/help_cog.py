@@ -39,7 +39,10 @@ class Help(Cog):
         Shows help for a command or a list of all commands.
 
         Usage:
-        {prefix}help <command>
+            {prefix}help <command>
+
+        Example:
+            {prefix}help config
         """
         if command is None:
             embed = discord.Embed(title="Help Menu", color=config.Bot.color)
@@ -70,7 +73,7 @@ class Help(Cog):
         Show general information about the bot
 
         Usage:
-        {prefix}help
+        {prefix}info
         """
         invbot = 'https://bit.ly/3cuoNpo'
         embed = discord.Embed(title="ScottBot", description="", color=config.Bot.color)
