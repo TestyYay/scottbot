@@ -28,7 +28,7 @@ class Config(commands.Cog):
                 'dad_name': Defaults.dad_name,
                 'swearing': False
             }
-            txt = INSERT_SQL.format(options=', '.join(defaults.keys()), vals=', '.join('$' + str(i) for i, x in enumerate(defaults.keys())))
+            txt = INSERT_SQL.format(options=', '.join(defaults.keys()), vals=', '.join('$' + str(i+2) for i, x in enumerate(defaults.keys())))
             print(txt)
             x = await self.bot.db_conn.execute(
                 txt,
