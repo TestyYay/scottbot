@@ -30,3 +30,7 @@ class DadCog(Cog):
                     await message.channel.send("lol u tried")
                 else:
                     await message.channel.send('Hi, {}, I\'m {}'.format(match.group(2), dad_name))
+
+
+def setup(bot: ScottBot):
+    bot.add_cog(DadCog(bot))
