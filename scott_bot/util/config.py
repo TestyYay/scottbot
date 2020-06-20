@@ -68,8 +68,7 @@ class _Config:
 async def get_config(name: str, bot, guild: Optional[discord.Guild] = None) -> Optional[_Config]:
     if bot.db_conn is not None:
         cols = await bot.db_conn.fetch(
-            "SELECT column_name FROM information_schema.columns WHERE table_name = $1;",
-            DataBase.main_tablename
+            f"SELECT column_name FROM information_schema.columns WHERE table_name = {DataBase.main_tablename};",
         )
         columns = [column.get("column_name") for column in cols]
         if name in columns:
