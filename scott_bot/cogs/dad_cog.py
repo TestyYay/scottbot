@@ -19,7 +19,7 @@ class DadCog(Cog):
 
     @Cog.listener("on_message")
     async def dad_message(self, message: Message):
-        if message.author.id == bot.user.id:
+        if message.author.id == self.bot.user.id:
             return
         match = DAD_MATCHER.match(message.content)
         if match:
