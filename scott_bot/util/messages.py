@@ -46,7 +46,7 @@ async def wait_for_deletion(
 
 
 async def bad_arg_error(cog: Optional[Cog], ctx: Context, error: DiscordException):
-    print(error)
+    print("bad_arg")
     if isinstance(error, BadArgument):
         await ctx.send(str(error.args[0]))
 

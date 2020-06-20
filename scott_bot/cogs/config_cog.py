@@ -57,6 +57,7 @@ class Config(commands.Cog):
     async def _config_group_error(self, ctx: Context, error):
         print("errored")
         print(error)
+        print(type(error))
         if isinstance(error, AttributeError):
             await ctx.send("You can't change that option.")
         else:
