@@ -19,10 +19,10 @@ class _Config:
         if self.guild is not None:
             if self.bot.db_conn is not None:
                 ret = await self.bot.db_conn.fetchrow(
-                    'SELECT $1 FROM $3 WHERE guild_id = $2',
+                    f'SELECT $1 FROM {DataBase.main_tablename} WHERE guild_id = $2',
                     self.name,
                     self.guild.id,
-                    DataBase.main_tablename
+
                 )
                 self._value = ret
                 return self._value
