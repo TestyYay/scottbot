@@ -8,7 +8,7 @@ from discord.abc import User
 from discord.ext.commands import Context, Paginator, Cog, Command, Group
 
 from scott_bot.util.config import Emojis
-from scott_bot.util.messages import wait_for_deletion
+from scott_bot.util.messages import wait_for_deletion, get_group_commands
 
 
 PAGINATION_EMOJI = (Emojis.first, Emojis.left, Emojis.right, Emojis.last, Emojis.delete)
@@ -74,8 +74,8 @@ class HelpPaginator:
                 if not command.hidden:
                     commands.append(command)
                 if isinstance(command, Group):
-                    commands += [comm for comm in command.commands if not comm.hidden]
-            print(commands)
+                    commands += get_group_commands(command, command.name)
+            print([command.name for command in commands])
             return commands
 
         def set_footer(footer: t.Optional[str], paginator: HelpPaginator, embed: discord.Embed) -> None:
