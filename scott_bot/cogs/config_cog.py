@@ -75,7 +75,7 @@ class Config(commands.Cog):
         s = ""
         values = await config._Config.get_multi(options, self.bot, guild)
         for key, value in values.items():
-            s += f"{key} : {value}\n"
+            s += f"{key:{i}} : {value}\n"
         return s
 
     # getattr(config.Config.ConfigHelp, option, 'None')
