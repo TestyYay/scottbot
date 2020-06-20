@@ -55,7 +55,7 @@ class Help(Cog):
             await HelpPaginator.paginate(
                 ctx,
                 embed,
-                cogs,
+                cogs=cogs,
                 restrict_to_users=(ctx.author,)
             )
         else:
@@ -74,6 +74,12 @@ class Help(Cog):
                 help_format.format(comm=comm, dashes='-' * len(comm.name), help=comm.help.format(prefix=ctx.prefix))
                 for comm in comms
             ]
+            await HelpPaginator.paginate(
+                ctx,
+                embed,
+                pages=pages,
+                restrict_to_users=(ctx.author,)
+            )
             message = await ctx.send(embed=embed)
             await wait_for_deletion(message, (ctx.author,), client=self.bot)
 
