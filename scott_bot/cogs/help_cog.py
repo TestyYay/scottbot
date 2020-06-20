@@ -74,6 +74,7 @@ class Help(Cog):
                 help_format.format(comm=comm, dashes='-' * len(comm.name), help=comm.help.format(prefix=ctx.prefix))
                 for comm in comms
             ]
+            print(pages)
             await HelpPaginator.paginate(
                 ctx,
                 embed,
