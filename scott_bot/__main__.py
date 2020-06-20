@@ -23,11 +23,11 @@ async def on_ready():
     await bot.get_cog('Status').start_status_change()
 
 
-@bot.event
-async def on_message(message):
-    if message.author.id == 696495244111380551:
-        return
-    await bot.process_commands(message)
+# @bot.event
+# async def on_message(message):
+#     if message.author.id == 696495244111380551:
+#         return
+#     await bot.process_commands(message)
 
 
 if __name__ == "__main__":
