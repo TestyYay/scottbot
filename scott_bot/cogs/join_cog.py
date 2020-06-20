@@ -25,7 +25,9 @@ class JoinMessage(Cog):
                 join_messages += JoinMessages.it_mems
             channel = member.guild.get_channel(join_leave)
             if channel is not None:
-                await channel.send(random.choice(join_messages))
+                sarcast = ''.join([s.lower() if random.choice([True, False]) else s.upper() for s in member.mention])
+                message = random.choice(join_messages).format(mention=member.mention, sarcast=sarcast)
+                await channel.send(message)
 
 
 def setup(bot: ScottBot):
