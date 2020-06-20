@@ -60,6 +60,7 @@ class HelpPaginator:
             )
 
         def _get_help_list(commands):
+            print("Help listing")
             if len(commands) <= 0:
                 return "[There are no commands under this category]"
             i = max(len(x.name) for x in commands)
@@ -110,6 +111,7 @@ class HelpPaginator:
             paginator.add_page(help_page)
 
         paginator.page_num = 0
+        print("Pages")
         print(paginator.pages)
 
         embed.description = paginator.page
@@ -125,6 +127,7 @@ class HelpPaginator:
             await wait_for_deletion(message, restrict_to_users, client=ctx.bot)
             return message
         else:
+            print("send")
             set_footer(footer_text, paginator, embed)
             # log.trace(f"Setting embed footer to '{embed.footer.text}'")
 

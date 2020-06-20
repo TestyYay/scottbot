@@ -56,7 +56,7 @@ def get_group_commands(group: Group, name: str):
     for command in group.commands:
         new_name = name + " " + command.name
         if isinstance(command, Group):
-            commands += _get_group_commands(command, new_name)
+            commands += get_group_commands(command, new_name)
         elif isinstance(command, Command):
             command.name = new_name
             commands.append(command)
