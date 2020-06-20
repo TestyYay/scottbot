@@ -120,6 +120,7 @@ class HelpPaginator:
                 # log.trace(f"Setting embed footer to '{footer_text}'")
 
             # log.debug("There's less than two pages, so we won't paginate - sending single page on its own")
+            print("single")
             message = await ctx.send(embed=embed)
             await wait_for_deletion(message, restrict_to_users, client=ctx.bot)
             return message
@@ -129,7 +130,7 @@ class HelpPaginator:
 
             # log.debug("Sending first page to channel...")
             message = await ctx.send(embed=embed)
-
+            print("Sent")
         for emoji in PAGINATION_EMOJI:
             # Add all the applicable emoji to the message
             # log.trace(f"Adding reaction: {repr(emoji)}")
