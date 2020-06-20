@@ -62,7 +62,8 @@ class Config(commands.Cog):
             )
             columns = [column.get("column_name") for column in cols if column not in config.Config.bad]
             embed = discord.Embed(title="Config Options")
-            embed.description = f"""**```asciidoc {await self._get_config_options(columns, ctx.guild)}```**"""
+            config_options = await self._get_config_options(columns, ctx.guild)
+            embed.description = f"""**```asciidoc {config_options}```**"""
             message = await ctx.send(embed=embed)
             await wait_for_deletion(message, (ctx.author,), client=self.bot)
 
