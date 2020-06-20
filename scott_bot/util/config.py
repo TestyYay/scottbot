@@ -2,8 +2,8 @@ import os
 from typing import Any, Optional
 
 import discord
-from discord.ext import commands
 import yaml
+from discord.ext import commands
 
 with open(os.path.join(os.path.dirname(__file__), "../config.yml"), encoding="UTF-8") as f:
     _CONFIG_YAML = yaml.safe_load(f)
@@ -40,8 +40,19 @@ class _Config:
                 )
 
 
+async def get_config(name: str, bot, guild: Optional[discord.Guild] = None) -> Optional[_Config]:
+    if bot.db_conn is not None:
+        cols = await bot.db_conn.fetch(
+            "SELECT column_name FROM information_schema.columns WHERE table_name = $1;",
+            DataBase.main_tablename
+        )
+        columns = [column.get("column_name") for column in cols]
+        if name in columns:
+            return _Config(name, bot, guild)
+
+
 async def prefix_for(bot, message: discord.Message):
-    config = _Config("prefix", bot, message.guild)
+    config = get_config("prefix", bot, message.guild)
     prefix = await config.get()
     return commands.when_mentioned_or(prefix)(bot, message)
 
@@ -137,6 +148,15 @@ class Emojis(metaclass=YAMLGetter):
     right: str
 
     delete: str
+
+
+class JoinMessages(metaclass=YAMLGetter):
+    section = "messages"
+    subsection = "join_messages"
+
+    general: list
+    swearing: list
+    it_mems: list
 
 
 BOT_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir))

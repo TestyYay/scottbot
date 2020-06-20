@@ -1,5 +1,3 @@
-import yaml
-from discord.ext import commands
 from scott_bot.bot import ScottBot
 from scott_bot.util import config
 
@@ -30,32 +28,6 @@ async def on_message(message):
     if message.author.id == 696495244111380551:
         return
     await bot.process_commands(message)
-
-
-@bot.command(
-    name='test',
-    description='This is a help test',
-    brief='This is a help test',
-    aliases=[],
-    hidden=False
-)
-async def test(ctx: commands.Context, i: int, s: str = None):
-    if s:
-        await ctx.send(s)
-    else:
-        await ctx.send('.')
-
-
-@bot.command(
-    name='test2',
-    description='This is a help test',
-    brief='This is a help test',
-    aliases=[],
-    hidden=False
-)
-async def test2(ctx: commands.Context, *, x, s="hi"):
-    await ctx.send(x)
-    await ctx.send(s)
 
 
 if __name__ == "__main__":
