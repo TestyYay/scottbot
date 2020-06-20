@@ -31,7 +31,7 @@ class Help(Cog):
 
     def __init__(self, bot):
         self.bot: ScottBot = bot
-        # self._help.error(bad_arg_error)
+        self._help.error(bad_arg_error)
 
     @commands.command(name="help", brief="Shows help for a command")
     async def _help(self, ctx: Context, command: CommandConverter = None):
