@@ -59,4 +59,5 @@ def get_group_commands(group: Group, name: str):
         elif isinstance(command, Command):
             command.name = new_name
             commands.append(command)
+    print(commands)
     return commands
