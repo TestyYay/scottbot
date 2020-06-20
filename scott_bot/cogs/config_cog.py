@@ -5,6 +5,7 @@ import discord
 from scott_bot.converters import ConfigConverter
 
 from scott_bot.bot import ScottBot
+from typing import Optional
 from scott_bot.util.config import DataBase, Defaults
 
 
@@ -43,7 +44,11 @@ class Config(commands.Cog):
 
     @config_group.command(name='help')
     async def config_help(self, ctx: Context, config_option: ConfigConverter):
-        print(config_option)
+        if config_option is not None:
+            print(config_option.get())
+            await ctx.send(str(config_option.value))
+        else:
+            await ctx.send("Unknown config option")
         print("help")
 
 
