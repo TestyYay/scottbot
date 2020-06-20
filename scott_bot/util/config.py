@@ -1,6 +1,7 @@
 import os
 from typing import Any, Optional, Sequence
 
+import asyncpg
 import discord
 import yaml
 from discord.ext import commands
@@ -53,14 +54,14 @@ class _Config:
             return getattr(Defaults, self.name, None)
 
     @staticmethod
-    async def get_multi(configs: Sequence[str], bot, guild: Optional[discord.Guild]):
+    async def get_multi(configs: Sequence[str], bot, guild: Optional[discord.Guild]) -> Optional[asyncpg.Record]:
         if guild is not None:
             if bot.db_conn is not None:
                 ret = await bot.db_conn.fetchrow(
                     f'SELECT {", ".join(configs)} FROM {DataBase.main_tablename} WHERE guild_id = $1',
                     guild.id
                 )
-                print(ret)
+                return ret
 
     async def set(self, new):
         if self.read_only:
