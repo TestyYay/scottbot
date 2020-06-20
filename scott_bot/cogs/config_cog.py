@@ -62,6 +62,7 @@ class Config(commands.Cog):
                 config.DataBase.main_tablename
             )
             print("after")
+            print(config.Config.bad)
             columns = [column.get("column_name") for column in cols if column not in config.Config.bad]
             print(columns)
             embed = discord.Embed(title="Config Options")
