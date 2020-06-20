@@ -30,7 +30,7 @@ class _Config:
             print("DM")
 
     @property
-    async def value(self):
+    def value(self):
         return self._value
 
 
