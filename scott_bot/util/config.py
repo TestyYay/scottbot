@@ -43,6 +43,7 @@ class _Config:
 async def prefix_for(bot, message: discord.Message):
     config = _Config("prefix", bot, message.guild)
     prefix = await config.get()
+    print(prefix)
     return commands.when_mentioned_or(prefix)(bot, message)
 
 
