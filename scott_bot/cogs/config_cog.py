@@ -50,8 +50,6 @@ class Config(commands.Cog):
         Example:
             {prefix}config dad_name "dad_bot"
         """
-        print(config_option)
-        print(new)
         if config_option is not None and new is not None:
             await config_option.set(new)
             await ctx.send(f"Changed config option {config_option.name} to {new}")
@@ -60,11 +58,8 @@ class Config(commands.Cog):
                 "SELECT column_name FROM information_schema.columns WHERE table_name = $1;",
                 config.DataBase.main_tablename
             )
-            print(cols)
-            print(config.Config.bad)
             columns = [column.get("column_name") for column in cols if
                        column.get("column_name") not in config.Config.bad]
-            print(columns)
             embed = discord.Embed(title="Config Options")
             config_options = await self._get_config_options(columns, ctx.guild)
             embed.description = f"""**```{config_options}```**"""
