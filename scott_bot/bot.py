@@ -25,7 +25,6 @@ class ScottBot(commands.Bot):
         self.db_conn = await asyncpg.connect(DataBase.db_url)
 
     async def _close(self) -> None:
-        print("closing")
         if self.http_session:
             await self.http_session.close()
 

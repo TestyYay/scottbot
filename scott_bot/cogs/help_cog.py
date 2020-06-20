@@ -52,8 +52,6 @@ class Help(Cog):
                 if not getattr(cog, "hidden", False)
                 and len(cog.get_commands()) > 0
             ]
-            print(cogs)
-            print("Hello")
             await HelpPaginator.paginate(
                 ctx,
                 embed,

@@ -60,7 +60,6 @@ class HelpPaginator:
             )
 
         def _get_help_list(commands):
-            print("Help listing")
             if len(commands) <= 0:
                 return "[There are no commands under this category]"
             i = max(len(x.name) for x in commands)
@@ -74,12 +73,8 @@ class HelpPaginator:
             for command in cog.get_commands():
                 if not command.hidden:
                     commands.append(command)
-                    print("Appended" + str(command))
                 if isinstance(command, Group):
-                    print("is a group")
                     commands += get_group_commands(command, command.name)
-            print([command.name for command in commands])
-            print(commands)
             return commands
 
         def set_footer(footer: t.Optional[str], paginator: HelpPaginator, embed: discord.Embed) -> None:
@@ -113,8 +108,6 @@ class HelpPaginator:
             paginator.add_page(help_page)
 
         paginator.page_num = 0
-        print("Pages")
-        print(paginator.pages)
 
         embed.description = paginator.page
 
@@ -124,18 +117,15 @@ class HelpPaginator:
                 # log.trace(f"Setting embed footer to '{footer_text}'")
 
             # log.debug("There's less than two pages, so we won't paginate - sending single page on its own")
-            print("single")
             message = await ctx.send(embed=embed)
             await wait_for_deletion(message, restrict_to_users, client=ctx.bot)
             return message
         else:
-            print("send")
             set_footer(footer_text, paginator, embed)
             # log.trace(f"Setting embed footer to '{embed.footer.text}'")
 
             # log.debug("Sending first page to channel...")
             message = await ctx.send(embed=embed)
-            print("Sent")
         for emoji in PAGINATION_EMOJI:
             # Add all the applicable emoji to the message
             # log.trace(f"Adding reaction: {repr(emoji)}")

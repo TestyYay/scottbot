@@ -46,13 +46,11 @@ async def wait_for_deletion(
 
 
 async def bad_arg_error(cog: Cog, ctx: Context, error: DiscordException):
-    print(error)
-    # if isinstance(error, BadArgument):
-    await ctx.send(str(error.args[0]))
+    if isinstance(error, BadArgument):
+        await ctx.send(str(error.args[0]))
 
 
 def get_group_commands(group: Group, name: str):
-    print("getting group")
     commands = []
     for command in group.commands:
         new_name = name + " " + command.name
@@ -61,5 +59,4 @@ def get_group_commands(group: Group, name: str):
         elif isinstance(command, Command):
             command.name = new_name
             commands.append(command)
-    print(commands)
     return commands
