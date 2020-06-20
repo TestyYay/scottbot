@@ -9,8 +9,8 @@ from scott_bot.util.config import DataBase, Defaults
 
 
 INSERT_SQL = """
-INSERT INTO $1 ($2)
-    VALUES ($3)
+INSERT INTO $1 ({options})
+    VALUES ({vals})
 ON CONFLICT ON CONSTRAINT guilds_pkey
 DO NOTHING;"""
 
@@ -28,11 +28,12 @@ class Config(commands.Cog):
                 'dad_name': Defaults.dad_name,
                 'swearing': False
             }
+            txt = INSERT_SQL.format(options=', '.join(defaults.keys()), vals=', '.join('$' + str(i) for i, x in enumerate(defaults.keys())))
+            print(txt)
             x = await self.bot.db_conn.execute(
-                INSERT_SQL,
+                txt,
                 DataBase.main_tablename,
-                list(defaults.keys()),
-                ', '.join(defaults.values())
+                *tuple(defaults.values())
                 )
             print(x)
 
