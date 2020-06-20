@@ -48,7 +48,7 @@ class Config(commands.Cog):
         if config_option is not None:
             x = await config_option.get()
             print(x)
-            await ctx.send(str(config_option.value))
+            await ctx.send(str(x))
         else:
             await ctx.send("Unknown config option")
         print("help")
