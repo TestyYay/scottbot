@@ -7,7 +7,7 @@ from discord.ext.commands import Cog, Context, Group
 from scott_bot.bot import ScottBot
 from scott_bot.converters import CommandConverter
 from scott_bot.util import config
-from scott_bot.util.messages import get_group_commands
+from scott_bot.util.messages import get_group_commands, bad_arg_error
 from scott_bot.util.pagination import HelpPaginator
 
 
