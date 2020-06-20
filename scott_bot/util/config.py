@@ -61,6 +61,7 @@ class _Config:
                     f'SELECT {", ".join(configs)} FROM {DataBase.main_tablename} WHERE guild_id = $1',
                     guild.id
                 )
+                print(ret)
                 return ret
 
     async def set(self, new):
