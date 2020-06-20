@@ -2,6 +2,7 @@ import os
 from typing import Any, Optional
 
 import discord
+from discord.ext import commands
 import yaml
 
 with open(os.path.join(os.path.dirname(__file__), "../config.yml"), encoding="UTF-8") as f:
@@ -25,7 +26,7 @@ class _Config:
                 self._value = ret
                 return self._value[self.name]
         else:
-            print("DM")
+            return getattr(Defaults, self.name, None)
 
     async def set(self, new):
         if self.guild is not None:
@@ -37,6 +38,12 @@ class _Config:
                     new,
                     self.guild.id
                 )
+
+
+async def prefix_for(bot, message: discord.Message):
+    config = _Config("prefix", bot, message.guild)
+    prefix = await config.get()
+    return commands.when_mentioned_or(prefix)(bot, message)
 
 
 class YAMLGetter(type):
@@ -117,6 +124,7 @@ class Defaults(metaclass=YAMLGetter):
 
     prefix: str
     dad_name: str
+    swearing: bool
 
 
 class Emojis(metaclass=YAMLGetter):

@@ -29,13 +29,13 @@ class Config(commands.Cog):
                 'dad_name': Defaults.dad_name,
                 'swearing': False
             }
-            txt = INSERT_SQL.format(table=DataBase.main_tablename, options=', '.join(defaults.keys()), vals=', '.join('$' + str(i+1) for i, x in enumerate(defaults.keys())))
-            print(txt)
-            x = await self.bot.db_conn.execute(
+            txt = INSERT_SQL.format(table=DataBase.main_tablename,
+                                    options=', '.join(defaults.keys()),
+                                    vals=', '.join('$' + str(i+1) for i, x in enumerate(defaults.keys())))
+            await self.bot.db_conn.execute(
                 txt,
                 *tuple(defaults.values())
                 )
-            print(x)
 
     @commands.group(name='config', aliases=('cfg',), invoke_without_command=True)
     async def config_group(self, ctx: Context, config_option: ConfigConverter, new: str):
