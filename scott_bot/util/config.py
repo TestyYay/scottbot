@@ -27,9 +27,16 @@ class _Config:
         else:
             print("DM")
 
-    @property
-    def value(self):
-        return self._value[self.name]
+    async def set(self, new):
+        if self.guild is not None:
+            if self.bot.db_conn is not None:
+                await self.bot.db_conn.execute(
+                    f"""UPDATE {DataBase.main_tablename}
+                            SET {self.name} = $1
+                            WHERE guild_id = $2""",
+                    new,
+                    self.guild.id
+                )
 
 
 class YAMLGetter(type):

@@ -38,9 +38,10 @@ class Config(commands.Cog):
             print(x)
 
     @commands.group(name='config', aliases=('cfg',), invoke_without_command=True)
-    async def config_group(self, ctx: Context, option: str, new: str):
-        print("config")
-        print(option, new)
+    async def config_group(self, ctx: Context, config_option: ConfigConverter, new: str):
+        if config_option is not None:
+            await config_option.set(new)
+            await ctx.send(f"Set to {new}")
 
     @config_group.command(name='help')
     async def config_help(self, ctx: Context, config_option: ConfigConverter):
