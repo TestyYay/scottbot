@@ -1,10 +1,10 @@
+import asyncio
 import contextlib
 from typing import Optional, Sequence
 
-import asyncio
 from discord import Client, Member, Message, Reaction, User, DiscordException
 from discord.ext.commands import Context, BadArgument, Cog, Group, Command
-from discord.abc import Snowflake
+
 from scott_bot.util.config import Emojis
 
 
@@ -46,6 +46,7 @@ async def wait_for_deletion(
 
 
 async def bad_arg_error(cog: Cog, ctx: Context, error: DiscordException):
+    print(error)
     if isinstance(error, BadArgument):
         await ctx.send(str(error.args[0]))
 
