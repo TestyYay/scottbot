@@ -55,11 +55,9 @@ class Config(commands.Cog):
 
     @_config_group.error
     async def _config_group_error(self, ctx: Context, error):
-        orig = getattr(error, "orininal", Exception)
-        print(orig)
-        print(type(orig))
-        if isinstance(orig, AttributeError):
-            await ctx.send("You can't change that option.")
+        if hasattr(error, "orininal"):
+            if isinstance(error.orininal, AttributeError):
+                await ctx.send("You can't change that option.")
         else:
             await bad_arg_error(None, ctx, error)
 
