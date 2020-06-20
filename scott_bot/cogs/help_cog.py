@@ -2,7 +2,7 @@ import os
 
 import discord
 from discord.ext import commands
-from discord.ext.commands import Cog, Context, BadArgument
+from discord.ext.commands import Cog, Context, BadArgument, Group
 
 from scott_bot.bot import ScottBot
 from scott_bot.converters import CommandConverter

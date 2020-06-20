@@ -94,10 +94,10 @@ class HelpPaginator:
         if cogs is not None:
             for cog in cogs:
                 help_page = f"""**```asciidoc
-    {cog.qualified_name}
-    {'-' * len(cog.qualified_name)}
+{cog.qualified_name}
+{'-' * len(cog.qualified_name)}
         
-    {_get_help_list(get_cog_commands(cog))}```**"""
+{_get_help_list(get_cog_commands(cog))}```**"""
                 paginator.add_page(help_page)
 
             paginator.page_num = 0
