@@ -61,9 +61,9 @@ class Help(Cog):
         else:
             help_format = """**```asciidoc
 {comm.name}
-{'-' * len(comm.name)}
+{dashes}
 
-{comm.help.format(prefix=prefix)}```**"""
+{help}```**"""
             embed = discord.Embed(title="Help Menu", color=config.Bot.color)
             comms = (
                 get_group_commands(command)
@@ -71,7 +71,7 @@ class Help(Cog):
                 else command
             )
             pages = [
-                help_format.format(comm=comm, prefix=ctx.prefix)
+                help_format.format(comm=comm, prefix=ctx.prefix, dashes='-' * len(comm.name), help=comm.help.format(prefix=prefix))
                 for comm in comms
             ]
             message = await ctx.send(embed=embed)
