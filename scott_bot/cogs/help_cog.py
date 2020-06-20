@@ -33,12 +33,13 @@ class Help(Cog):
         self.bot: ScottBot = bot
         self._help.error(bad_arg_error)
 
-    @commands.command(name="help", brief="Shows help for a command.")
+    @commands.command(name="help", brief="Shows help for a command")
     async def _help(self, ctx: Context, command: CommandConverter = None):
         """
         Shows help for a command or a list of all commands.
 
         Usage:
+            {prefix}help
             {prefix}help <command>
 
         Example:

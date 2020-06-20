@@ -40,10 +40,10 @@ class Config(commands.Cog):
                 *tuple(defaults.values())
                 )
 
-    @commands.group(name='config', aliases=('cfg',), invoke_without_command=True)
+    @commands.group(name='config', aliases=('cfg',), brief="Change config for the server", invoke_without_command=True)
     async def _config_group(self, ctx: Context, config_option: ConfigConverter, new: str):
         """
-        Change config for your server. You have to have Manage Server permissions to run this command.
+        Change config for the server. You have to have Manage Server permissions to run this command.
 
         Usage:
             {prefix}config
@@ -55,7 +55,7 @@ class Config(commands.Cog):
         await config_option.set(new)
         await ctx.send(f"Set to {new}")
 
-    @_config_group.command(name='help')
+    @_config_group.command(name='help', brief="Shows help for a config option")
     async def _config_help(self, ctx: Context, config_option: ConfigConverter):
         """
         Shows help for a particular config option.
