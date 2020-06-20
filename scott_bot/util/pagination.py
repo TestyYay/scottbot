@@ -5,7 +5,7 @@ from contextlib import suppress
 
 import discord
 from discord.abc import User
-from discord.ext.commands import Context, Paginator, Cog, Command
+from discord.ext.commands import Context, Paginator, Cog, Command, Group
 
 from scott_bot.util.config import Emojis
 from scott_bot.util.messages import wait_for_deletion
@@ -68,6 +68,16 @@ class HelpPaginator:
                 s += f"{command.name:{i}} : {command.brief}\n"
             return s
 
+        def _get_commands(cog: Cog):
+            commands = []
+            for command in cog.get_commands():
+                if not command.hidden:
+                    commands.append(command)
+                if isinstance(command, Group):
+                    commands += [comm for comm in command.commands if not comm.hidden]
+            print(commands)
+            return commands
+
         def set_footer(footer: t.Optional[str], paginator: HelpPaginator, embed: discord.Embed) -> None:
             if footer:
                 embed.set_footer(text=f"{footer} (Page {paginator.page_num + 1}/{len(paginator.pages)})")
@@ -95,7 +105,7 @@ class HelpPaginator:
 {cog.qualified_name}
 {'-' * len(cog.qualified_name)}
     
-{_get_help_list([comm for comm in cog.get_commands() if not comm.hidden])}```**"""
+{_get_help_list(_get_commands(cog))}```**"""
             paginator.add_page(help_page)
 
         paginator.page_num = 0
