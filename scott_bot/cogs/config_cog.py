@@ -62,7 +62,8 @@ class Config(commands.Cog):
             )
             print(cols)
             print(config.Config.bad)
-            columns = [column.get("column_name") for column in cols if column not in config.Config.bad]
+            columns = [column.get("column_name") for column in cols if
+                       column.get("column_name") not in config.Config.bad]
             print(columns)
             embed = discord.Embed(title="Config Options")
             config_options = await self._get_config_options(columns, ctx.guild)
