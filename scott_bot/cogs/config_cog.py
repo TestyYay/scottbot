@@ -45,7 +45,8 @@ class Config(commands.Cog):
     @config_group.command(name='help')
     async def config_help(self, ctx: Context, config_option: ConfigConverter):
         if config_option is not None:
-            print(config_option.get())
+            x = await config_option.get()
+            print(x)
             await ctx.send(str(config_option.value))
         else:
             await ctx.send("Unknown config option")
