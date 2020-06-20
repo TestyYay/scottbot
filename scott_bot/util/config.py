@@ -1,5 +1,5 @@
 import os
-from typing import Any, Optional
+from typing import Any, Optional, Sequence
 
 import discord
 import yaml
@@ -51,6 +51,16 @@ class _Config:
                 return self._value[self.name]
         else:
             return getattr(Defaults, self.name, None)
+
+    @staticmethod
+    async def get_multi(configs: Sequence[str], bot, guild: Optional[discord.Guild]):
+        if guild is not None:
+            if bot.db_conn is not None:
+                ret = await bot.db_conn.fetchrow(
+                    f'SELECT {", ".join(configs)} FROM {DataBase.main_tablename} WHERE guild_id = $1',
+                    guild.id
+                )
+                print(ret)
 
     async def set(self, new):
         if self.read_only:

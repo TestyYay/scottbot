@@ -66,18 +66,18 @@ class Config(commands.Cog):
             print(columns)
             embed = discord.Embed(title="Config Options")
             config_options = await self._get_config_options(columns, ctx.guild)
-            embed.description = f"""**```asciidoc {config_options}```**"""
+            embed.description = f"""**```{config_options}```**"""
             message = await ctx.send(embed=embed)
             await wait_for_deletion(message, (ctx.author,), client=self.bot)
 
     async def _get_config_options(self, options: list, guild):
         i = max(len(x) for x in options)
         s = ""
-        for option in options:
-            if option in config.Config.ConfigHelp.__annotations__:
-                _option = config.get_config(option, self.bot, guild)
-                s += f"{option:{i}} : {getattr(config.Config.ConfigHelp, option, 'None')}\n"
+        values = await config._Config.get_multi(options, self.bot, guild)
         return s
+
+    # getattr(config.Config.ConfigHelp, option, 'None')
+    # if option in config.Config.ConfigHelp.__annotations__:
 
     # @_config_group.error
     # async def _config_group_error(self, ctx: Context, error):
