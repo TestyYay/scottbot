@@ -2,12 +2,12 @@ import os
 
 import discord
 from discord.ext import commands
-from discord.ext.commands import Cog, Context, BadArgument, Group
+from discord.ext.commands import Cog, Context, Group
 
 from scott_bot.bot import ScottBot
 from scott_bot.converters import CommandConverter
 from scott_bot.util import config
-from scott_bot.util.messages import wait_for_deletion, bad_arg_error, get_group_commands
+from scott_bot.util.messages import get_group_commands
 from scott_bot.util.pagination import HelpPaginator
 
 
@@ -74,7 +74,6 @@ class Help(Cog):
                 help_format.format(comm=comm, dashes='-' * len(comm.name), help=comm.help.format(prefix=ctx.prefix))
                 for comm in comms
             ]
-            print(pages)
             await HelpPaginator.paginate(
                 ctx,
                 embed,
