@@ -61,6 +61,7 @@ class Config(commands.Cog):
                 "SELECT column_name FROM information_schema.columns WHERE table_name = $1;",
                 config.DataBase.main_tablename
             )
+            print("after")
             columns = [column.get("column_name") for column in cols if column not in config.Config.bad]
             print(columns)
             embed = discord.Embed(title="Config Options")
