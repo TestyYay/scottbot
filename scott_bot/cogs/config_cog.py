@@ -50,6 +50,8 @@ class Config(commands.Cog):
         Example:
             {prefix}config dad_name "dad_bot"
         """
+        print(config_option)
+        print(new)
         if config_option is not None and new is not None:
             await config_option.set(new)
             await ctx.send(f"Changed config option {config_option.name} to {new}")
@@ -60,16 +62,16 @@ class Config(commands.Cog):
             )
             columns = [column.get("column_name") for column in cols if column not in config.Config.bad]
             embed = discord.Embed(title="Config Options")
-            embed.description = f"""**```asciidoc {Config._get_config_options(columns)}```**"""
+            embed.description = f"""**```asciidoc {await self._get_config_options(columns, ctx.guild)}```**"""
             message = await ctx.send(embed=embed)
             await wait_for_deletion(message, (ctx.author,), client=self.bot)
 
-    @staticmethod
-    def _get_config_options(options: list):
+    async def _get_config_options(self, options: list, guild):
         i = max(len(x) for x in options)
         s = ""
         for option in options:
             if option in config.Config.ConfigHelp.__annotations__:
+                _option = config.get_config(option, self.bot, guild)
                 s += f"{option:{i}} : {getattr(config.Config.ConfigHelp, option, 'None')}\n"
         return s
 
