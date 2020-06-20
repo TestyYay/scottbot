@@ -8,7 +8,7 @@ from discord.abc import User
 from discord.ext.commands import Context, Paginator, Cog, Command, Group
 
 from scott_bot.util.config import Emojis
-from scott_bot.util.messages import wait_for_deletion, get_group_commands
+from scott_bot.util.messages import wait_for_deletion, get_cog_commands, get_group_commands
 
 
 PAGINATION_EMOJI = (Emojis.first, Emojis.left, Emojis.right, Emojis.last, Emojis.delete)
@@ -31,7 +31,8 @@ class HelpPaginator:
             cls,
             ctx: Context,
             embed: discord.Embed,
-            cogs: t.Sequence[Cog],
+            cogs: t.Optional[t.Sequence[Cog]] = None,
+            pages: t.Optional[t.Sequence[str]] = None,
             timeout: int = 300,
             restrict_to_users: t.Optional[t.Sequence[User]] = None,
             footer_text: str = None
@@ -68,15 +69,6 @@ class HelpPaginator:
                 s += f"{command.name:{i}} : {command.brief}\n"
             return s
 
-        def _get_commands(cog: Cog):
-            commands = []
-            for command in cog.get_commands():
-                if not command.hidden:
-                    commands.append(command)
-                if isinstance(command, Group):
-                    commands += get_group_commands(command, command.name)
-            return commands
-
         def set_footer(footer: t.Optional[str], paginator: HelpPaginator, embed: discord.Embed) -> None:
             if footer:
                 embed.set_footer(text=f"{footer} (Page {paginator.page_num + 1}/{len(paginator.pages)})")
@@ -99,17 +91,21 @@ class HelpPaginator:
 
         paginator = cls()
 
-        for cog in cogs:
-            help_page = f"""**```asciidoc
-{cog.qualified_name}
-{'-' * len(cog.qualified_name)}
-    
-{_get_help_list(_get_commands(cog))}```**"""
-            paginator.add_page(help_page)
+        if cogs is not None:
+            for cog in cogs:
+                help_page = f"""**```asciidoc
+    {cog.qualified_name}
+    {'-' * len(cog.qualified_name)}
+        
+    {_get_help_list(get_cog_commands(cog))}```**"""
+                paginator.add_page(help_page)
 
-        paginator.page_num = 0
+            paginator.page_num = 0
 
-        embed.description = paginator.page
+            embed.description = paginator.page
+        elif pages is not None:
+            for page in pages:
+                paginator.add_page(page)
 
         if len(paginator.pages) <= 1:
             if footer_text:
@@ -174,11 +170,9 @@ class HelpPaginator:
 
     @property
     def page_num(self):
-        return (
-            self._current_page
-            if self._current_page is not None and len(self.pages) > 0
-            else None
-        )
+        if self._current_page is None and len(self.pages) > 0:
+            self._current_page = 0
+        return self._current_page
 
     @page_num.setter
     def page_num(self, page: int):

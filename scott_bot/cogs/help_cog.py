@@ -7,7 +7,7 @@ from discord.ext.commands import Cog, Context, BadArgument
 from scott_bot.bot import ScottBot
 from scott_bot.converters import CommandConverter
 from scott_bot.util import config
-from scott_bot.util.messages import wait_for_deletion, bad_arg_error
+from scott_bot.util.messages import wait_for_deletion, bad_arg_error, get_group_commands
 from scott_bot.util.pagination import HelpPaginator
 
 
@@ -31,7 +31,7 @@ class Help(Cog):
 
     def __init__(self, bot):
         self.bot: ScottBot = bot
-        self._help.error(bad_arg_error)
+        # self._help.error(bad_arg_error)
 
     @commands.command(name="help", brief="Shows help for a command")
     async def _help(self, ctx: Context, command: CommandConverter = None):
@@ -59,12 +59,21 @@ class Help(Cog):
                 restrict_to_users=(ctx.author,)
             )
         else:
-            embed = discord.Embed(title="Help Menu", color=config.Bot.color)
-            embed.description = f"""**```asciidoc
-{command.name}
-{'-' * len(command.name)}
+            help_format = """**```asciidoc
+{comm.name}
+{'-' * len(comm.name)}
 
-{command.help.format(prefix=ctx.prefix)}```**"""
+{comm.help.format(prefix=prefix)}```**"""
+            embed = discord.Embed(title="Help Menu", color=config.Bot.color)
+            comms = (
+                get_group_commands(command)
+                if isinstance(command, Group)
+                else command
+            )
+            pages = [
+                help_format.format(comm=comm, prefix=ctx.prefix)
+                for comm in comms
+            ]
             message = await ctx.send(embed=embed)
             await wait_for_deletion(message, (ctx.author,), client=self.bot)
 

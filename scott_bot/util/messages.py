@@ -50,7 +50,18 @@ async def bad_arg_error(cog: Cog, ctx: Context, error: DiscordException):
         await ctx.send(str(error.args[0]))
 
 
-def get_group_commands(group: Group, name: str):
+def get_cog_commands(cog: Cog):
+    commands = []
+    for command in cog.get_commands():
+        if not command.hidden:
+            commands.append(command)
+        if isinstance(command, Group):
+            commands += get_group_commands(command)
+    return commands
+
+
+def get_group_commands(group: Group, name: str = None):
+    name = name or group.name
     commands = []
     for command in group.commands:
         new_name = name + " " + command.name
