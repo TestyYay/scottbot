@@ -1,6 +1,6 @@
 from typing import Optional
 
-from discord.ext.commands import Converter, Command, Context
+from discord.ext.commands import Converter, Command, Context, BadArgument
 
 from scott_bot.util.config import _Config, DataBase
 
@@ -11,6 +11,7 @@ class CommandConverter(Converter):
         commands = ctx.bot.all_commands
         if command in commands:
             return commands.get(command)
+        raise BadArgument('Unknown command: "{}"'.format(command))
 
 
 class ConfigConverter(Converter):
@@ -24,3 +25,4 @@ class ConfigConverter(Converter):
             columns = [column.get("column_name") for column in cols]
             if option in columns:
                 return _Config(option, ctx.bot, ctx.guild)
+            raise BadArgument('Unknown config option: "{}"'.format(option))

@@ -7,6 +7,7 @@ from scott_bot.converters import ConfigConverter
 from scott_bot.bot import ScottBot
 from typing import Optional
 from scott_bot.util.config import DataBase, Defaults
+from scott_bot.util.messages import bad_arg_error
 
 
 INSERT_SQL = """
@@ -19,6 +20,8 @@ DO NOTHING;"""
 class Config(commands.Cog):
     def __init__(self, bot: ScottBot):
         self.bot = bot
+        self._config_group.error(bad_arg_error)
+        self._config_help.error(bad_arg_error)
 
     @commands.Cog.listener("on_guild_join")
     async def add_guild_db(self, guild: discord.Guild):
@@ -38,23 +41,14 @@ class Config(commands.Cog):
                 )
 
     @commands.group(name='config', aliases=('cfg',), invoke_without_command=True)
-    async def config_group(self, ctx: Context, config_option: ConfigConverter, new: str):
-        print(config_option)
-        if config_option is not None:
-            await config_option.set(new)
-            await ctx.send(f"Set to {new}")
-        else:
-            await ctx.send("Unknown config option")
+    async def _config_group(self, ctx: Context, config_option: ConfigConverter, new: str):
+        await config_option.set(new)
+        await ctx.send(f"Set to {new}")
 
-    @config_group.command(name='help')
-    async def config_help(self, ctx: Context, config_option: ConfigConverter):
-        if config_option is not None:
-            x = await config_option.get()
-            print(x)
-            await ctx.send(str(x))
-        else:
-            await ctx.send("Unknown config option")
-        print("help")
+    @_config_group.command(name='help')
+    async def _config_help(self, ctx: Context, config_option: ConfigConverter):
+        x = await config_option.get()
+        await ctx.send(str(x))
 
 
 def setup(bot: ScottBot):

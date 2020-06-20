@@ -1,15 +1,14 @@
-import asyncio
-
 import os
+
 import discord
 from discord.ext import commands
-from discord.ext.commands import Command, Cog, Context
-from scott_bot.converters import CommandConverter
+from discord.ext.commands import Cog, Context, BadArgument
+
 from scott_bot.bot import ScottBot
-from scott_bot.util.pagination import HelpPaginator
+from scott_bot.converters import CommandConverter
 from scott_bot.util import config
-from scott_bot.util.messages import wait_for_deletion
-from typing import Sequence
+from scott_bot.util.messages import wait_for_deletion, bad_arg_error
+from scott_bot.util.pagination import HelpPaginator
 
 
 def _get_code_lines():
@@ -32,6 +31,7 @@ class Help(Cog):
 
     def __init__(self, bot):
         self.bot: ScottBot = bot
+        self._help.error(bad_arg_error)
 
     @commands.command(name="help", brief="Shows help for a command.")
     async def _help(self, ctx: Context, command: CommandConverter = None):
@@ -46,7 +46,7 @@ class Help(Cog):
             cogs = [
                 cog for cog in self.bot.cogs.values()
                 if not getattr(cog, "hidden", False)
-                and len(cog.get_commands()) > 0
+                   and len(cog.get_commands()) > 0
             ]
             await HelpPaginator.paginate(
                 ctx,
