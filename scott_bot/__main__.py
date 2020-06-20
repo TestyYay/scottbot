@@ -8,7 +8,8 @@ bot.remove_command("help")
 extensions = [
     "cogs.status_cog",
     "cogs.help_cog",
-    "cogs.config_cog"
+    "cogs.config_cog",
+    "cogs.join_cog"
 ]
 
 
