@@ -52,7 +52,7 @@ async def get_config(name: str, bot, guild: Optional[discord.Guild] = None) -> O
 
 
 async def prefix_for(bot, message: discord.Message):
-    config = get_config("prefix", bot, message.guild)
+    config = await get_config("prefix", bot, message.guild)
     prefix = await config.get()
     return commands.when_mentioned_or(prefix)(bot, message)
 
