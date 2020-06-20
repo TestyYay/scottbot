@@ -100,12 +100,11 @@ class HelpPaginator:
 {_get_help_list(get_cog_commands(cog))}```**"""
                 paginator.add_page(help_page)
 
-            paginator.page_num = 0
-
-            embed.description = paginator.page
         elif pages is not None:
             for page in pages:
                 paginator.add_page(page)
+
+        embed.description = paginator.page
 
         if len(paginator.pages) <= 1:
             if footer_text:
