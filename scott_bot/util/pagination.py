@@ -74,7 +74,9 @@ class HelpPaginator:
             for command in cog.get_commands():
                 if not command.hidden:
                     commands.append(command)
+                    print("Appended" + str(command))
                 if isinstance(command, Group):
+                    print("is a group")
                     commands += get_group_commands(command, command.name)
             print([command.name for command in commands])
             print(commands)
