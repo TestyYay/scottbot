@@ -57,7 +57,7 @@ class Config(commands.Cog):
             await ctx.send(f"Changed config option {config_option.name} to {new}")
         else:
             print("else")
-            cols = await bot.db_conn.fetch(
+            cols = await self.bot.db_conn.fetch(
                 "SELECT column_name FROM information_schema.columns WHERE table_name = $1;",
                 config.DataBase.main_tablename
             )
