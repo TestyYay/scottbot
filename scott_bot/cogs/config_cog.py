@@ -54,11 +54,11 @@ class Config(commands.Cog):
         await ctx.send(f"Changed config option {config_option.name} to {new}")
 
     @_config_group.error
-    async def _config_group_error(self, cog, ctx: Context, error):
+    async def _config_group_error(self, ctx: Context, error):
         if isinstance(error, AttributeError):
             await ctx.send("You can't change that option.")
         else:
-            await bad_arg_error(cog, ctx, error)
+            await bad_arg_error(None, ctx, error)
 
     @_config_group.command(name='help', brief="Shows help for a config option")
     async def _config_help(self, ctx: Context, config_option: ConfigConverter):
