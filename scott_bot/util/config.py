@@ -162,6 +162,16 @@ class Config(metaclass=YAMLGetter):
 
     bad: list
 
+    class ConfigHelp(metaclass=YAMLGetter):
+        section = "config"
+        subsection = "help"
+
+        prefix: str
+        join_leave: str
+        dad_name: str
+        admin_channel: str
+        swearing: str
+
 
 class Defaults(metaclass=YAMLGetter):
     section = "config"

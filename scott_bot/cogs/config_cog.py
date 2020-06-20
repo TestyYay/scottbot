@@ -4,8 +4,8 @@ from discord.ext.commands import Context
 
 from scott_bot.bot import ScottBot
 from scott_bot.converters import ConfigConverter
-from scott_bot.util.config import DataBase, Defaults
-from scott_bot.util.messages import bad_arg_error
+from scott_bot.util import config
+from scott_bot.util.messages import bad_arg_error, wait_for_deletion
 
 INSERT_SQL = """
 INSERT INTO {table} ({options})
@@ -25,11 +25,11 @@ class Config(commands.Cog):
         if self.bot.db_conn is not None:
             defaults = {
                 'guild_id': guild.id,
-                'prefix': Defaults.prefix,
-                'dad_name': Defaults.dad_name,
+                'prefix': config.Defaults.prefix,
+                'dad_name': config.Defaults.dad_name,
                 'swearing': False
             }
-            txt = INSERT_SQL.format(table=DataBase.main_tablename,
+            txt = INSERT_SQL.format(table=config.DataBase.main_tablename,
                                     options=', '.join(defaults.keys()),
                                     vals=', '.join('$' + str(i + 1) for i, x in enumerate(defaults.keys())))
             await self.bot.db_conn.execute(
@@ -38,7 +38,7 @@ class Config(commands.Cog):
             )
 
     @commands.group(name='config', aliases=('cfg',), brief="Change config for the server", invoke_without_command=True)
-    async def _config_group(self, ctx: Context, config_option: ConfigConverter, new: str):
+    async def _config_group(self, ctx: Context, config_option: ConfigConverter = None, new: str = None):
         """
         Change config for the server. You have to have Manage Server permissions to run this command.
 
@@ -50,8 +50,28 @@ class Config(commands.Cog):
         Example:
             {prefix}config dad_name "dad_bot"
         """
-        await config_option.set(new)
-        await ctx.send(f"Changed config option {config_option.name} to {new}")
+        if config_option is not None and new is not None:
+            await config_option.set(new)
+            await ctx.send(f"Changed config option {config_option.name} to {new}")
+        else:
+            cols = await bot.db_conn.fetch(
+                "SELECT column_name FROM information_schema.columns WHERE table_name = $1;",
+                config.DataBase.main_tablename
+            )
+            columns = [column.get("column_name") for column in cols if column not in config.Config.bad]
+            embed = discord.Embed(title="Config Options")
+            embed.description = f"""**```asciidoc {Config._get_config_options(columns)}```**"""
+            message = await ctx.send(embed=embed)
+            await wait_for_deletion(message, (ctx.author,), client=self.bot)
+
+    @staticmethod
+    def _get_config_options(options: list):
+        i = max(len(x) for x in options)
+        s = ""
+        for option in options:
+            if option in config.Config.ConfigHelp.__annotations__:
+                s += f"{option:{i}} : {getattr(config.Config.ConfigHelp, option, 'None')}\n"
+        return s
 
     @_config_group.error
     async def _config_group_error(self, ctx: Context, error):
