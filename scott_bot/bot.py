@@ -22,7 +22,7 @@ class ScottBot(commands.Bot):
 
     async def _create(self) -> None:
         self.http_session = aiohttp.ClientSession()
-        self.db_conn = await asyncpg.connect(DataBase.db_url, password="Minecraft10@")
+        self.db_conn = await asyncpg.connect(DataBase.db_url)
 
     async def _close(self) -> None:
         print("closing")
