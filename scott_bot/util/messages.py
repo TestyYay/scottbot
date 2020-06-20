@@ -3,7 +3,7 @@ from typing import Optional, Sequence
 
 import asyncio
 from discord import Client, Member, Message, Reaction, User, DiscordException
-from discord.ext.commands import Context, BadArgument, Cog, Group
+from discord.ext.commands import Context, BadArgument, Cog, Group, Command
 from discord.abc import Snowflake
 from scott_bot.util.config import Emojis
 
