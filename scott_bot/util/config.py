@@ -23,13 +23,13 @@ class _Config:
                     int(self.guild.id),
                 )
                 self._value = ret
-                return self._value
+                return self._value[self.name]
         else:
             print("DM")
 
     @property
     def value(self):
-        return self._value
+        return self._value[self.name]
 
 
 class YAMLGetter(type):
