@@ -15,6 +15,7 @@ class _Config:
         self.bot = bot
         self.guild = guild
         self._value = None
+        self.read_only = self.name in Config.bad
 
     @staticmethod
     def _format_type(typ: str) -> Any:
@@ -52,6 +53,8 @@ class _Config:
             return getattr(Defaults, self.name, None)
 
     async def set(self, new):
+        if self.read_only:
+            raise AttributeError("The option is read-only")
         if self.guild is not None:
             if self.bot.db_conn is not None:
                 typ = await self.get_type()
@@ -154,8 +157,14 @@ class DataBase(metaclass=YAMLGetter):
     nickname_tablename: str
 
 
+class Config(metaclass=YAMLGetter):
+    section = "config"
+
+    bad: list
+
+
 class Defaults(metaclass=YAMLGetter):
-    section = "database"
+    section = "config"
     subsection = "defaults"
 
     prefix: str

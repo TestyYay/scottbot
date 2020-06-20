@@ -1,14 +1,11 @@
+import discord
 from discord.ext import commands
 from discord.ext.commands import Context
-import discord
-
-from scott_bot.converters import ConfigConverter
 
 from scott_bot.bot import ScottBot
-from typing import Optional
+from scott_bot.converters import ConfigConverter
 from scott_bot.util.config import DataBase, Defaults
 from scott_bot.util.messages import bad_arg_error
-
 
 INSERT_SQL = """
 INSERT INTO {table} ({options})
@@ -34,11 +31,11 @@ class Config(commands.Cog):
             }
             txt = INSERT_SQL.format(table=DataBase.main_tablename,
                                     options=', '.join(defaults.keys()),
-                                    vals=', '.join('$' + str(i+1) for i, x in enumerate(defaults.keys())))
+                                    vals=', '.join('$' + str(i + 1) for i, x in enumerate(defaults.keys())))
             await self.bot.db_conn.execute(
                 txt,
                 *tuple(defaults.values())
-                )
+            )
 
     @commands.group(name='config', aliases=('cfg',), brief="Change config for the server", invoke_without_command=True)
     async def _config_group(self, ctx: Context, config_option: ConfigConverter, new: str):
@@ -53,7 +50,14 @@ class Config(commands.Cog):
             {prefix}config dad_name "dad_bot"
         """
         await config_option.set(new)
-        await ctx.send(f"Set to {new}")
+        await ctx.send(f"Config option {config_option.name} to {new}")
+
+    @_config_group.error
+    async def _config_group_error(self, cog, ctx: Context, error):
+        if isinstance(error, AttributeError):
+            await ctx.send("You can't change that option.")
+        else:
+            await bad_arg_error(cog, ctx, error)
 
     @_config_group.command(name='help', brief="Shows help for a config option")
     async def _config_help(self, ctx: Context, config_option: ConfigConverter):
