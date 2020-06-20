@@ -80,8 +80,6 @@ class Help(Cog):
                 pages=pages,
                 restrict_to_users=(ctx.author,)
             )
-            message = await ctx.send(embed=embed)
-            await wait_for_deletion(message, (ctx.author,), client=self.bot)
 
     @commands.command(name="info", brief="Show info lol")
     async def _info(self, ctx: Context, guild: int = None, channel: int = None):
