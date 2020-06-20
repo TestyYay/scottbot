@@ -76,6 +76,7 @@ class HelpPaginator:
                 if isinstance(command, Group):
                     commands += get_group_commands(command, command.name)
             print([command.name for command in commands])
+            print(commands)
             return commands
 
         def set_footer(footer: t.Optional[str], paginator: HelpPaginator, embed: discord.Embed) -> None:
