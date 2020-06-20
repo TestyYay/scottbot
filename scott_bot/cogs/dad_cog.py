@@ -1,3 +1,5 @@
+import re
+
 from discord import Message
 from discord.ext.commands import Cog
 
