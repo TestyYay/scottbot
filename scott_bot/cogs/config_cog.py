@@ -96,6 +96,8 @@ class Config(commands.Cog):
         Example:
             {prefix}config help dad_name
         """
+        print(config.Config.ConfigHelp.__annotations__)
+        print(config_option.name)
         if config_option.name in config.Config.ConfigHelp.__annotations__:
             embed = discord.Embed(title="Config Option")
             embed.description = f"""**```
