@@ -17,8 +17,8 @@ DO NOTHING;"""
 class Config(commands.Cog):
     def __init__(self, bot: ScottBot):
         self.bot = bot
-        # self._config_group.error(bad_arg_error)
-        self._config_help.error(bad_arg_error)
+        self._config_group.error(bad_arg_error)
+        # self._config_help.error(bad_arg_error)
 
     @commands.Cog.listener("on_guild_join")
     async def add_guild_db(self, guild: discord.Guild):
