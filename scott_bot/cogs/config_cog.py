@@ -45,7 +45,6 @@ class ConfigCog(commands.Cog, name="Config"):
             {prefix}config
             {prefix}config <option> <new>
 
-
         Example:
             {prefix}config dad_name "dad_bot"
         """

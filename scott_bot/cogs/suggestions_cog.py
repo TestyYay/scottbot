@@ -20,6 +20,14 @@ class SuggestionCog(commands.Cog, name="Suggestion"):
     @commands.command(name="suggest", brief="Provide feedback")
     @commands.cooldown(2, 60, commands.BucketType.user)
     async def _suggest(self, ctx: commands.Context, *suggestion: str):
+        """
+        Send a suggestion to the maker of this bot.
+
+        Usage:
+            {prefix}suggest <suggestion>
+        Example:
+            {prefix}suggest git gud lol
+        """
         if not ctx.guild:
             suggestion = ' '.join(suggestion)
             if suggestion:
