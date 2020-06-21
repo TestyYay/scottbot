@@ -29,8 +29,8 @@ class InternetCog(commands.Cog, name="Internet"):
         if isinstance(error, commands.errors.MissingRequiredArgument):
             await ctx.send('You must input a video to search for!')
 
-    @commands.command(name="urbandictionary", brief="Defines the given term using UrbanDictionary", aliases=("urban",))
     @nsfw
+    @commands.command(name="urbandictionary", brief="Defines the given term using UrbanDictionary", aliases=("urban",))
     async def _urban(self, ctx: commands.Context, *term: str):
         headers = {
             'x-rapidapi-host': "mashape-community-urban-dictionary.p.rapidapi.com",
