@@ -99,6 +99,7 @@ class Config(commands.Cog):
         print(config.Config.ConfigHelp.__annotations__)
         print(config_option.name)
         if config_option.name in config.Config.ConfigHelp.__annotations__:
+            print("in")
             embed = discord.Embed(title="Config Option")
             embed.description = f"""**```
 {config_option.name}
