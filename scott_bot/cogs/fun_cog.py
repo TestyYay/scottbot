@@ -12,6 +12,12 @@ class FunCog(commands.Cog, name="Fun"):
 
     @commands.command(name="uwu", brief="Uwuify the provided text")
     async def _uwu(self, ctx: commands.Context, *text: str):
+        """
+        Uwuifies the provided text and adds a random lenny face to the end.
+
+        Usage:
+            {prefix}uwu <text>
+        """
         text = " ".join(text)
         for key, value in UwU.replaces.items():
             text = text.replace(key, value)

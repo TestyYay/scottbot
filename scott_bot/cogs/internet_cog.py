@@ -14,7 +14,17 @@ class InternetCog(commands.Cog, name="Internet"):
         self.bot = bot
 
     @commands.command(name="youtube", brief="Search YouTube", aliases=("yt",))
-    async def _yt_search(self, ctx: commands.Context, search_term: str):
+    async def _yt_search(self, ctx: commands.Context, *search_term: str):
+        """
+        Searches YouTube for the given search term and returns a random result
+
+        Usage:
+            {prefix}youtube <search term>
+
+        Example:
+            {prefix}youtube funny cats
+        """
+        search_term = ' '.join(search_term)
         if self.bot.http_session is not None:
             query_string = urlencode({"search_query": search_term})
             async with self.bot.http_session.get("http://www.youtube.com/results?" + query_string) as r:
@@ -32,6 +42,12 @@ class InternetCog(commands.Cog, name="Internet"):
     @commands.command(name="urbandictionary", brief="Defines a term using UrbanDictionary", aliases=("urban",))
     @commands.check(nsfw)
     async def _urban(self, ctx: commands.Context, *term: str):
+        """
+        Search UrbanDictionary for the given term. Must be in a nsfw channel to use this command
+
+        Usage:
+            {prefix}urban <search term>
+        """
         headers = {
             'x-rapidapi-host': "mashape-community-urban-dictionary.p.rapidapi.com",
             'x-rapidapi-key': "969f01b839msh4787708f5bcb9acp155a3djsn11ba69cd6ced"
