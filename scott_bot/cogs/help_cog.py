@@ -27,7 +27,7 @@ def _get_code_lines():
     return lines
 
 
-class Help(Cog):
+class HelpCog(Cog, name="Help"):
 
     def __init__(self, bot):
         self.bot: ScottBot = bot
@@ -110,4 +110,4 @@ class Help(Cog):
 
 
 def setup(bot: ScottBot):
-    bot.add_cog(Help(bot))
+    bot.add_cog(HelpCog(bot))

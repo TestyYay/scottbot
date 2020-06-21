@@ -13,7 +13,7 @@ BAD_PATTERN = r"(i('?)m|i am) (.+) (and)?"
 BAD_MATCHER = re.compile(BAD_PATTERN, re.IGNORECASE)
 
 
-class DadCog(Cog):
+class DadCog(Cog, name="Dad"):
     def __init__(self, bot: ScottBot):
         self.bot = bot
 

@@ -14,7 +14,7 @@ ON CONFLICT ON CONSTRAINT guilds_pkey
 DO NOTHING;"""
 
 
-class Config(commands.Cog):
+class ConfigCog(commands.Cog, name="Config"):
     def __init__(self, bot: ScottBot):
         self.bot = bot
         self._config_help.error(bad_arg_error)
@@ -107,4 +107,4 @@ class Config(commands.Cog):
 
 
 def setup(bot: ScottBot):
-    bot.add_cog(Config(bot))
+    bot.add_cog(ConfigCog(bot))

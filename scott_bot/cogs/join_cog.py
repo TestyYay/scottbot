@@ -7,7 +7,7 @@ from scott_bot.bot import ScottBot
 from scott_bot.util.config import JoinMessages, get_config
 
 
-class JoinMessage(Cog):
+class JoinMessageCog(Cog, name="JoinMessage"):
     def __init__(self, bot: ScottBot):
         self.bot = bot
 
@@ -30,4 +30,4 @@ class JoinMessage(Cog):
 
 
 def setup(bot: ScottBot):
-    bot.add_cog(JoinMessage(bot))
+    bot.add_cog(JoinMessageCog(bot))

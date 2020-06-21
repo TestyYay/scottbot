@@ -10,7 +10,8 @@ extensions = [
     "cogs.help_cog",
     "cogs.config_cog",
     "cogs.join_cog",
-    "cogs.dad_cog"
+    "cogs.dad_cog",
+    "cogs.internet_cog"
 ]
 
 
