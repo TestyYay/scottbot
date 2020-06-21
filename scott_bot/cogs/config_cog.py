@@ -18,7 +18,7 @@ class Config(commands.Cog):
     def __init__(self, bot: ScottBot):
         self.bot = bot
         self._config_group.error(bad_arg_error)
-        # self._config_help.error(bad_arg_error)
+        self._config_help.error(bad_arg_error)
 
     @commands.Cog.listener("on_guild_join")
     async def add_guild_db(self, guild: discord.Guild):
@@ -105,6 +105,8 @@ class Config(commands.Cog):
 {getattr(config.Config.ConfigHelp, config_option.name, 'None')}```**"""
             message = await ctx.send(embed=embed)
             await wait_for_deletion(message, (ctx.author,), client=self.bot)
+        else:
+            await ctx.send(f'Unknown config option: "{config_option.name}"')
 
 
 def setup(bot: ScottBot):
