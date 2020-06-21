@@ -12,7 +12,8 @@ extensions = [
     "cogs.join_cog",
     "cogs.dad_cog",
     "cogs.internet_cog",
-    "cogs.fun_cog"
+    "cogs.fun_cog",
+    "cogs.suggestions_cog"
 ]
 
 
