@@ -17,6 +17,7 @@ class SuggestionCog(commands.Cog, name="Suggestion"):
         self.bot = bot
 
     @commands.command(name="suggest", brief="Provide feedback")
+    @commands.cooldown(2, 60, BucketType.user)
     async def _suggest(self, ctx: commands.Context, *suggestion: str):
         if not ctx.guild:
             suggestion = ' '.join(suggestion)
@@ -35,6 +36,8 @@ class SuggestionCog(commands.Cog, name="Suggestion"):
                 else:
                     embed.add_field(name='An error has occured', value='Please try again later.')
                 await ctx.author.send(embed=embed)
+            else:
+                await ctx.send('Use the syntax: //suggest <suggestion.')
         else:
             await ctx.send('Please send feedback via dm. Thank You!')
             await ctx.author.send('Please send feedback here. Thank You!')
