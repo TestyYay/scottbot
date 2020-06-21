@@ -15,7 +15,7 @@ class InternetCog(commands.Cog, name="Internet"):
     async def _yt_search(self, ctx: commands.Context, search_term: str):
         if self.bot.http_session is not None:
             query_string = urlencode({"search_query": search_term})
-            async with session.get("http://www.youtube.com/results?" + query_string) as r:
+            async with self.bot.http_session.get("http://www.youtube.com/results?" + query_string) as r:
                 if r.status == 200:
                     text = await r.text()
                     search_results = re.findall(r'href=\"/watch\?v=(.{11})', text)
