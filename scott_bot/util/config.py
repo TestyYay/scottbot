@@ -216,4 +216,18 @@ class JoinMessages(metaclass=YAMLGetter):
     it_mems: list
 
 
+class IFTTT(metaclass=YAMLGetter):
+    section = "ifttt"
+
+    token: str
+
+
+class UwU(metaclass=YAMLGetter):
+    section = "messages"
+    subsection = "uwu"
+
+    faces: list
+    replaces: dict
+
+
 BOT_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir))

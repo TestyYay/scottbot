@@ -2,10 +2,11 @@ import asyncio
 import contextlib
 from typing import Optional, Sequence
 
+import aiohttp
 from discord import Client, Member, Message, Reaction, User, DiscordException
 from discord.ext.commands import Context, BadArgument, Cog, Group, Command
 
-from scott_bot.util.config import Emojis
+from scott_bot.util.config import Emojis, IFTTT
 
 
 async def wait_for_deletion(
@@ -71,3 +72,10 @@ def get_group_commands(group: Group, name: str = None):
             command.name = new_name
             commands.append(command)
     return commands
+
+
+async def ifttt_notify(session: aiohttp.ClientSession, data: Sequence, name="None",
+                       key=IFTTT.token):
+    await session.post(
+        f"https://maker.ifttt.com/trigger/{name}/with/key/{key}",
+        data=dict(zip(('value1', 'value2', 'value3'), data)))
