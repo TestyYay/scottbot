@@ -1,15 +1,13 @@
 import asyncio
-import logging
 import typing as t
 from contextlib import suppress
 
 import discord
 from discord.abc import User
-from discord.ext.commands import Context, Paginator, Cog, Command, Group
+from discord.ext.commands import Context, Paginator, Cog, Command
 
 from scott_bot.util.config import Emojis
-from scott_bot.util.messages import wait_for_deletion, get_cog_commands, get_group_commands
-
+from scott_bot.util.messages import wait_for_deletion, get_cog_commands
 
 PAGINATION_EMOJI = (Emojis.first, Emojis.left, Emojis.right, Emojis.last, Emojis.delete)
 
@@ -83,8 +81,8 @@ class HelpPaginator:
 
             # log.debug(f"Got first page reaction - changing to page 1/{len(paginator.pages)}")
 
-            embed.description = ""
-            await message.edit(embed=embed)
+            # embed.description = ""
+            # await message.edit(embed=embed)
             embed.description = paginator.page
             set_footer(footer_text, paginator, embed)
             await message.edit(embed=embed)

@@ -29,7 +29,7 @@ class InternetCog(commands.Cog, name="Internet"):
         if isinstance(error, commands.errors.MissingRequiredArgument):
             await ctx.send('You must input a video to search for!')
 
-    @commands.command(name="urbandictionary", brief="Defines the given term using UrbanDictionary", aliases=("urban",))
+    @commands.command(name="urbandictionary", brief="Defines a term using UrbanDictionary", aliases=("urban",))
     @commands.check(nsfw)
     async def _urban(self, ctx: commands.Context, *term: str):
         headers = {
