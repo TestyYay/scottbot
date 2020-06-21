@@ -13,7 +13,7 @@ class FunCog(commands.Cog, name="Fun"):
         text = " ".join(text)
         for key, value in UwU.replaces.items():
             text = text.replace(key, value)
-        await ctx.send(message + ' ' + random.choice(UwU.faces))
+        await ctx.send(text + ' ' + random.choice(UwU.faces))
 
 
 def setup(bot: ScottBot):
