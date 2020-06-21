@@ -22,6 +22,11 @@ class InternetCog(commands.Cog, name="Internet"):
                     vid_id = random.choice(search_results)
                     await ctx.send("http://www.youtube.com/watch?v=" + vid_id)
 
+    @_yt_search.error
+    async def yt_error(self, ctx: commands.Context, error):
+        if isinstance(error, commands.errors.MissingRequiredArgument):
+            await ctx.send('You must input a video to search for!')
+
 
 def setup(bot: ScottBot):
     bot.add_cog(InternetCog(bot))
