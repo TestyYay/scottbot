@@ -5,6 +5,7 @@ from urllib.parse import urlencode
 from discord.ext import commands
 
 from scott_bot.bot import ScottBot
+from scott_bot.util.checks import nsfw
 from scott_bot.util.messages import wait_for_deletion
 
 
@@ -29,6 +30,7 @@ class InternetCog(commands.Cog, name="Internet"):
             await ctx.send('You must input a video to search for!')
 
     @commands.command(name="urbandictionary", brief="Defines the given term using UrbanDictionary", aliases=("urban",))
+    @nsfw
     async def _urban(self, ctx: commands.Context, *term: str):
         headers = {
             'x-rapidapi-host': "mashape-community-urban-dictionary.p.rapidapi.com",
