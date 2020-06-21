@@ -17,7 +17,7 @@ class SuggestionCog(commands.Cog, name="Suggestion"):
         self.bot = bot
 
     @commands.command(name="suggest", brief="Provide feedback")
-    @commands.cooldown(2, 60, BucketType.user)
+    @commands.cooldown(2, 60, commands.BucketType.user)
     async def _suggest(self, ctx: commands.Context, *suggestion: str):
         if not ctx.guild:
             suggestion = ' '.join(suggestion)
