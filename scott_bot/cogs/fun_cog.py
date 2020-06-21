@@ -1,3 +1,5 @@
+import random
+
 from discord.ext import commands
 
 from scott_bot.bot import ScottBot
