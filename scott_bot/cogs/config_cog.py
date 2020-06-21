@@ -96,8 +96,16 @@ class Config(commands.Cog):
         Example:
             {prefix}config help dad_name
         """
-        x = await config_option.get()
-        await ctx.send(str(x))
+        if option in config.Config.ConfigHelp.__annotations__:
+            embed = discord.Embed(title="Config Option")
+            embed.description = f"""**```
+{config_option.name}
+{'-' * len(config_option.name)}
+    
+{getattr(config.Config.ConfigHelp, option, 'None')}
+    ```**"""
+            message = await ctx.send(embed=embed)
+            await wait_for_deletion(message, (ctx.author,), client=self.bot)
 
 
 def setup(bot: ScottBot):
