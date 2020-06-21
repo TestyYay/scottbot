@@ -1,10 +1,5 @@
-from discord.ext.commands import Context, check
+from discord.ext.commands import Context
 
 
-def nsfw(*args):
-    print(args)
-
-    async def predicate(ctx: Context):
-        return ctx.channel.is_nsfw()
-
-    return check(predicate)
+def nsfw(ctx: Context):
+    return ctx.channel.is_nsfw()
