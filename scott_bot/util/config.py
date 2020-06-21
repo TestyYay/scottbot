@@ -66,6 +66,7 @@ class _Config:
 
     async def set(self, new):
         if self.read_only:
+            print("read_only")
             raise AttributeError("The option is read-only")
         if self.guild is not None:
             if self.bot.db_conn is not None:
