@@ -27,6 +27,23 @@ class InternetCog(commands.Cog, name="Internet"):
         if isinstance(error, commands.errors.MissingRequiredArgument):
             await ctx.send('You must input a video to search for!')
 
+    @commands.command(name="urbandictionary", brief="Defines the given term using UrbanDictionary", alias=("urban",))
+    async def _urban(self, ctx: commands.Context, *term: str):
+        headers = {
+            'x-rapidapi-host': "mashape-community-urban-dictionary.p.rapidapi.com",
+            'x-rapidapi-key': "969f01b839msh4787708f5bcb9acp155a3djsn11ba69cd6ced"
+        }
+        term = ' '.join(term)
+        if self.bot.http_session is not None:
+            async with self.bot.http_session.get("https://mashape-community-urban-dictionary.p.rapidapi.com/define",
+                                                 headers=headers, params={"term": term}) as r:
+                if r.status == 200:
+                    js = await r.json()
+                    definition = random.choice(js["list"]) if term.lower() != "scott" else js["list"][4]
+                    text = f'```"{definition["word"]}" Definition:\n\n\n{definition["definition"]}\n\n\nExample:\n\n\n{definition["example"]}\n\n\nAuthor: {definition["author"]}\nLikes: {definition["thumbs_up"]}``` '
+                    text = text.replace("]", "").replace("[", "")
+                    await ctx.send(text)
+
 
 def setup(bot: ScottBot):
     bot.add_cog(InternetCog(bot))
