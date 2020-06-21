@@ -9,7 +9,7 @@ from discord.ext.commands import Context, Paginator, Cog, Command
 from scott_bot.util.config import Emojis
 from scott_bot.util.messages import wait_for_deletion, get_cog_commands
 
-PAGINATION_EMOJI = (Emojis.first, Emojis.left, Emojis.right, Emojis.last, Emojis.delete)
+PAGINATION_EMOJI = (Emojis.first, Emojis.left, Emojis.delete, Emojis.right, Emojis.last)
 
 
 class EmptyPaginatorEmbed(Exception):
