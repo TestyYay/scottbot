@@ -5,6 +5,7 @@ from urllib.parse import urlencode
 from discord.ext import commands
 
 from scott_bot.bot import ScottBot
+from scott_bot.util.messages import wait_for_deletion
 
 
 class InternetCog(commands.Cog, name="Internet"):
@@ -42,7 +43,8 @@ class InternetCog(commands.Cog, name="Internet"):
                     definition = random.choice(js["list"]) if term.lower() != "scott" else js["list"][4]
                     text = f'```"{definition["word"]}" Definition:\n\n\n{definition["definition"]}\n\n\nExample:\n\n\n{definition["example"]}\n\n\nAuthor: {definition["author"]}\nLikes: {definition["thumbs_up"]}``` '
                     text = text.replace("]", "").replace("[", "")
-                    await ctx.send(text)
+                    message = await ctx.send(text)
+                    await wait_for_deletion(message, (ctx.author,), client=self.bot)
 
 
 def setup(bot: ScottBot):
