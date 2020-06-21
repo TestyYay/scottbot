@@ -105,7 +105,7 @@ class Config(commands.Cog):
 {config_option.name}
 {'-' * len(config_option.name)}
     
-{getattr(config.Config.ConfigHelp, option, 'None')}
+{getattr(config.Config.ConfigHelp, config_option.name, 'None')}
     ```**"""
             message = await ctx.send(embed=embed)
             await wait_for_deletion(message, (ctx.author,), client=self.bot)
