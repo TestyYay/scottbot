@@ -56,6 +56,7 @@ class SuggestionCog(commands.Cog, name="Suggestion"):
 
     @_suggest.error
     async def on_cooldown(self, ctx, error):
+        print(error)
         if isinstance(error, commands.CommandOnCooldown):
             embed = discord.Embed(title="You are on cooldown", description="Please try this again later")
             await ctx.author.send(embed=embed)
