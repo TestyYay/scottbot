@@ -52,6 +52,7 @@ async def bad_arg_error(cog: Optional[Cog], ctx: Context, error: DiscordExceptio
 
 
 async def missing_perms_error(cog: Optional[Cog], ctx: Context, error: DiscordException):
+    print("miss perms")
     if isinstance(error, MissingPermissions):
         await ctx.send("You don't have permission do that!")
 

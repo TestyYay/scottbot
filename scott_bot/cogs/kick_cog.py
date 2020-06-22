@@ -16,6 +16,7 @@ class KickCog(commands.Cog, name="Kick"):
     @commands.command(name="randomkick", brief="Kick a random person")
     @commands.has_permissions(kick_members=True)
     async def _kick(self, ctx: commands.Context, member: discord.Member = None):
+        print("in")
         if not member:
             bot_user = ctx.guild.get_member(bot.user.id)
             guild_members = ctx.guild.members.copy()
