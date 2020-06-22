@@ -67,7 +67,9 @@ def get_cog_commands(cog: Cog):
         if not command.hidden:
             commands.append(command)
         if isinstance(command, Group):
-            commands += get_group_commands(command)
+            c = get_group_commands(command)
+            print(c)
+            commands += c
     return commands
 
 
@@ -75,6 +77,8 @@ def get_group_commands(group: Group, name: str = None):
     name = name or group.name
     commands = []
     for command in group.commands:
+        if command.hidden:
+            continue
         new_name = name + " " + command.name
         if isinstance(command, Group):
             commands += get_group_commands(command, new_name)
