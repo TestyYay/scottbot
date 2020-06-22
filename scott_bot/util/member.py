@@ -36,7 +36,8 @@ INSERT INTO {tablename} (guild_id, user_id, nick)
 
 async def save_nicks(db_conn: Optional[asyncpg.Connection], *members: discord.Member):
     if db_conn is not None:
-        template_vals = ", ".join("($1, $2, $3)")
+        template_vals = ", ".join(["($1, $2, $3)"] * len(members))
+        print(template_vals)
         vals = []
         for member in members:
             vals += [member.guild.id, member.id, member.nick]
