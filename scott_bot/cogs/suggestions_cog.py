@@ -35,9 +35,11 @@ class SuggestionCog(commands.Cog, name="Suggestion"):
                 if self.bot.http_session is not None:
                     await ifttt_notify(self.bot.http_session, (suggestion, ctx.author.name), name=IFTTT.suggestion)
                 embed = discord.Embed()
+                s = SUGGESTION_SQL.format(tablename=sql.Identifier(DataBase.suggestions_tablename))
+                print(s)
                 if self.bot.db_conn is not None:
                     x = await self.bot.db_conn.execute(
-                        SUGGESTION_SQL.format(tablename=sql.Identifier(DataBase.suggestions_tablename)),
+                        s,
                         ctx.author.id,
                         ctx.author.display_name,
                         suggestion
