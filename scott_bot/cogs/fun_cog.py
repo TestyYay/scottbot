@@ -5,7 +5,7 @@ from discord.ext import commands
 
 from scott_bot.bot import ScottBot
 from scott_bot.util.config import UwU
-from scott_bot.util.member import save_nicks
+from scott_bot.util.member import save_nicks, hireoradmin
 from scott_bot.util.messages import missing_perms_error
 
 
@@ -37,7 +37,6 @@ The later, and often larger, counterweight trebuchet, also known as the counterp
     @commands.command(name="randomkick", brief="Kick a random person")
     @commands.has_permissions(kick_members=True)
     async def _kick(self, ctx: commands.Context, member: discord.Member = None):
-        print("in")
         if not member:
             bot_user = ctx.guild.get_member(bot.user.id)
             guild_members = ctx.guild.members.copy()
@@ -56,7 +55,7 @@ The later, and often larger, counterweight trebuchet, also known as the counterp
     async def _nic(self, ctx: commands.Context, member1: discord.Member = None, member2: discord.Member = None):
         bot_user = ctx.guild.me
         guild_members = [member for member in ctx.guild.members if
-                         hireoradmin(ctx.guild, ctx.channel, bot_user, member)]
+                         hireoradmin(ctx.channel, bot_user, member)]
         if member1 is not None and member2 is None:
             guild_members.remove(member1)
             member2 = random.choice(guild_members)

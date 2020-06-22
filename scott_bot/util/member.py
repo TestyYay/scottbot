@@ -44,3 +44,13 @@ async def save_nicks(db_conn: Optional[asyncpg.Connection], *members: discord.Me
             INSERT_SQL.format(tablename=config.DataBase.nickname_tablename, vals=template_vals),
             *vals
         )
+
+
+def hire(user1: discord.Member, user2: discord.Member):
+    u1 = user1.top_role.position
+    u2 = user2.top_role.position
+    return u1 > u2
+
+
+def hireoradmin(channel, user1, user2):
+    return hire(user1, user2) and not user2.permissions_in(channel).administrator
