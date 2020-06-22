@@ -24,7 +24,7 @@ class FunCog(commands.Cog, name="Fun"):
         await ctx.send(text + ' ' + random.choice(UwU.faces))
 
     @commands.command(name="trebuchet", brief="Trebuchet = good")
-    async def _trebuchet(self, ctx: Context):
+    async def _trebuchet(self, ctx: commands.Context):
         msg = '''A trebuchet (French trébuchet) is a type of catapult that uses a swinging arm to throw a projectile. It was a common powerful siege engine until the advent of gunpowder.
     There are two main types of trebuchets.  The first is the traction trebuchet, or mangonel, which uses manpower to swing the arm. It first appeared in China in the 4th century BC. Carried westward by the Avars, the technology was adopted by the Byzantines in the late 6th century AD and by their neighbors in the following centuries.
     The later, and often larger, counterweight trebuchet, also known as the counterpoise trebuchet, uses a counterweight to swing the arm. It appeared in both Christian and Muslim lands around the Mediterranean in the 12th century, and made its way back to China via Mongol conquests in the 13th century.'''
