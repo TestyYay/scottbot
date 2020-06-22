@@ -14,10 +14,11 @@ ON CONFLICT ON CONSTRAINT guilds_pkey
 DO NOTHING;"""
 
 
-class ConfigCog(commands.Cog, name="Config"):
+class AdminCog(commands.Cog, name="Admin"):
     def __init__(self, bot: ScottBot):
         self.bot = bot
         self._config_help.error(bad_arg_error)
+        self._admin_reset.error(missing_perms_error)
 
     @commands.Cog.listener("on_guild_join")
     async def add_guild_db(self, guild: discord.Guild):
@@ -49,6 +50,10 @@ class ConfigCog(commands.Cog, name="Config"):
         Example:
             {prefix}config dad_name "dad_bot"
         """
+        _admin = config.get_config("admin_channel", self.bot, ctx.guild)
+        admin_channel = await _admin.get()
+        if admin_channel and int(admin_channel) != ctx.channel.id:
+            return
         if config_option is not None and new is not None:
             await config_option.set(new)
             await ctx.send(f"Changed config option {config_option.name} to {new}")
@@ -106,6 +111,12 @@ class ConfigCog(commands.Cog, name="Config"):
         else:
             await ctx.send(f'Unknown config option: "{config_option.name}"')
 
+    @_config_group.command(name='resetadminchannel', brief="Resets the admin channel")
+    @commands.has_permissions(administrator=True)
+    async def _admin_reset(self, ctx: Context):
+        _admin = config.get_config("admin_channel", self.bot, ctx.guild)
+        _admin.set(None)
+
 
 def setup(bot: ScottBot):
-    bot.add_cog(ConfigCog(bot))
+    bot.add_cog(AdminCog(bot))

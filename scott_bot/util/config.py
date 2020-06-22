@@ -116,7 +116,7 @@ class YAMLGetter(type):
             prefixes:
                 direct_message: ''
                 guild: '!'
-        # config_cog.py
+        # admin_cog.py
         class Prefixes(metaclass=YAMLGetter):
             section = "scott_bot"
             subsection = "prefixes"
