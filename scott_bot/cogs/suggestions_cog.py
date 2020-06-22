@@ -36,12 +36,14 @@ class SuggestionCog(commands.Cog, name="Suggestion"):
                     await ifttt_notify(self.bot.http_session, (suggestion, ctx.author.name), name=IFTTT.suggestion)
                 embed = discord.Embed()
                 if self.bot.db_conn is not None:
-                    await self.bot.db_conn.execute(
+                    x = await self.bot.db_conn.execute(
                         SUGGESTION_SQL.format(tablename=sql.Identifier(DataBase.suggestions_tablename)),
                         ctx.author.id,
                         ctx.author.display_name,
                         suggestion
                     )
+                    print(x)
+                    print(dir(x))
                     embed.add_field(name='Your response has been recorded', value='Thank you for your feedback!')
                 else:
                     embed.add_field(name='An error has occured', value='Please try again later.')
