@@ -66,7 +66,7 @@ class HelpCog(Cog, name="Help"):
 {help}```**"""
             embed = discord.Embed(title="Help Menu", color=config.Bot.color)
             comms = (
-                {command.name: command} + get_group_commands(command)
+                dict({command.name: command}, **get_group_commands(command))
                 if isinstance(command, Group)
                 else {command.name: command}
             )
