@@ -53,9 +53,13 @@ The later, and often larger, counterweight trebuchet, also known as the counterp
     @commands.guild_only()
     @commands.has_permissions(manage_nicknames=True)
     async def _nic(self, ctx: commands.Context, member1: discord.Member = None, member2: discord.Member = None):
-        bot_user = ctx.guild.me
-        guild_members = [member for member in ctx.guild.members if
-                         hireoradmin(ctx.channel, bot_user, member)]
+        guild_members = []
+        for member in ctx.guild.members:
+            b = hireoradmin(ctx.channel, ctx.guild.me, member)
+            print(b)
+            if b:
+                guild_members.append(member)
+        print(guild_members)
         if len(guild_members) < 1:
             return await ctx.send("I don't have permission to do that!")
         if member1 is not None and member2 is None:
