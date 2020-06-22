@@ -13,6 +13,7 @@ extensions = [
     "cogs.dad_cog",
     "cogs.internet_cog",
     "cogs.fun_cog",
+    "cogs.kick_cog",
     "cogs.other_cog"
 ]
 
