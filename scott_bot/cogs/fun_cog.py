@@ -5,6 +5,7 @@ from discord.ext import commands
 
 from scott_bot.bot import ScottBot
 from scott_bot.util.config import UwU
+from scott_bot.util.member import save_nicks
 from scott_bot.util.messages import missing_perms_error
 
 
@@ -49,6 +50,34 @@ The later, and often larger, counterweight trebuchet, also known as the counterp
 
         await kicplayer(ctx, member)
 
+    @commands.command(name="sv")
+    async def _sv(self, ctx: commands.Context):
+        await save_nicks(self.bot.db_conn, ctx.author)
+
+    @commands.command(name="nickswitch", brief="Swap two player's nicks!", aliases=("nick", "nickswap"))
+    @commands.guild_only()
+    @has_permissions(manage_nicknames=True)
+    async def _nic(self, ctx: commands.Context, member1: discord.Member = None, member2: discord.Member = None):
+        bot_user = ctx.guild.get_member(bot.user.id)
+        guild_members = ctx.guild.members.copy()
+        if member1 is not None and member2 is None:
+            guild_members.remove(member1)
+            guild_members = [member for member in guild_members if
+                             hireoradmin(ctx.guild, ctx.channel, bot_user, member)]
+            member2 = random.choice(guild_members)
+        elif member1 is None and member2 is None:
+            guild_members = [member for member in guild_members if
+                             hireoradmin(ctx.guild, ctx.channel, bot_user, member)]
+            member1 = random.choice(guild_members)
+            guild_members.remove(member1)
+            member2 = random.choice(guild_members)
+        def_nic(config, member1)
+        def_nic(config, member2)
+        config.write()
+        await swap_nicks(member1, member2)
+        msg = 'Nicknames changed'
+        await ctx.send(msg)
+
 
 async def _kicplayer(ctx: commands.Context, person: discord.Member):
     kickmsg = await ctx.send('Getting players')
@@ -69,6 +98,15 @@ async def _kicplayer(ctx: commands.Context, person: discord.Member):
     await ctx.guild.kick(person)
     await asyncio.sleep(0.5)
     await kickmsg.edit(content='Kicked {}'.format(person))
+
+
+async def _swap_nicks(person1: discord.Member, person2: discord.Member):
+    n1 = person1.display_name
+    n2 = person2.display_name
+    await person2.edit(nick=n1)
+    await person1.edit(nick=n2)
+    print(person1.display_name + '  >>>>>  ' + person2.display_name)
+    print(person2.display_name + '  >>>>>  ' + person1.display_name)
 
 
 def setup(bot: ScottBot):

@@ -1,4 +1,10 @@
+from typing import Optional
+
+import asyncpg
+import discord
 from discord.ext.commands import Context
+
+from scott_bot.util import config
 
 
 async def kicplayer(ctx: Context, person):
@@ -20,3 +26,24 @@ async def kicplayer(ctx: Context, person):
     await ctx.guild.kick(person)
     await asyncio.sleep(0.5)
     await kickmsg.edit(content='Kicked {}'.format(person))
+
+
+INSERT_SQL = """
+INSERT INTO {tablename} (guild_id, user_id, nick)
+    VALUES {vals};
+"""
+
+
+async def save_nicks(db_conn: Optional[asyncpg.Connection], *members: discord.Member):
+    if db_conn is not None:
+        template_vals = ", ".join("($1, $2, $3)")
+        vals = []
+        for member in members:
+            vals += [member.guild.id, member.id, member.nick]
+        s = INSERT_SQL.format(tablename=config.DataBase.nickname_tablename, vals=template_vals)
+        print(s)
+        print(vals)
+        await db_conn.execute(
+            s,
+            *vals
+        )
