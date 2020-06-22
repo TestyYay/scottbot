@@ -13,7 +13,7 @@ VALUES (
 );"""
 
 
-class OtherCog(commands.Cog, name="Suggestion"):
+class OtherCog(commands.Cog, name="Other"):
     def __init__(self, bot: ScottBot):
         self.bot = bot
 
