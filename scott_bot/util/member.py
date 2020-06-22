@@ -52,6 +52,7 @@ def hire(user1: discord.Member, user2: discord.Member):
 
 def hireoradmin(channel, user1, user2):
     x = hire(user1, user2)
+    print("hir")
     print(x)
     print(user2.permissions_in(channel).administrator)
     return x and not user2.permissions_in(channel).administrator
