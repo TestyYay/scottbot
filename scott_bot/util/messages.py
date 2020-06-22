@@ -4,7 +4,7 @@ from typing import Optional, Sequence
 
 import aiohttp
 from discord import Client, Member, Message, Reaction, User, DiscordException
-from discord.ext.commands import Context, BadArgument, Cog, Group, Command
+from discord.ext.commands import Context, BadArgument, Cog, Group, Command, MissingPermissions
 
 from scott_bot.util.config import Emojis, IFTTT
 
@@ -49,6 +49,11 @@ async def wait_for_deletion(
 async def bad_arg_error(cog: Optional[Cog], ctx: Context, error: DiscordException):
     if isinstance(error, BadArgument):
         await ctx.send(str(error.args[0]))
+
+
+async def missing_perms_error(cog: Optional[Cog], ctx: Context, error: DiscordException):
+    if isinstance(error, MissingPermissions):
+        await ctx.send("You don't have permission do that!")
 
 
 def get_cog_commands(cog: Cog):

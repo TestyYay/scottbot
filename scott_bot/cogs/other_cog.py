@@ -13,7 +13,7 @@ VALUES (
 );"""
 
 
-class SuggestionCog(commands.Cog, name="Suggestion"):
+class OtherCog(commands.Cog, name="Suggestion"):
     def __init__(self, bot: ScottBot):
         self.bot = bot
 
@@ -60,4 +60,4 @@ class SuggestionCog(commands.Cog, name="Suggestion"):
 
 
 def setup(bot: ScottBot):
-    bot.add_cog(SuggestionCog(bot))
+    bot.add_cog(OtherCog(bot))
