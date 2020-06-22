@@ -47,6 +47,8 @@ async def save_nicks(db_conn: Optional[asyncpg.Connection], *members: discord.Me
 
 
 def hire(user1: discord.Member, user2: discord.Member):
+    print(user1.top_role)
+    print(user2.top_role)
     return user1.top_role.position > user2.top_role.position
 
 
