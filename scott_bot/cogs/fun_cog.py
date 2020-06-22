@@ -56,6 +56,8 @@ The later, and often larger, counterweight trebuchet, also known as the counterp
         bot_user = ctx.guild.me
         guild_members = [member for member in ctx.guild.members if
                          hireoradmin(ctx.channel, bot_user, member)]
+        if len(guild_members) < 1:
+            return await ctx.send("I don't have permission to do that!")
         if member1 is not None and member2 is None:
             guild_members.remove(member1)
             member2 = random.choice(guild_members)
@@ -65,7 +67,7 @@ The later, and often larger, counterweight trebuchet, also known as the counterp
             member2 = random.choice(guild_members)
         await save_nicks(self.bot.db_conn, member1, member2)
         await _swap_nicks(member1, member2)
-        await ctx.send('Nicknames changed')
+        await ctx.send('Nicknames changed!')
 
 
 async def _kicplayer(ctx: commands.Context, person: discord.Member):
