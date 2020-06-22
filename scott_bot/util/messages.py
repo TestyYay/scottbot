@@ -49,12 +49,16 @@ async def wait_for_deletion(
 async def bad_arg_error(cog: Optional[Cog], ctx: Context, error: DiscordException):
     if isinstance(error, BadArgument):
         await ctx.send(str(error.args[0]))
+    else:
+        raise error
 
 
 async def missing_perms_error(cog: Optional[Cog], ctx: Context, error: DiscordException):
     print("miss perms")
     if isinstance(error, MissingPermissions):
         await ctx.send("You don't have permission do that!")
+    else:
+        raise error
 
 
 def get_cog_commands(cog: Cog):
