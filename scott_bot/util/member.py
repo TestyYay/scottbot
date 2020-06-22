@@ -47,10 +47,11 @@ async def save_nicks(db_conn: Optional[asyncpg.Connection], *members: discord.Me
 
 
 def hire(user1: discord.Member, user2: discord.Member):
-    u1 = user1.top_role.position
-    u2 = user2.top_role.position
-    return u1 > u2
+    return user1.top_role.position > user2.top_role.position
 
 
 def hireoradmin(channel, user1, user2):
-    return hire(user1, user2) and not user2.permissions_in(channel).administrator
+    x = hire(user1, user2)
+    print(x)
+    print(user2.permissions_in(channel).administrator)
+    return x and not user2.permissions_in(channel).administrator
