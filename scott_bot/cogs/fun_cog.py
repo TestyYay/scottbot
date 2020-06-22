@@ -55,12 +55,9 @@ The later, and often larger, counterweight trebuchet, also known as the counterp
     async def _nic(self, ctx: commands.Context, member1: discord.Member = None, member2: discord.Member = None):
         guild_members = []
         for member in ctx.guild.members:
-            print(member)
             b = hireoradmin(ctx.channel, ctx.guild.me, member)
-            print(b)
             if b:
                 guild_members.append(member)
-        print(guild_members)
         if len(guild_members) < 1:
             return await ctx.send("I don't have permission to do that!")
         if member1 is not None and member2 is None:

@@ -40,21 +40,20 @@ async def save_nicks(db_conn: Optional[asyncpg.Connection], *members: discord.Me
         vals = []
         for member in members:
             vals += [member.guild.id, member.id, member.display_name]
+        print(vals)
+        print(*vals)
+        s = INSERT_SQL.format(tablename=config.DataBase.nickname_tablename, vals=template_vals)
+        print()
         await db_conn.execute(
-            INSERT_SQL.format(tablename=config.DataBase.nickname_tablename, vals=template_vals),
+            s,
             *vals
         )
 
 
 def hire(user1: discord.Member, user2: discord.Member):
-    print(user1.top_role)
-    print(user2.top_role)
     return user1.top_role.position > user2.top_role.position
 
 
 def hireoradmin(channel, user1, user2):
     x = hire(user1, user2)
-    print("hir")
-    print(x)
-    print(user2.permissions_in(channel).administrator)
     return x and not user2.permissions_in(channel).administrator
