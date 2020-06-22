@@ -114,6 +114,12 @@ class AdminCog(commands.Cog, name="Admin"):
     @_config_group.command(name='resetadminchannel', brief="Resets the admin channel")
     @commands.has_permissions(administrator=True)
     async def _admin_reset(self, ctx: Context):
+        """
+        Resets the admin channel config option. This is useful if you delete the channel and then can't change config.
+
+        Usage:
+            {prefix}config resetadminchannnel
+        """
         _admin = config.get_config("admin_channel", self.bot, ctx.guild)
         _admin.set(None)
 
