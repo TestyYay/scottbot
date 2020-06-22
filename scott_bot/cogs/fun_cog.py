@@ -50,10 +50,6 @@ The later, and often larger, counterweight trebuchet, also known as the counterp
 
         await kicplayer(ctx, member)
 
-    @commands.command(name="sv")
-    async def _sv(self, ctx: commands.Context):
-        await save_nicks(self.bot.db_conn, ctx.author)
-
     @commands.command(name="nickswitch", brief="Swap two player's nicks!", aliases=("nick", "nickswap"))
     @commands.guild_only()
     @commands.has_permissions(manage_nicknames=True)
