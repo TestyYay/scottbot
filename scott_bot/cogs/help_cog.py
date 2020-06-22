@@ -60,7 +60,7 @@ class HelpCog(Cog, name="Help"):
             )
         else:
             help_format = """**```asciidoc
-{comm.name}
+{comm}
 {dashes}
 
 {help}```**"""
