@@ -5,7 +5,7 @@ from discord.ext.commands import Context
 from scott_bot.bot import ScottBot
 from scott_bot.converters import ConfigConverter
 from scott_bot.util import config
-from scott_bot.util.messages import bad_arg_error, wait_for_deletion
+from scott_bot.util.messages import bad_arg_error, wait_for_deletion, missing_perms_error
 
 INSERT_SQL = """
 INSERT INTO {table} ({options})
@@ -37,6 +37,7 @@ class ConfigCog(commands.Cog, name="Config"):
             )
 
     @commands.group(name='config', aliases=('cfg',), brief="Change config for the server", invoke_without_command=True)
+    @commands.has_permissions(administrator=True)
     async def _config_group(self, ctx: Context, config_option: ConfigConverter = None, new: str = None):
         """
         Change config for the server. You have to have Manage Server permissions to run this command.
@@ -79,6 +80,7 @@ class ConfigCog(commands.Cog, name="Config"):
             if isinstance(error.original, AttributeError):
                 await ctx.send("You can't change that option.")
         else:
+            await missing_perms_error(None, ctx, error)
             await bad_arg_error(None, ctx, error)
 
     @_config_group.command(name='help', brief="Shows help for a config option")
