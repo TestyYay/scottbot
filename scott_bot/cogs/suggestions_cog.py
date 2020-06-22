@@ -1,5 +1,6 @@
 import discord
 from discord.ext import commands
+from psycopg2 import sql
 
 from scott_bot.bot import ScottBot
 from scott_bot.util.config import IFTTT, DataBase
@@ -36,7 +37,7 @@ class SuggestionCog(commands.Cog, name="Suggestion"):
                 embed = discord.Embed()
                 if self.bot.db_conn is not None:
                     await self.bot.db_conn.execute(
-                        SUGGESTION_SQL.format(tablename=DataBase.suggestions_tablename),
+                        SUGGESTION_SQL.format(tablename=sql.Identifier(DataBase.suggestions_tablename)),
                         ctx.author.id,
                         ctx.author.display_name,
                         suggestion
@@ -50,6 +51,12 @@ class SuggestionCog(commands.Cog, name="Suggestion"):
         else:
             await ctx.send('Please send feedback via dm. Thank You!')
             await ctx.author.send('Please send feedback here. Thank You!')
+
+    @_suggest.error
+    async def on_cooldown(self, ctx, error):
+        if isinstance(error, commands.CommandOnCooldown):
+            embed = discord.Embed(title="You are on cooldown", description="Please try this again later")
+            await ctx.author.send(embed=embed)
 
 
 def setup(bot: ScottBot):
