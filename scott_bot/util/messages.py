@@ -1,6 +1,6 @@
 import asyncio
 import contextlib
-from typing import Optional, Sequence
+from typing import Optional, Sequence, Dict
 
 import aiohttp
 from discord import Client, Member, Message, Reaction, User, DiscordException
@@ -61,30 +61,27 @@ async def missing_perms_error(cog: Optional[Cog], ctx: Context, error: DiscordEx
         raise error
 
 
-def get_cog_commands(cog: Cog):
-    commands = []
+def get_cog_commands(cog: Cog) -> Dict[str, Command]:
+    commands = {}
     for command in cog.get_commands():
         if not command.hidden:
-            commands.append(command)
+            commands[new_name] = command
         if isinstance(command, Group):
-            c = get_group_commands(command)
-            print(c)
-            commands += c
+            commands.update(get_group_commands(command))
     return commands
 
 
-def get_group_commands(group: Group, name: str = None):
+def get_group_commands(group: Group, name: str = None) -> Dict[str, Command]:
     name = name or group.name
-    commands = []
+    commands = {}
     for command in group.commands:
         if command.hidden:
             continue
         new_name = name + " " + command.name
         if isinstance(command, Group):
-            commands += get_group_commands(command, new_name)
+            commands.update(get_group_commands(command, new_name))
         elif isinstance(command, Command):
-            command.name = new_name
-            commands.append(command)
+            commands[new_name] = command
     return commands
 
 

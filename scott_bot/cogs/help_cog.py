@@ -66,13 +66,13 @@ class HelpCog(Cog, name="Help"):
 {help}```**"""
             embed = discord.Embed(title="Help Menu", color=config.Bot.color)
             comms = (
-                [command] + get_group_commands(command)
+                {command.name: command} + get_group_commands(command)
                 if isinstance(command, Group)
-                else [command]
+                else {command.name: command}
             )
             pages = [
-                help_format.format(comm=comm, dashes='-' * len(comm.name), help=comm.help.format(prefix=ctx.prefix))
-                for comm in comms
+                help_format.format(comm=name, dashes='-' * len(name), help=comm.help.format(prefix=ctx.prefix))
+                for name, comm in comms.items()
             ]
             await HelpPaginator.paginate(
                 ctx,

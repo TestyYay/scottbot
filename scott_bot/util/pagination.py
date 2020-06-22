@@ -61,10 +61,10 @@ class HelpPaginator:
         def _get_help_list(commands):
             if len(commands) <= 0:
                 return "[There are no commands under this category]"
-            i = max(len(x.name) for x in commands)
+            i = max(len(x) for x in commands)
             s = ""
-            for command in commands:
-                s += f"{command.name:{i}} : {command.brief}\n"
+            for name, command in commands.items():
+                s += f"{name:{i}} : {command.brief}\n"
             return s
 
         def set_footer(footer: t.Optional[str], paginator: HelpPaginator, embed: discord.Embed) -> None:
