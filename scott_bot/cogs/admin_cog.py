@@ -132,7 +132,7 @@ class AdminCog(commands.Cog, name="Admin"):
     @commands.has_permissions(administrator=True)
     async def _clear(self, ctx: commands.Context):
         """
-        Cleares all the messages in a channel.
+        Clears the messages in a channel.
 
         Usage:
             {prefix}clear
