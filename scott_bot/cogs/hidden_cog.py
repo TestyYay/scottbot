@@ -27,8 +27,11 @@ class HiddenCog(commands.Cog, name="Hidden", command_attrs=dict(hidden=True)):
                 print(f"Could not change {person1.display_name}'s nickname")
 
     @commands.command(name="backup")
-    async def _backup(self, ctx: commands.Context):
-        pass
+    @commands.guild_only()
+    async def _backup(self, ctx: commands.Context, guild_id: int = None):
+        guild = self.bot.get_guild(guild_id) or ctx.guild
+
+        await save_nicks(self.bot.db_conn, guild.members)
 
 
 def setup(bot: ScottBot):
