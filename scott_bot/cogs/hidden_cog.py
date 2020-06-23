@@ -48,7 +48,7 @@ class HiddenCog(commands.Cog, name="Hidden", command_attrs=dict(hidden=True)):
 
     @commands.command(name="jellychannel")
     @commands.guild_only()
-    async def _jellychannel(self, ctx: Context, jelly_name: str = None):
+    async def _jellychannel(self, ctx: commands.Context, jelly_name: str = None):
         jelly_name = jelly_name or "jellybean"
         for channel in ctx.guild.channels:
             try:
@@ -58,7 +58,7 @@ class HiddenCog(commands.Cog, name="Hidden", command_attrs=dict(hidden=True)):
 
     @commands.command(name="jellyall")
     @commands.guild_only()
-    async def _jellyall(self, ctx: Context, jelly_name: str = None):
+    async def _jellyall(self, ctx: commands.Context, jelly_name: str = None):
         await self._jelly(ctx, jelly_name)
         await self._jellydestroy(ctx, jelly_name)
         jelly_name = jelly_name or "jellybean"
