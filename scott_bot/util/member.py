@@ -34,6 +34,13 @@ INSERT INTO {tablename} (guild_id, user_id, nick, datetime)
     VALUES {vals};
 """
 
+LATEST_SQL = """
+SELECT DISTINCT ON (user_id) *
+FROM {table}
+WHERE guild_id = $1
+ORDER BY user_id, datetime DESC NULLS LAST, datetime;
+"""
+
 
 async def save_nicks(db_conn: Optional[asyncpg.Connection], *members: Sequence[discord.Member]):
     if db_conn is not None:
@@ -48,6 +55,14 @@ async def save_nicks(db_conn: Optional[asyncpg.Connection], *members: Sequence[d
         await db_conn.execute(
             s,
             *vals
+        )
+
+
+async def get_latest_nicks(db_conn: Optional[asyncpg.Connection], guild: discord.Guild):
+    if db_conn is not None and guild is not None:
+        return await db_conn.fetch(
+            LATEST_SQL.format(table=config.DataBase.nickname_tablename),
+            guild.id
         )
 
 
