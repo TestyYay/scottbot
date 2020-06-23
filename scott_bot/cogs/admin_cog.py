@@ -33,7 +33,7 @@ class AdminCog(commands.Cog, name="Admin"):
         Example:
             {prefix}config dad_name "dad_bot"
         """
-        _admin = config.get_config("admin_channel", self.bot, ctx.guild)
+        _admin = await config.get_config("admin_channel", self.bot, ctx.guild)
         admin_channel = await _admin.get()
         if admin_channel and int(admin_channel) != ctx.channel.id:
             return
