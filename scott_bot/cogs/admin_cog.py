@@ -39,7 +39,7 @@ class AdminCog(commands.Cog, name="Admin"):
             return
         if config_option is not None and new is not None:
             await config_option.set(new)
-            await ctx.send(f"Changed config option {config_option.name} to {new}")
+            await ctx.send(f"Changed config option `{config_option.name}` to `{new}`")
         else:
             cols = await self.bot.db_conn.fetch(
                 "SELECT column_name FROM information_schema.columns WHERE table_name = $1;",
