@@ -4,7 +4,7 @@ import discord
 from discord.ext import commands
 
 from scott_bot.bot import ScottBot
-from scott_bot.util.config import UwU
+from scott_bot.util.config import UwU, DataBase
 from scott_bot.util.member import save_nicks, hireoradmin
 from scott_bot.util.messages import missing_perms_error
 
@@ -70,6 +70,33 @@ The later, and often larger, counterweight trebuchet, also known as the counterp
         await save_nicks(self.bot.db_conn, member1, member2)
         await _swap_nicks(member1, member2)
         await ctx.send('Nicknames changed!')
+
+    @commands.command(name="resetnicks", brief="Reset everyone's nicknames", aliases=("rn",))
+    async def _rn(self, ctx: commands.Context):
+        if self.bot.db_conn is None:
+            return
+        nicks = await self.bot.db_conn.fetch(
+            f"SELECT * FROM {DataBase.nickname_tablename} WHERE guild_id = $1",
+            ctx.guild.id
+        )
+        # print(nicks)
+        # if config.def_nicks != {}:
+        #     for i, nick in config.def_nicks.items():
+        #         try:
+        #             person = ctx.guild.get_member(int(i))
+        #             if person:
+        #                 await person.edit(nick=nick)
+        #         except discord.Forbidden as e:
+        #             logger.log(2, e)
+        # else:
+        #     for person in ctx.guild.members:
+        #         if person.nick:
+        #             try:
+        #                 await person.edit(nick=person.name)
+        #             except discord.Forbidden as e:
+        #                 logger.log(2, e)
+        # await ctx.send('All nicknames reset!')
+        # config.write()
 
 
 async def _kicplayer(ctx: commands.Context, person: discord.Member):

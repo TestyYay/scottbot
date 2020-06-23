@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Optional, Sequence
 
 import asyncpg
 import discord
@@ -34,7 +34,7 @@ INSERT INTO {tablename} (guild_id, user_id, nick)
 """
 
 
-async def save_nicks(db_conn: Optional[asyncpg.Connection], *members: discord.Member):
+async def save_nicks(db_conn: Optional[asyncpg.Connection], *members: Sequence[discord.Member]):
     if db_conn is not None:
         template_vals = ", ".join(f"(${i}, ${i + 1}, ${i + 2})" for i in range(1, len(members) * 3, 3))
         vals = []
