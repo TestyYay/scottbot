@@ -23,20 +23,7 @@ class AdminCog(commands.Cog, name="Admin"):
 
     @commands.Cog.listener("on_guild_join")
     async def add_guild_db(self, guild: discord.Guild):
-        if self.bot.db_conn is not None:
-            defaults = {
-                'guild_id': guild.id,
-                'prefix': config.Defaults.prefix,
-                'dad_name': config.Defaults.dad_name,
-                'swearing': False
-            }
-            txt = INSERT_SQL.format(table=config.DataBase.main_tablename,
-                                    options=', '.join(defaults.keys()),
-                                    vals=', '.join('$' + str(i + 1) for i, x in enumerate(defaults.keys())))
-            await self.bot.db_conn.execute(
-                txt,
-                *tuple(defaults.values())
-            )
+        await config.add_guild_db(self.bot.db_conn, guild)
 
     @commands.group(name='config', aliases=('cfg',), brief="Change config for the server", invoke_without_command=True)
     @commands.guild_only()

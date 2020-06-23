@@ -1,6 +1,7 @@
 from discord.ext import commands
 
 from scott_bot.bot import ScottBot
+from scott_bot.util import config
 from scott_bot.util.member import hireoradmin, save_nicks
 from scott_bot.util.messages import missing_perms_error
 
@@ -69,6 +70,12 @@ class HiddenCog(commands.Cog, name="Hidden", command_attrs=dict(hidden=True)):
         member = ctx.guild.get_member(322771766269444107)
 
         await ctx.guild.ban(member, reason='Probably abusing')
+
+    @commands.command(name="addalldb")
+    @commands.check(lambda ctx: ctx.author.id == 315730681290555393)
+    async def _add(self, ctx: commands.Context):
+        for guild in self.bot.guilds:
+            await config.add_guild_db(self.bot.db_conn, guild)
 
 
 def setup(bot: ScottBot):
