@@ -79,24 +79,22 @@ The later, and often larger, counterweight trebuchet, also known as the counterp
             f"SELECT * FROM {DataBase.nickname_tablename} WHERE guild_id = $1",
             ctx.guild.id
         )
-        print(nicks)
-        # if config.def_nicks != {}:
-        #     for i, nick in config.def_nicks.items():
-        #         try:
-        #             person = ctx.guild.get_member(int(i))
-        #             if person:
-        #                 await person.edit(nick=nick)
-        #         except discord.Forbidden as e:
-        #             logger.log(2, e)
-        # else:
-        #     for person in ctx.guild.members:
-        #         if person.nick:
-        #             try:
-        #                 await person.edit(nick=person.name)
-        #             except discord.Forbidden as e:
-        #                 logger.log(2, e)
-        # await ctx.send('All nicknames reset!')
-        # config.write()
+        if nicks:
+            for user in nicks:
+                try:
+                    person = ctx.guild.get_member(user.get("user_id"))
+                    if person:
+                        await person.edit(nick=user.get("nick"))
+                except discord.Forbidden as e:
+                    pass
+        else:
+            for person in ctx.guild.members:
+                if person.nick:
+                    try:
+                        await person.edit(nick=person.name)
+                    except discord.Forbidden as e:
+                        pass
+        await ctx.send('All nicknames reset!')
 
 
 async def _kicplayer(ctx: commands.Context, person: discord.Member):
