@@ -20,5 +20,3 @@ class ConfigConverter(Converter):
         config = await get_config(option, ctx.bot, ctx.guild)
         if config is not None:
             return config
-        else:
-            raise BadArgument('Unknown config option: "{}"'.format(option))
