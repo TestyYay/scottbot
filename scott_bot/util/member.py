@@ -48,10 +48,7 @@ async def save_nicks(db_conn: Optional[asyncpg.Connection], *members: Sequence[d
         vals = []
         for member in members:
             vals += [member.guild.id, member.id, member.display_name, datetime.now()]
-        print(template_vals)
-        print(vals)
         s = INSERT_SQL.format(tablename=config.DataBase.nickname_tablename, vals=template_vals)
-        print(s)
         await db_conn.execute(
             s,
             *vals
