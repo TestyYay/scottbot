@@ -30,7 +30,7 @@ async def kicplayer(ctx: Context, person):
 
 
 INSERT_SQL = """
-INSERT INTO {tablename} (guild_id, user_id, nick, date)
+INSERT INTO {tablename} (guild_id, user_id, nick, datetime)
     VALUES {vals};
 """
 
