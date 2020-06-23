@@ -60,19 +60,19 @@ class HelpCog(Cog, name="Help"):
             )
         else:
             help_format = """**```asciidoc
-{comm.name}
+{comm}
 {dashes}
 
 {help}```**"""
             embed = discord.Embed(title="Help Menu", color=config.Bot.color)
             comms = (
-                [command] + get_group_commands(command)
+                dict({command.name: command}, **get_group_commands(command))
                 if isinstance(command, Group)
-                else [command]
+                else {command.name: command}
             )
             pages = [
-                help_format.format(comm=comm, dashes='-' * len(comm.name), help=comm.help.format(prefix=ctx.prefix))
-                for comm in comms
+                help_format.format(comm=name, dashes='-' * len(name), help=comm.help.format(prefix=ctx.prefix))
+                for name, comm in comms.items()
             ]
             await HelpPaginator.paginate(
                 ctx,
@@ -96,7 +96,7 @@ class HelpCog(Cog, name="Help"):
         embed.add_field(name="Servers with ScottBot", value=f"{len(self.bot.guilds)}")
         embed.add_field(name="Lines of Code", value=str(_get_code_lines()))
         embed.add_field(name="Invite Link", value=invbot)
-        embed.add_field(name='Any Suggestions?', value='DM the bot: //suggest help')
+        embed.add_field(name='Any Suggestions?', value='DM the bot: //suggest <suggestion>')
 
         msg = 'Info'
         if guild is not None and channel is not None:

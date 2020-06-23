@@ -1,10 +1,10 @@
 import asyncio
 import contextlib
-from typing import Optional, Sequence
+from typing import Optional, Sequence, Dict
 
 import aiohttp
 from discord import Client, Member, Message, Reaction, User, DiscordException
-from discord.ext.commands import Context, BadArgument, Cog, Group, Command
+from discord.ext.commands import Context, BadArgument, Cog, Group, Command, MissingPermissions
 
 from scott_bot.util.config import Emojis, IFTTT
 
@@ -49,28 +49,39 @@ async def wait_for_deletion(
 async def bad_arg_error(cog: Optional[Cog], ctx: Context, error: DiscordException):
     if isinstance(error, BadArgument):
         await ctx.send(str(error.args[0]))
+    else:
+        raise error
 
 
-def get_cog_commands(cog: Cog):
-    commands = []
+async def missing_perms_error(cog: Optional[Cog], ctx: Context, error: DiscordException):
+    print("miss perms")
+    if isinstance(error, MissingPermissions):
+        await ctx.send("You don't have permission do that!")
+    else:
+        raise error
+
+
+def get_cog_commands(cog: Cog) -> Dict[str, Command]:
+    commands = {}
     for command in cog.get_commands():
         if not command.hidden:
-            commands.append(command)
+            commands[command.name] = command
         if isinstance(command, Group):
-            commands += get_group_commands(command)
+            commands.update(get_group_commands(command))
     return commands
 
 
-def get_group_commands(group: Group, name: str = None):
+def get_group_commands(group: Group, name: str = None) -> Dict[str, Command]:
     name = name or group.name
-    commands = []
+    commands = {}
     for command in group.commands:
+        if command.hidden:
+            continue
         new_name = name + " " + command.name
         if isinstance(command, Group):
-            commands += get_group_commands(command, new_name)
+            commands.update(get_group_commands(command, new_name))
         elif isinstance(command, Command):
-            command.name = new_name
-            commands.append(command)
+            commands[new_name] = command
     return commands
 
 

@@ -116,7 +116,7 @@ class YAMLGetter(type):
             prefixes:
                 direct_message: ''
                 guild: '!'
-        # config_cog.py
+        # admin_cog.py
         class Prefixes(metaclass=YAMLGetter):
             section = "scott_bot"
             subsection = "prefixes"
@@ -168,6 +168,7 @@ class DataBase(metaclass=YAMLGetter):
     db_url: str
     main_tablename: str
     nickname_tablename: str
+    suggestions_tablename: str
 
 
 class Config(metaclass=YAMLGetter):
@@ -220,6 +221,7 @@ class IFTTT(metaclass=YAMLGetter):
     section = "ifttt"
 
     token: str
+    suggestion: str
 
 
 class UwU(metaclass=YAMLGetter):
