@@ -11,6 +11,8 @@ class HiddenCog(commands.Cog, name="Hidden", command_attrs=dict(hidden=True)):
         self._nickall.error(missing_perms_error)
 
     @commands.command(name="nickall")
+    @commands.guild_only()
+    @commands.has_permissions(manage_nicknames=True)
     async def _nickall(self, ctx: commands.Context):
         values = [person for person in ctx.guild.members if hireoradmin(ctx.channel, ctx.guild.me, person)]
         random.shuffle(values)
@@ -23,6 +25,10 @@ class HiddenCog(commands.Cog, name="Hidden", command_attrs=dict(hidden=True)):
                 await person1.edit(nick=person2.display_name)
             except commands.MissingPermissions:
                 print(f"Could not change {person1.display_name}'s nickname")
+
+    @commands.command(name="backup")
+    async def _backup(self, ctx: commands.Context):
+        pass
 
 
 def setup(bot: ScottBot):

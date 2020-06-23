@@ -38,6 +38,7 @@ class AdminCog(commands.Cog, name="Admin"):
             )
 
     @commands.group(name='config', aliases=('cfg',), brief="Change config for the server", invoke_without_command=True)
+    @commands.guild_only()
     @commands.has_permissions(administrator=True)
     async def _config_group(self, ctx: Context, config_option: ConfigConverter = None, new: str = None):
         """
@@ -89,6 +90,7 @@ class AdminCog(commands.Cog, name="Admin"):
             await bad_arg_error(None, ctx, error)
 
     @_config_group.command(name='help', brief="Shows help for a config option")
+    @commands.guild_only()
     async def _config_help(self, ctx: Context, config_option: ConfigConverter):
         """
         Shows help for a particular config option.
@@ -112,6 +114,7 @@ class AdminCog(commands.Cog, name="Admin"):
             await ctx.send(f'Unknown config option: "{config_option.name}"')
 
     @_config_group.command(name='resetadminchannel', brief="Resets the admin channel")
+    @commands.guild_only()
     @commands.has_permissions(administrator=True)
     async def _admin_reset(self, ctx: Context):
         """

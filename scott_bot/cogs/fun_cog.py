@@ -13,6 +13,7 @@ class FunCog(commands.Cog, name="Fun"):
     def __init__(self, bot: ScottBot):
         self.bot = bot
         self._kick.error(missing_perms_error)
+        self._rn.error(missing_perms_error)
 
     @commands.command(name="uwu", brief="Uwuify the provided text")
     async def _uwu(self, ctx: commands.Context, *text: str):
@@ -35,6 +36,7 @@ The later, and often larger, counterweight trebuchet, also known as the counterp
         await ctx.send(msg)
 
     @commands.command(name="randomkick", brief="Kick a random person")
+    @commands.guild_only()
     @commands.has_permissions(kick_members=True)
     async def _kick(self, ctx: commands.Context, member: discord.Member = None):
         if not member:
@@ -72,6 +74,8 @@ The later, and often larger, counterweight trebuchet, also known as the counterp
         await ctx.send('Nicknames changed!')
 
     @commands.command(name="resetnicks", brief="Reset everyone's nicknames", aliases=("rn",))
+    @commands.guild_only()
+    @commands.has_permissions(manage_nicknames=True)
     async def _rn(self, ctx: commands.Context):
         if self.bot.db_conn is None:
             return
