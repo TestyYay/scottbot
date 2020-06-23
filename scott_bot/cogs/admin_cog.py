@@ -7,12 +7,6 @@ from scott_bot.converters import ConfigConverter
 from scott_bot.util import config
 from scott_bot.util.messages import bad_arg_error, wait_for_deletion, missing_perms_error
 
-INSERT_SQL = """
-INSERT INTO {table} ({options})
-    VALUES ({vals})
-ON CONFLICT ON CONSTRAINT guilds_pkey
-DO NOTHING;"""
-
 
 class AdminCog(commands.Cog, name="Admin"):
     def __init__(self, bot: ScottBot):

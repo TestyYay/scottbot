@@ -91,6 +91,13 @@ async def get_config(name: str, bot, guild: Optional[discord.Guild] = None) -> O
             return _Config(name, bot, guild)
 
 
+INSERT_SQL = """
+INSERT INTO {table} ({options})
+    VALUES ({vals})
+ON CONFLICT ON CONSTRAINT guilds_pkey
+DO NOTHING;"""
+
+
 async def add_guild_db(db_conn: Optional[asyncpg.Connection], guild: discord.Guild):
     if db_conn is not None:
         defaults = {
