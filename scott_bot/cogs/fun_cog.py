@@ -79,7 +79,7 @@ The later, and often larger, counterweight trebuchet, also known as the counterp
             f"SELECT * FROM {DataBase.nickname_tablename} WHERE guild_id = $1",
             ctx.guild.id
         )
-        # print(nicks)
+        print(nicks)
         # if config.def_nicks != {}:
         #     for i, nick in config.def_nicks.items():
         #         try:
