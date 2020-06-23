@@ -49,7 +49,7 @@ The later, and often larger, counterweight trebuchet, also known as the counterp
             guild_members = [member for member in guild_members if not member.permissions_in(ctx.channel).administrator]
             member = random.choice(guild_members)
 
-        await kicplayer(ctx, member)
+        await _kicplayer(ctx, member)
 
     @commands.command(name="nickswitch", brief="Swap two player's nicks!", aliases=("nick", "nickswap"))
     @commands.guild_only()
@@ -96,7 +96,7 @@ The later, and often larger, counterweight trebuchet, also known as the counterp
                         await person.edit(nick=person.name)
                     except discord.Forbidden:
                         pass
-        await ctx.send('All nicknames reset!')
+        await ctx.send('Nicknames reset!')
 
 
 async def _kicplayer(ctx: commands.Context, person: discord.Member):
