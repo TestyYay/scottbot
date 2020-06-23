@@ -19,6 +19,7 @@ class AdminCog(commands.Cog, name="Admin"):
         self.bot = bot
         self._config_help.error(bad_arg_error)
         self._admin_reset.error(missing_perms_error)
+        self._clear.error(missing_perms_error)
 
     @commands.Cog.listener("on_guild_join")
     async def add_guild_db(self, guild: discord.Guild):
@@ -125,6 +126,19 @@ class AdminCog(commands.Cog, name="Admin"):
         """
         _admin = config.get_config("admin_channel", self.bot, ctx.guild)
         _admin.set(None)
+
+    @commands.command(name="clear", brief="Clears all the messages in a channel")
+    @commands.guild_only()
+    @commands.has_permissions(administrator=True)
+    async def _clear(self, ctx: commands.Context):
+        """
+        Cleares all the messages in a channel.
+
+        Usage:
+            {prefix}clear
+        """
+        msgs = await ctx.channel.purge(limit=None, bulk=True)
+        await ctx.send(f"{len(msgs)} messages cleared!")
 
 
 def setup(bot: ScottBot):

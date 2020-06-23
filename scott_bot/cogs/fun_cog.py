@@ -40,6 +40,16 @@ The later, and often larger, counterweight trebuchet, also known as the counterp
     @commands.guild_only()
     @commands.has_permissions(kick_members=True)
     async def _kick(self, ctx: commands.Context, member: discord.Member = None):
+        """
+        Kicks a random member from the server. You have to have the kick_members permissions to run this command.
+
+        Usage:
+            {prefix}randomkick
+            {prefix}randomkick <user>
+
+        Example:
+            {prefix}randomkick @DonaldTrump
+        """
         if not member:
             bot_user = ctx.guild.get_member(bot.user.id)
             guild_members = ctx.guild.members.copy()
@@ -56,6 +66,12 @@ The later, and often larger, counterweight trebuchet, also known as the counterp
     @commands.guild_only()
     @commands.has_permissions(manage_nicknames=True)
     async def _nic(self, ctx: commands.Context, member1: discord.Member = None, member2: discord.Member = None):
+        """
+        Swaps two random players' nicknames.
+
+        Usage:
+            {prefix}nickswitch
+        """
         guild_members = []
         for member in ctx.guild.members:
             b = hireoradmin(ctx.channel, ctx.guild.me, member)
@@ -78,6 +94,13 @@ The later, and often larger, counterweight trebuchet, also known as the counterp
     @commands.guild_only()
     @commands.has_permissions(manage_nicknames=True)
     async def _rn(self, ctx: commands.Context):
+        """
+        Reset's players nicknames to before the previous nickname switch. If you run nickswith multiple times it will
+        reset them to the last time to did it.
+
+        Usage:
+            {prefix}resetnicks
+        """
         if self.bot.db_conn is None:
             return
         nicks = await get_latest_nicks(self.bot.db_conn, ctx.guild)
