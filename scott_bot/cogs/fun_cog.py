@@ -81,7 +81,6 @@ The later, and often larger, counterweight trebuchet, also known as the counterp
         if self.bot.db_conn is None:
             return
         nicks = await get_latest_nicks(self.bot.db_conn, ctx.guild)
-        print(nicks)
         if nicks:
             for user in nicks:
                 try:
