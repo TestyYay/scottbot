@@ -91,7 +91,6 @@ class HelpPaginator:
         if cogs is not None:
             for cog in cogs:
                 comms = get_cog_commands(cog)
-                print(comms)
                 help_page = f"""**```asciidoc
 {cog.qualified_name}
 {'-' * len(cog.qualified_name)}

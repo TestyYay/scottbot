@@ -61,7 +61,6 @@ class _Config:
                     f'SELECT {", ".join(configs)} FROM {DataBase.main_tablename} WHERE guild_id = $1',
                     guild.id
                 )
-                print(ret)
                 return ret
 
     async def set(self, new):
@@ -90,6 +89,30 @@ async def get_config(name: str, bot, guild: Optional[discord.Guild] = None) -> O
         columns = [column.get("column_name") for column in cols]
         if name in columns:
             return _Config(name, bot, guild)
+
+
+INSERT_SQL = """
+INSERT INTO {table} ({options})
+    VALUES ({vals})
+ON CONFLICT ON CONSTRAINT guilds_pkey
+DO NOTHING;"""
+
+
+async def add_guild_db(db_conn: Optional[asyncpg.Connection], guild: discord.Guild):
+    if db_conn is not None:
+        defaults = {
+            'guild_id': guild.id,
+            'prefix': Defaults.prefix,
+            'dad_name': Defaults.dad_name,
+            'swearing': False
+        }
+        txt = INSERT_SQL.format(table=DataBase.main_tablename,
+                                options=', '.join(defaults.keys()),
+                                vals=', '.join('$' + str(i + 1) for i, x in enumerate(defaults.keys())))
+        await db_conn.execute(
+            txt,
+            *tuple(defaults.values())
+        )
 
 
 async def prefix_for(bot, message: discord.Message):

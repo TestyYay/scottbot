@@ -7,35 +7,17 @@ from scott_bot.converters import ConfigConverter
 from scott_bot.util import config
 from scott_bot.util.messages import bad_arg_error, wait_for_deletion, missing_perms_error
 
-INSERT_SQL = """
-INSERT INTO {table} ({options})
-    VALUES ({vals})
-ON CONFLICT ON CONSTRAINT guilds_pkey
-DO NOTHING;"""
-
 
 class AdminCog(commands.Cog, name="Admin"):
     def __init__(self, bot: ScottBot):
         self.bot = bot
         self._config_help.error(bad_arg_error)
         self._admin_reset.error(missing_perms_error)
+        self._clear.error(missing_perms_error)
 
     @commands.Cog.listener("on_guild_join")
     async def add_guild_db(self, guild: discord.Guild):
-        if self.bot.db_conn is not None:
-            defaults = {
-                'guild_id': guild.id,
-                'prefix': config.Defaults.prefix,
-                'dad_name': config.Defaults.dad_name,
-                'swearing': False
-            }
-            txt = INSERT_SQL.format(table=config.DataBase.main_tablename,
-                                    options=', '.join(defaults.keys()),
-                                    vals=', '.join('$' + str(i + 1) for i, x in enumerate(defaults.keys())))
-            await self.bot.db_conn.execute(
-                txt,
-                *tuple(defaults.values())
-            )
+        await config.add_guild_db(self.bot.db_conn, guild)
 
     @commands.group(name='config', aliases=('cfg',), brief="Change config for the server", invoke_without_command=True)
     @commands.guild_only()
@@ -51,13 +33,13 @@ class AdminCog(commands.Cog, name="Admin"):
         Example:
             {prefix}config dad_name "dad_bot"
         """
-        _admin = config.get_config("admin_channel", self.bot, ctx.guild)
+        _admin = await config.get_config("admin_channel", self.bot, ctx.guild)
         admin_channel = await _admin.get()
         if admin_channel and int(admin_channel) != ctx.channel.id:
             return
         if config_option is not None and new is not None:
             await config_option.set(new)
-            await ctx.send(f"Changed config option {config_option.name} to {new}")
+            await ctx.send(f"Changed config option `{config_option.name}` to `{new}`")
         else:
             cols = await self.bot.db_conn.fetch(
                 "SELECT column_name FROM information_schema.columns WHERE table_name = $1;",
@@ -125,6 +107,19 @@ class AdminCog(commands.Cog, name="Admin"):
         """
         _admin = config.get_config("admin_channel", self.bot, ctx.guild)
         _admin.set(None)
+
+    @commands.command(name="clear", brief="Clears all the messages in a channel")
+    @commands.guild_only()
+    @commands.has_permissions(administrator=True)
+    async def _clear(self, ctx: commands.Context):
+        """
+        Clears the messages in a channel.
+
+        Usage:
+            {prefix}clear
+        """
+        msgs = await ctx.channel.purge(limit=None, bulk=True)
+        await ctx.send(f"{len(msgs)} messages cleared!")
 
 
 def setup(bot: ScottBot):
