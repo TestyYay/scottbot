@@ -1,3 +1,4 @@
+import asyncio
 from collections import defaultdict
 
 import discord
@@ -36,7 +37,11 @@ class SpamCog(commands.Cog, name="Spam"):
         print(self.loops)
         if not self.loops[ctx.guild.id][ctx.author]:
             message = ' '.join(text)
-            loop = tasks.Loop(self.send_message(ctx.channel, message), secs, 0, 0, count, True, None)
+            func = self.send_message(ctx.channel, message)
+            print(func)
+            print(asyncio.iscoroutine(func))
+            print(asyncio.iscoroutinefunction(func))
+            loop = tasks.Loop(func, secs, 0, 0, count, True, None)
             self.loops[ctx.guild.id][ctx.author] = {"channel": ctx.channel, "message": message, "loop": loop}
             loop.start()
         else:
