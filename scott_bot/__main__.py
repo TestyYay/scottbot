@@ -14,6 +14,7 @@ extensions = [
     "cogs.internet_cog",
     "cogs.fun_cog",
     "cogs.hidden_cog",
+    "cogs.spam_cog",
     "cogs.other_cog"
 ]
 
