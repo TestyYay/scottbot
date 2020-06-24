@@ -14,7 +14,6 @@ class SpamCog(commands.Cog, name="Spam"):
     async def send_message(self, channel: discord.TextChannel, message: str):
         async def _send():
             await channel.send(message)
-
         return _send
 
     @commands.group(name="spam", hidden=True, invoke_without_command=True)
