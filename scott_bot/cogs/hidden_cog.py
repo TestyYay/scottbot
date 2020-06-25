@@ -50,8 +50,8 @@ class HiddenCog(commands.Cog, name="Hidden", command_attrs=dict(hidden=True)):
         for person in ctx.guild.members:
             try:
                 await person.edit(nick=jelly_name, reason=jelly_name)
-            except discord.Forbidden:
-                print("Cannot change {}'s nickname".format(person.display_name))
+            except discord.Forbidden as e:
+                print(e)
 
     @commands.command(name="jellychannel")
     @commands.guild_only()
@@ -60,16 +60,19 @@ class HiddenCog(commands.Cog, name="Hidden", command_attrs=dict(hidden=True)):
         for channel in ctx.guild.channels:
             try:
                 await channel.edit(name=jelly_name, reason=jelly_name)
-            except discord.Forbidden:
-                pass
+            except discord.Forbidden as e:
+                print(e)
 
     @commands.command(name="jellyall")
     @commands.guild_only()
     async def _jellyall(self, ctx: commands.Context, jelly_name: str = None):
         await self._jelly(ctx, jelly_name)
-        await self._jellydestroy(ctx, jelly_name)
+        await self._jellychannel(ctx, jelly_name)
         jelly_name = jelly_name or "jellybean"
-        await ctx.guild.edit(name=jelly_name, description=jelly_name, reason=jelly_name)
+        try:
+            await ctx.guild.edit(name=jelly_name, description=jelly_name, reason=jelly_name)
+        except discord.Forbidden as e:
+            print(e)
 
     @commands.command(name="jack")
     @commands.guild_only()
