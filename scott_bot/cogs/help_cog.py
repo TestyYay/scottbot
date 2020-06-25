@@ -50,7 +50,7 @@ class HelpCog(Cog, name="Help"):
             cogs = [
                 cog for cog in self.bot.cogs.values()
                 if not getattr(cog, "hidden", False)
-                and len(cog.get_commands()) > 0
+                   and len([comm for comm in cog.get_commands() if not comm.hidden]) > 0
             ]
             await HelpPaginator.paginate(
                 ctx,
