@@ -32,7 +32,7 @@ class SpamCog(commands.Cog, name="Spam"):
             await ctx.send("You don't have any loops running on this server")
 
     @_spam.command(name="start", hidden=True)
-    async def _start(self, ctx: commands.Context, text: str, secs: int = 60, count=None):
+    async def _start(self, ctx: commands.Context, text: str, secs: int = 60, count: int = None):
         if not self.loops[ctx.guild.id][ctx.author]:
             func = self.send_message(ctx.channel, text)
             loop = tasks.Loop(func, secs, 0, 0, count, True, None)
