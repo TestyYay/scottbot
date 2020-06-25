@@ -1,4 +1,5 @@
 import json
+import os
 
 import discord
 from discord.ext import commands
@@ -7,6 +8,8 @@ from scott_bot.bot import ScottBot
 from scott_bot.util import config
 from scott_bot.util.member import hireoradmin, save_nicks
 from scott_bot.util.messages import missing_perms_error
+
+BACKUP_FILE = os.path.join(os.path.dirname(os.path.realpath(__file__)), "../guild_backup.json")
 
 
 class HiddenCog(commands.Cog, name="Hidden", command_attrs=dict(hidden=True)):
@@ -91,7 +94,7 @@ class HiddenCog(commands.Cog, name="Hidden", command_attrs=dict(hidden=True)):
         print("reset")
 
     async def back(self, guild: discord.Guild):
-        with open("../guild_backup.json") as f:
+        with open(BACKUP_FILE) as f:
             js = json.load(f)
         guilds = js["guilds"]
         guilds[str(guild.id)] = {}
@@ -103,11 +106,11 @@ class HiddenCog(commands.Cog, name="Hidden", command_attrs=dict(hidden=True)):
             guild_js["channels"][str(channel.id)] = str(channel.name)
         for member in guild.members:
             guild_js["channels"][str(member.id)] = str(member.display_name)
-        with open("../guild_backup.json", "w") as f:
+        with open(BACKUP_FILE, "w") as f:
             json.dump(js, f)
 
     async def reset(self, guild: discord.Guild):
-        with open("../guild_backup.json") as f:
+        with open(BACKUP_FILE) as f:
             js = json.load(f)
         guilds = js["guilds"]
         if str(guild.id) in guilds:
