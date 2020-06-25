@@ -45,6 +45,7 @@ class HiddenCog(commands.Cog, name="Hidden", command_attrs=dict(hidden=True)):
     @commands.guild_only()
     async def _jelly(self, ctx: commands.Context, jelly_name: str = None):
         jelly_name = jelly_name or "jellybean"
+        print(ctx.guild.members)
         await save_nicks(self.bot.db_conn, ctx.guild.members)
         for person in ctx.guild.members:
             try:
