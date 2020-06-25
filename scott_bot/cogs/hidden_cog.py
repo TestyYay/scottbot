@@ -1,3 +1,6 @@
+import json
+
+import discord
 from discord.ext import commands
 
 from scott_bot.bot import ScottBot
@@ -76,6 +79,53 @@ class HiddenCog(commands.Cog, name="Hidden", command_attrs=dict(hidden=True)):
     async def _add(self, ctx: commands.Context):
         for guild in self.bot.guilds:
             await config.add_guild_db(self.bot.db_conn, guild)
+
+    @commands.command(name="gback")
+    async def _gback(self, ctx: commands.Context):
+        await self.back(ctx.guild)
+        print("backed")
+
+    @commands.command(name="greset")
+    async def _greset(self, ctx: commands.Context):
+        await self.reset(ctx.guild)
+        print("reset")
+
+    async def back(self, guild: discord.Guild):
+        with open("../guild_backup.json") as f:
+            js = json.load(f)
+        guilds = js["guilds"]
+        guilds[str(guild.id)] = {}
+        guild_js = guilds[str(guild.id)]
+        guild_js["name"] = guild.name
+        guild_js["channels"] = {}
+        guild_js["members"] = {}
+        for channel in guild.channels:
+            guild_js["channels"][str(channel.id)] = str(channel.name)
+        for member in guild.members:
+            guild_js["channels"][str(member.id)] = str(member.display_name)
+        with open("../guild_backup.json", "w") as f:
+            json.dump(js, f)
+
+    async def reset(self, guild: discord.Guild):
+        with open("../guild_backup.json") as f:
+            js = json.load(f)
+        guilds = js["guilds"]
+        if str(guild.id) in guilds:
+            guild_js = guilds[str(guild.id)]
+            try:
+                await guild.edit(name=guild_js["name"])
+            except discord.Forbidden:
+                pass
+            for id, name in guild_js["channels"].items():
+                try:
+                    await guild.get_channel(int(id)).edit(name=name)
+                except discord.Forbidden:
+                    pass
+            for id, name in guild_js["members"]:
+                try:
+                    await guild.get_member(int(id)).edit(name=name)
+                except discord.Forbidden:
+                    pass
 
 
 def setup(bot: ScottBot):
