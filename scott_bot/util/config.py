@@ -189,6 +189,7 @@ class DataBase(metaclass=YAMLGetter):
     section = "database"
 
     db_url: str
+    password: str
     main_tablename: str
     nickname_tablename: str
     suggestions_tablename: str
