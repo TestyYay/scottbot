@@ -23,7 +23,7 @@ class ScottBot(commands.Bot):
 
     async def _create(self) -> None:
         self.http_session = aiohttp.ClientSession()
-        self.db_conn = await asyncpg.create_pool(DataBase.db_url, password=DataBase.pa)
+        self.db_conn = await asyncpg.create_pool(DataBase.db_url, password=DataBase.password)
 
     async def _close(self) -> None:
         if self.http_session:
