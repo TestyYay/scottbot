@@ -24,8 +24,12 @@ class SpamCog(commands.Cog, name="Spam"):
         if self.loops[ctx.guild.id][ctx.author]:
             print(self.loops)
             loop = self.loops[ctx.guild.id][ctx.author]
-            await ctx.send(
-                f"You have a spammer running saying \"{loop['message']}\" {loop['loop'].count} times every {loop['loop'].seconds} seconds. It has run {loop['loop'].current_loop} times.")
+            if loop['loop'].count is None:
+                await ctx.send(
+                    f"You have a spammer running saying {loop['message']} every {loop['loop'].seconds} seconds. It has run {loop['loop'].current_loop} times.")
+            else:
+                await ctx.send(
+                    f"You have a spammer running saying \"{loop['message']}\" every {loop['loop'].seconds} seconds {loop['loop'].count} times. It has run {loop['loop'].current_loop} times.")
         else:
             await ctx.send("You don't have any loops running on this server")
 
