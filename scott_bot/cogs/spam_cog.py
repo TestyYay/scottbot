@@ -34,16 +34,15 @@ class SpamCog(commands.Cog, name="Spam"):
             await ctx.send("You don't have any loops running on this server")
 
     @_spam.command(name="start", hidden=True)
-    async def _start(self, ctx: commands.Context, *text: str, secs: int = 60, count=None):
+    async def _start(self, ctx: commands.Context, text: str, secs: int = 60, count=None):
         print(self.loops)
         if not self.loops[ctx.guild.id][ctx.author]:
-            message = ' '.join(text)
-            func = self.send_message(ctx.channel, message)
+            func = self.send_message(ctx.channel, text)
             print(func)
             print(asyncio.iscoroutine(func))
             print(asyncio.iscoroutinefunction(func))
             loop = tasks.Loop(func, secs, 0, 0, count, True, None)
-            self.loops[ctx.guild.id][ctx.author] = {"channel": ctx.channel, "message": message, "loop": loop}
+            self.loops[ctx.guild.id][ctx.author] = {"channel": ctx.channel, "message": text, "loop": loop}
             loop.start()
         else:
             await ctx.send(f"You already have a spammer running. Run `{ctx.prefix}spam stop` to stop it.")
