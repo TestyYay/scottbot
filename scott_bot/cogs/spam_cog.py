@@ -12,10 +12,11 @@ class SpamCog(commands.Cog, name="Spam"):
         self.bot = bot
         self.loops = defaultdict(lambda: defaultdict(dict))
 
-    async def send_message(self, channel: discord.TextChannel, message: str):
+    def send_message(self, channel: discord.TextChannel, message: str):
         async def _send():
             await channel.send(message)
-        return await _send
+
+        return _send
 
     @commands.group(name="spam", hidden=True, invoke_without_command=True)
     @commands.has_permissions(administrator=True)
