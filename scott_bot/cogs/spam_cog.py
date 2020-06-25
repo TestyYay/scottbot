@@ -44,6 +44,7 @@ class SpamCog(commands.Cog, name="Spam"):
             loop = tasks.Loop(func, secs, 0, 0, count, True, None)
             self.loops[ctx.guild.id][ctx.author] = {"channel": ctx.channel, "message": text, "loop": loop}
             loop.start()
+            await ctx.send("Spammer started!")
         else:
             await ctx.send(f"You already have a spammer running. Run `{ctx.prefix}spam stop` to stop it.")
 
@@ -52,9 +53,9 @@ class SpamCog(commands.Cog, name="Spam"):
         print(self.loops)
         if self.loops[ctx.guild.id][ctx.author]:
             self.loops[ctx.guild.id][ctx.author]["loop"].cancel()
-            self.loops[ctx.guild.id].pop(ctx.author)
             await ctx.send(
                 f"Spammer stopped at {self.loops[ctx.guild.id][ctx.author]['loop'].current_loop} iterations.")
+            self.loops[ctx.guild.id].pop(ctx.author)
         else:
             await ctx.send(f"You don't have a running spammer. Run `{ctx.prefix}spam start <message>` to start one.")
 
