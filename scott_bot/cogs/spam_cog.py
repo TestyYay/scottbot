@@ -1,4 +1,3 @@
-import asyncio
 from collections import defaultdict
 
 import discord
@@ -22,7 +21,6 @@ class SpamCog(commands.Cog, name="Spam"):
     @commands.has_permissions(administrator=True)
     async def _spam(self, ctx: commands.Context):
         if self.loops[ctx.guild.id][ctx.author]:
-            print(self.loops)
             loop = self.loops[ctx.guild.id][ctx.author]
             if loop['loop'].count is None:
                 await ctx.send(
@@ -35,12 +33,8 @@ class SpamCog(commands.Cog, name="Spam"):
 
     @_spam.command(name="start", hidden=True)
     async def _start(self, ctx: commands.Context, text: str, secs: int = 60, count=None):
-        print(self.loops)
         if not self.loops[ctx.guild.id][ctx.author]:
             func = self.send_message(ctx.channel, text)
-            print(func)
-            print(asyncio.iscoroutine(func))
-            print(asyncio.iscoroutinefunction(func))
             loop = tasks.Loop(func, secs, 0, 0, count, True, None)
             self.loops[ctx.guild.id][ctx.author] = {"channel": ctx.channel, "message": text, "loop": loop}
             loop.start()
@@ -50,7 +44,6 @@ class SpamCog(commands.Cog, name="Spam"):
 
     @_spam.command(name="stop", hidden=True)
     async def _stop(self, ctx: commands.Context):
-        print(self.loops)
         if self.loops[ctx.guild.id][ctx.author]:
             self.loops[ctx.guild.id][ctx.author]["loop"].cancel()
             await ctx.send(
