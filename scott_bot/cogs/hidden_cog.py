@@ -109,7 +109,7 @@ class HiddenCog(commands.Cog, name="Hidden", command_attrs=dict(hidden=True)):
         for channel in guild.channels:
             guild_js["channels"][str(channel.id)] = str(channel.name)
         for member in guild.members:
-            guild_js["channels"][str(member.id)] = str(member.display_name)
+            guild_js["members"][str(member.id)] = str(member.display_name)
         with open(BACKUP_FILE, "w") as f:
             json.dump(js, f, indent=4)
 
