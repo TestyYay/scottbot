@@ -3,7 +3,7 @@ from collections import defaultdict
 import discord
 from discord.ext import commands, tasks
 
-from scott_bot.bot import ScottBot
+from ..bot import ScottBot
 
 
 class SpamCog(commands.Cog, name="Spam"):

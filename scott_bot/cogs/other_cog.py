@@ -1,9 +1,9 @@
 import discord
 from discord.ext import commands
 
-from scott_bot.bot import ScottBot
-from scott_bot.util.config import IFTTT, DataBase
-from scott_bot.util.messages import ifttt_notify
+from ..bot import ScottBot
+from ..util.config import IFTTT, DataBase
+from ..util.messages import ifttt_notify
 
 SUGGESTION_SQL = """INSERT INTO {tablename} (user_id, user_name, suggestion_text)
 VALUES (

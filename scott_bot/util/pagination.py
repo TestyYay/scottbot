@@ -5,8 +5,8 @@ import discord
 from discord.abc import User
 from discord.ext.commands import Context, Cog, Command
 
-from scott_bot.util.config import Emojis
-from scott_bot.util.messages import wait_for_deletion, get_cog_commands
+from .config import Emojis
+from .messages import wait_for_deletion, get_cog_commands
 
 PAGINATION_EMOJI = (Emojis.first, Emojis.left, Emojis.delete, Emojis.right, Emojis.last)
 

@@ -4,7 +4,7 @@ import aiohttp
 import asyncpg
 from discord.ext import commands
 
-from scott_bot.util.config import DataBase
+from .util.config import DataBase
 
 
 class ScottBot(commands.Bot):

@@ -3,8 +3,8 @@ import random
 import discord
 from discord.ext.commands import Cog
 
-from scott_bot.bot import ScottBot
-from scott_bot.util.config import JoinMessages, get_config
+from ..bot import ScottBot
+from ..util.config import JoinMessages, get_config
 
 
 class JoinMessageCog(Cog, name="JoinMessage"):

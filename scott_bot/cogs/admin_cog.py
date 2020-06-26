@@ -2,10 +2,10 @@ import discord
 from discord.ext import commands
 from discord.ext.commands import Context
 
-from scott_bot.bot import ScottBot
-from scott_bot.converters import ConfigConverter
-from scott_bot.util import config
-from scott_bot.util.messages import bad_arg_error, wait_for_deletion, missing_perms_error
+from ..bot import ScottBot
+from ..converters import ConfigConverter
+from ..util import config
+from ..util.messages import bad_arg_error, wait_for_deletion, missing_perms_error
 
 
 class AdminCog(commands.Cog, name="Admin"):

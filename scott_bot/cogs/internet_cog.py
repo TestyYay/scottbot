@@ -4,9 +4,9 @@ from urllib.parse import urlencode
 
 from discord.ext import commands
 
-from scott_bot.bot import ScottBot
-from scott_bot.util.checks import nsfw
-from scott_bot.util.messages import wait_for_deletion
+from ..bot import ScottBot
+from ..util.checks import nsfw
+from ..util.messages import wait_for_deletion
 
 
 class InternetCog(commands.Cog, name="Internet"):

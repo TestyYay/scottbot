@@ -4,10 +4,10 @@ import random
 import discord
 from discord.ext import commands
 
-from scott_bot.bot import ScottBot
-from scott_bot.util.config import UwU
-from scott_bot.util.member import save_nicks, hireoradmin, get_latest_nicks
-from scott_bot.util.messages import missing_perms_error
+from ..bot import ScottBot
+from ..util.config import UwU
+from ..util.member import save_nicks, hireoradmin, get_latest_nicks
+from ..util.messages import missing_perms_error
 
 
 class FunCog(commands.Cog, name="Fun"):

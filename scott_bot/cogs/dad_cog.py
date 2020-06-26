@@ -3,8 +3,8 @@ import re
 from discord import Message
 from discord.ext.commands import Cog
 
-from scott_bot.bot import ScottBot
-from scott_bot.util.config import get_config
+from ..bot import ScottBot
+from ..util.config import get_config
 
 DAD_PATTERN = r"i('?)m (.+)"
 DAD_MATCHER = re.compile(DAD_PATTERN, re.IGNORECASE)

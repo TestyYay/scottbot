@@ -5,7 +5,7 @@ import asyncpg
 import discord
 from discord.ext.commands import Context
 
-from scott_bot.util import config
+from .config import DataBase
 
 
 async def kicplayer(ctx: Context, person):
@@ -48,7 +48,7 @@ async def save_nicks(db_conn: Optional[asyncpg.Connection], *members: Sequence[d
         vals = []
         for member in members:
             vals += [member.guild.id, member.id, member.display_name, datetime.now()]
-        s = INSERT_SQL.format(tablename=config.DataBase.nickname_tablename, vals=template_vals)
+        s = INSERT_SQL.format(tablename=DataBase.nickname_tablename, vals=template_vals)
         await db_conn.execute(
             s,
             *vals
@@ -58,7 +58,7 @@ async def save_nicks(db_conn: Optional[asyncpg.Connection], *members: Sequence[d
 async def get_latest_nicks(db_conn: Optional[asyncpg.Connection], guild: discord.Guild):
     if db_conn is not None and guild is not None:
         return await db_conn.fetch(
-            LATEST_SQL.format(table=config.DataBase.nickname_tablename),
+            LATEST_SQL.format(table=DataBase.nickname_tablename),
             guild.id
         )
 

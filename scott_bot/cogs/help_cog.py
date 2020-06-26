@@ -4,11 +4,11 @@ import discord
 from discord.ext import commands
 from discord.ext.commands import Cog, Context, Group
 
-from scott_bot.bot import ScottBot
-from scott_bot.converters import CommandConverter
-from scott_bot.util import config
-from scott_bot.util.messages import get_group_commands, bad_arg_error
-from scott_bot.util.pagination import HelpPaginator
+from ..bot import ScottBot
+from ..converters import CommandConverter
+from ..util import config
+from ..util.messages import get_group_commands, bad_arg_error
+from ..util.pagination import HelpPaginator
 
 
 def _get_code_lines():

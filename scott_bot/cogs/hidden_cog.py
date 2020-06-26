@@ -4,10 +4,10 @@ import os
 import discord
 from discord.ext import commands
 
-from scott_bot.bot import ScottBot
-from scott_bot.util import config
-from scott_bot.util.member import hireoradmin, save_nicks
-from scott_bot.util.messages import missing_perms_error
+from ..bot import ScottBot
+from ..util import config
+from ..util.member import hireoradmin, save_nicks
+from ..util.messages import missing_perms_error
 
 BACKUP_FILE = os.path.join(os.path.dirname(os.path.realpath(__file__)), "../guild_backup.json")
 

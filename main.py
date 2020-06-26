@@ -6,16 +6,16 @@ bot = ScottBot(command_prefix=config.prefix_for, description='ScottBot', case_in
 bot.remove_command("help")
 
 extensions = [
-    "cogs.status_cog",
-    "cogs.help_cog",
-    "cogs.admin_cog",
-    "cogs.join_cog",
-    "cogs.dad_cog",
-    "cogs.internet_cog",
-    "cogs.fun_cog",
-    "cogs.hidden_cog",
-    "cogs.spam_cog",
-    "cogs.other_cog"
+    "status_cog",
+    "help_cog",
+    "admin_cog",
+    "join_cog",
+    "dad_cog",
+    "internet_cog",
+    "fun_cog",
+    "hidden_cog",
+    "spam_cog",
+    "other_cog"
 ]
 
 
@@ -26,7 +26,7 @@ async def on_ready():
     print(bot.user.id)
     print('-' * len(str(bot.user.id)))
     for extension in extensions:
-        bot.load_extension(extension)
+        bot.load_extension("scott_bot.cogs." + extension)
     await bot.get_cog('Status').start_status_change()
 
 
