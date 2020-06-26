@@ -5,11 +5,11 @@ import asyncpg
 import discord
 import yaml
 from discord.ext import commands
-from dotenv import load_dotenv
+from dotenv import load_dotenv, find_dotenv
 
 with open(os.path.join(os.path.dirname(__file__), "../config.yml"), encoding="UTF-8") as f:
     _CONFIG_YAML = yaml.safe_load(f)
-load_dotenv()
+load_dotenv(find_dotenv())
 
 
 class _Config:
