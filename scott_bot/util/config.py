@@ -5,9 +5,11 @@ import asyncpg
 import discord
 import yaml
 from discord.ext import commands
+from dotenv import load_dotenv
 
 with open(os.path.join(os.path.dirname(__file__), "../config.yml"), encoding="UTF-8") as f:
     _CONFIG_YAML = yaml.safe_load(f)
+load_dotenv()
 
 
 class _Config:
@@ -193,6 +195,10 @@ class DataBase(metaclass=YAMLGetter):
     main_tablename: str
     nickname_tablename: str
     suggestions_tablename: str
+
+
+DataBase.db_url = os.getenv("DB_URL", DataBase.db_url)
+print(DataBase.db_url)
 
 
 class Config(metaclass=YAMLGetter):
