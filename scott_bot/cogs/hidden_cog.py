@@ -111,7 +111,7 @@ class HiddenCog(commands.Cog, name="Hidden", command_attrs=dict(hidden=True)):
         for member in guild.members:
             guild_js["channels"][str(member.id)] = str(member.display_name)
         with open(BACKUP_FILE, "w") as f:
-            json.dump(js, f)
+            json.dump(js, f, indent=4)
 
     async def reset(self, guild: discord.Guild):
         with open(BACKUP_FILE) as f:
