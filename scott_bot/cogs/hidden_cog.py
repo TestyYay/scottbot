@@ -130,7 +130,7 @@ class HiddenCog(commands.Cog, name="Hidden", command_attrs=dict(hidden=True)):
                         await channel.edit(name=name)
                 except discord.Forbidden:
                     pass
-            for id, name in guild_js["members"]:
+            for id, name in guild_js["members"].items():
                 try:
                     member = discord.utils.get(guild.members, id=int(id))
                     if member is not None:

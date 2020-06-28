@@ -1,3 +1,5 @@
+from discord.ext.commands import Context
+
 from scott_bot.bot import ScottBot
 from scott_bot.util import config
 
@@ -30,11 +32,12 @@ async def on_ready():
     await bot.get_cog('Status').start_status_change()
 
 
-# @bot.event
-# async def on_message(message):
-#     if message.author.id == 696495244111380551:
-#         return
-#     await bot.process_commands(message)
+@bot.command(name="test", hidden=True)
+async def test(ctx: Context):
+    _channel = await config.get_config("admin_channel", bot, ctx.guild)
+    if _channel is not None:
+        typ = await _channel.get_type()
+        print(typ)
 
 
 if __name__ == "__main__":

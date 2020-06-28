@@ -1,3 +1,5 @@
+from typing import Union
+
 import discord
 from discord.ext import commands
 from discord.ext.commands import Context
@@ -22,7 +24,8 @@ class AdminCog(commands.Cog, name="Admin"):
     @commands.group(name='config', aliases=('cfg',), brief="Change config for the server", invoke_without_command=True)
     @commands.guild_only()
     @commands.has_permissions(administrator=True)
-    async def _config_group(self, ctx: Context, config_option: ConfigConverter = None, new: str = None):
+    async def _config_group(self, ctx: Context, config_option: ConfigConverter = None,
+                            new: Union[discord.TextChannel, str] = None):
         """
         Change config for the server. You have to have Manage Server permissions to run this command.
 
@@ -35,9 +38,9 @@ class AdminCog(commands.Cog, name="Admin"):
         """
         _admin = await config.get_config("admin_channel", self.bot, ctx.guild)
         admin_channel = await _admin.get()
-        if admin_channel and int(admin_channel) != ctx.channel.id:
+        if admin_channel and admin_channel != ctx.channel:
             return
-        if config_option is not None and new is not None:
+        if config_option is not None:
             await config_option.set(new)
             await ctx.send(f"Changed config option `{config_option.name}` to `{new}`")
         else:
@@ -61,15 +64,15 @@ class AdminCog(commands.Cog, name="Admin"):
             s += f"{key:{i}} : {value}\n"
         return s
 
-    @_config_group.error
-    async def _config_group_error(self, ctx: Context, error):
-        print(error)
-        if hasattr(error, "original"):
-            if isinstance(error.original, AttributeError):
-                await ctx.send("You can't change that option.")
-        else:
-            await missing_perms_error(None, ctx, error)
-            await bad_arg_error(None, ctx, error)
+    # @_config_group.error
+    # async def _config_group_error(self, ctx: Context, error):
+    #     print(error)
+    #     if hasattr(error, "original"):
+    #         if isinstance(error.original, AttributeError):
+    #             await ctx.send("You can't change that option.")
+    #     else:
+    #         await missing_perms_error(None, ctx, error)
+    #         await bad_arg_error(None, ctx, error)
 
     @_config_group.command(name='help', brief="Shows help for a config option")
     @commands.guild_only()
@@ -105,8 +108,8 @@ class AdminCog(commands.Cog, name="Admin"):
         Usage:
             {prefix}config resetadminchannnel
         """
-        _admin = config.get_config("admin_channel", self.bot, ctx.guild)
-        _admin.set(None)
+        _admin = await config.get_config("admin_channel", self.bot, ctx.guild)
+        await _admin.set(None)
 
     @commands.command(name="clear", brief="Clears all the messages in a channel")
     @commands.guild_only()

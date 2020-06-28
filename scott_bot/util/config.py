@@ -17,31 +17,51 @@ class _Config:
         self.name = name
         self.bot = bot
         self.guild = guild
-        self._value = None
         self.read_only = self.name in Config.bad
 
     @staticmethod
-    def _format_type(typ: str) -> Any:
+    def _format_type(typ: str, new) -> Any:
+        def to_bool(x):
+            lower = x.lower()
+            return True if lower in ('yes', 'y', 'true', 't', '1', 'enable', 'on') else lower in (
+                'no', 'n', 'false', 'f', '0', 'disable', 'off')
+
         type_dict = {
             "bigint": int,
-            "boolean": bool,
-            "bool": bool,
+            "boolean": to_bool,
+            "bool": to_bool,
             "anyarray": list,
             "varchar": str,
             "text": str,
             "integer": int,
             "character varying": str
         }
-        return type_dict.get(typ)
+        typ = type_dict.get(typ)
+        if typ:
+            new = typ(new)
+        return new
+
+    @staticmethod
+    def to_channel(name, guild, x):
+        if isinstance(x, int):
+            if name in Config.channels:
+                x = guild.get_channel(x)
+        return x
+
+    @staticmethod
+    def from_channel(x):
+        if isinstance(x, discord.TextChannel):
+            x = x.id
+        return x
 
     async def get_type(self):
         if self.bot.db_conn is not None:
             x = await self.bot.db_conn.fetchrow(
-                "SELECT data_type FROM information_schema.columns WHERE table_name = $1 AND column_name = $2;",
+                "SELECT data_type, domain_name FROM information_schema.columns WHERE table_name = $1 AND column_name = $2;",
                 DataBase.main_tablename,
                 self.name
             )
-            return x.get("data_type")
+            return x.get("domain_name") or x.get("data_type")
 
     async def get(self) -> Any:
         if self.guild is not None:
@@ -50,29 +70,28 @@ class _Config:
                     f'SELECT {self.name} FROM {DataBase.main_tablename} WHERE guild_id = $1',
                     int(self.guild.id),
                 )
-                self._value = ret
-                return self._value[self.name]
+                return _Config.to_channel(self.name, self.guild, ret[self.name])
         else:
             return getattr(Defaults, self.name, None)
 
     @staticmethod
-    async def get_multi(configs: Sequence[str], bot, guild: Optional[discord.Guild]) -> Optional[asyncpg.Record]:
+    async def get_multi(configs: Sequence[str], bot, guild: Optional[discord.Guild]) -> Optional[dict]:
         if guild is not None:
             if bot.db_conn is not None:
                 ret = await bot.db_conn.fetchrow(
                     f'SELECT {", ".join(configs)} FROM {DataBase.main_tablename} WHERE guild_id = $1',
                     guild.id
                 )
-                return ret
+                return {key: _Config.to_channel(key, guild, val) for key, val in ret.items()}
 
     async def set(self, new):
         if self.read_only:
-            print("read_only")
             raise AttributeError("The option is read-only")
         if self.guild is not None:
             if self.bot.db_conn is not None:
                 typ = await self.get_type()
-                new = _Config._format_type(typ)(new)
+                new = _Config._format_type(typ, new)
+                new = self.from_channel(new)
                 await self.bot.db_conn.execute(
                     f"""UPDATE {DataBase.main_tablename}
                             SET {self.name} = $1
@@ -198,13 +217,13 @@ class DataBase(metaclass=YAMLGetter):
 
 
 DataBase.db_url = os.getenv("DB_URL", DataBase.db_url)
-print(DataBase.db_url)
 
 
 class Config(metaclass=YAMLGetter):
     section = "config"
 
     bad: list
+    channels: list
 
     class ConfigHelp(metaclass=YAMLGetter):
         section = "config"
