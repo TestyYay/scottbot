@@ -31,14 +31,14 @@ class _Config:
             "boolean": to_bool,
             "bool": to_bool,
             "anyarray": list,
-            "varchar": str,
-            "text": str,
-            "integer": int,
-            "character varying": str
+            "integer": int
         }
         typ = type_dict.get(typ)
         if typ:
-            new = typ(new)
+            try:
+                new = typ(new)
+            except TypeError:
+                new = None
         return new
 
     @staticmethod
@@ -85,6 +85,8 @@ class _Config:
                 return {key: _Config.to_channel(key, guild, val) for key, val in ret.items()}
 
     async def set(self, new):
+        print("new")
+        print(new)
         if self.read_only:
             raise AttributeError("The option is read-only")
         if self.guild is not None:
@@ -279,6 +281,16 @@ class UwU(metaclass=YAMLGetter):
 
     faces: list
     replaces: dict
+
+
+class Reddit(metaclass=YAMLGetter):
+    section = "reddit"
+
+    client_id: str
+    client_secret: str
+    user_agent: str
+    username: str
+    password: str
 
 
 BOT_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir))

@@ -6,11 +6,9 @@ from discord.ext.commands import Cog
 from ..bot import ScottBot
 from ..util.config import get_config
 
-DAD_PATTERN = r"i('?)m (.+)"
-DAD_MATCHER = re.compile(DAD_PATTERN, re.IGNORECASE)
+DAD_MATCHER = re.compile(r"i('?)m (.+)", re.IGNORECASE)
 
-BAD_PATTERN = r"(i('?)m|i am) (.+) (and)?"
-BAD_MATCHER = re.compile(BAD_PATTERN, re.IGNORECASE)
+BAD_MATCHER = re.compile(r"(i('?)m|i am) (.+) (and)?", re.IGNORECASE)
 
 
 class DadCog(Cog, name="Dad"):
