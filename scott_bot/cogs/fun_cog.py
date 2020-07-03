@@ -5,7 +5,7 @@ import discord
 from discord.ext import commands
 
 from ..bot import ScottBot
-from ..util.config import UwU
+from ..util.constants import UwU
 from ..util.member import save_nicks, hireoradmin, get_latest_nicks
 from ..util.messages import missing_perms_error
 

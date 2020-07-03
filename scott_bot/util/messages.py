@@ -6,7 +6,7 @@ import aiohttp
 from discord import Client, Member, Message, Reaction, User, DiscordException
 from discord.ext.commands import Context, BadArgument, Cog, Group, Command, MissingPermissions
 
-from .config import Emojis, IFTTT
+from .constants import Emojis, IFTTT
 
 
 async def wait_for_deletion(

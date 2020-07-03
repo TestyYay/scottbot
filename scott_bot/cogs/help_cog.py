@@ -4,9 +4,9 @@ import discord
 from discord.ext import commands
 from discord.ext.commands import Cog, Context, Group
 
+import scott_bot.util.constants
 from ..bot import ScottBot
 from ..converters import CommandConverter
-from ..util import config
 from ..util.messages import get_group_commands, bad_arg_error
 from ..util.pagination import HelpPaginator
 
@@ -14,7 +14,7 @@ from ..util.pagination import HelpPaginator
 def _get_code_lines():
     lines = 0
     py_files = []
-    for root, dirs, files in os.walk(config.BOT_DIR):
+    for root, dirs, files in os.walk(scott_bot.util.constants.BOT_DIR):
         for file in files:
             if file.endswith(".py"):
                 py_files.append(os.path.join(root, file))
@@ -46,7 +46,7 @@ class HelpCog(Cog, name="Help"):
             {prefix}help config
         """
         if command is None:
-            embed = discord.Embed(title="Help Menu", color=config.Bot.color)
+            embed = discord.Embed(title="Help Menu", color=scott_bot.util.constants.Bot.color)
             cogs = [
                 cog for cog in self.bot.cogs.values()
                 if not getattr(cog, "hidden", False)
@@ -64,7 +64,7 @@ class HelpCog(Cog, name="Help"):
 {dashes}
 
 {help}```**"""
-            embed = discord.Embed(title="Help Menu", color=config.Bot.color)
+            embed = discord.Embed(title="Help Menu", color=scott_bot.util.constants.Bot.color)
             comms = (
                 dict({command.name: command}, **get_group_commands(command))
                 if isinstance(command, Group)
@@ -90,7 +90,7 @@ class HelpCog(Cog, name="Help"):
         {prefix}info
         """
         invbot = 'https://bit.ly/3cuoNpo'
-        embed = discord.Embed(title="ScottBot", description="", color=config.Bot.color)
+        embed = discord.Embed(title="ScottBot", description="", color=scott_bot.util.constants.Bot.color)
 
         embed.add_field(name="Author", value="@ScottBot10#7361")
         embed.add_field(name="Servers with ScottBot", value=f"{len(self.bot.guilds)}")

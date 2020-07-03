@@ -5,7 +5,7 @@ import asyncpg
 import discord
 from discord.ext.commands import Context
 
-from .config import DataBase
+from .constants import DataBase
 
 
 async def kicplayer(ctx: Context, person):

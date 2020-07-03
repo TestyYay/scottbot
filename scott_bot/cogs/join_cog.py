@@ -4,7 +4,8 @@ import discord
 from discord.ext.commands import Cog
 
 from ..bot import ScottBot
-from ..util.config import JoinMessages, get_config
+from ..util.config import get_config
+from ..util.constants import JoinMessages
 
 
 class JoinMessageCog(Cog, name="JoinMessage"):

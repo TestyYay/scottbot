@@ -4,6 +4,7 @@ import discord
 from discord.ext import commands
 from discord.ext.commands import Context
 
+import scott_bot.util.constants
 from ..bot import ScottBot
 from ..converters import ConfigConverter
 from ..util import config
@@ -46,10 +47,10 @@ class AdminCog(commands.Cog, name="Admin"):
         else:
             cols = await self.bot.db_conn.fetch(
                 "SELECT column_name FROM information_schema.columns WHERE table_name = $1;",
-                config.DataBase.main_tablename
+                scott_bot.util.constants.DataBase.main_tablename
             )
             columns = [column.get("column_name") for column in cols if
-                       column.get("column_name") not in config.Config.bad]
+                       column.get("column_name") not in scott_bot.util.constants.Config.bad]
             embed = discord.Embed(title="Config Options")
             config_options = await self._get_config_options(columns, ctx.guild)
             embed.description = f"""**```{config_options}```**"""
@@ -86,13 +87,13 @@ class AdminCog(commands.Cog, name="Admin"):
         Example:
             {prefix}config help dad_name
         """
-        if config_option.name in config.Config.ConfigHelp.__annotations__:
+        if config_option.name in scott_bot.util.constants.Config.ConfigHelp.__annotations__:
             embed = discord.Embed(title="Config Option")
             embed.description = f"""**```
 {config_option.name}
 {'-' * len(config_option.name)}
     
-{getattr(config.Config.ConfigHelp, config_option.name, 'None')}```**"""
+{getattr(scott_bot.util.constants.Config.ConfigHelp, config_option.name, 'None')}```**"""
             message = await ctx.send(embed=embed)
             await wait_for_deletion(message, (ctx.author,), client=self.bot)
         else:

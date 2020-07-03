@@ -6,7 +6,8 @@ import aiohttp
 import asyncpg
 from discord.ext import commands
 
-from .util.config import DataBase
+import scott_bot.util.constants
+from .util.constants import DataBase
 
 
 class ScottBot(commands.Bot):
@@ -15,7 +16,7 @@ class ScottBot(commands.Bot):
 
         self.http_session: Optional[aiohttp.ClientSession] = None
         self.db_conn: Optional[asyncpg.Connection] = None
-        self.reddit: Optional[apraw.Reddit] = None
+        self.reddit: Optional[scott_bot.util.constants.Reddit] = None
 
         self.loop.create_task(self.load_all_extensions())
 

@@ -1,5 +1,6 @@
 from discord.ext.commands import Context
 
+import scott_bot.util.constants
 from scott_bot.bot import ScottBot
 from scott_bot.util import config
 
@@ -17,4 +18,4 @@ async def test(ctx: Context):
 
 
 if __name__ == "__main__":
-    bot.run(config.Bot.token)
+    bot.run(scott_bot.util.constants.Bot.token)
