@@ -30,6 +30,9 @@ class ScottBot(commands.Bot):
         await self.wait_until_ready()
         p = Path.cwd() / 'scott_bot' / 'cogs'
         cogs = [x.stem for x in p.glob('*.py')]
+        if "other_cog" in cogs:
+            cogs.remove("other_cog")
+            cogs.append("other_cog")
         extension = None
         for extension in cogs:
             self.load_extension(f'scott_bot.cogs.{extension}')
