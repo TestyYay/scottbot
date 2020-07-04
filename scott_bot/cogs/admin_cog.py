@@ -112,7 +112,7 @@ class AdminCog(commands.Cog, name="Admin"):
         _admin = await config.get_config("admin_channel", self.bot, ctx.guild)
         await _admin.set(None)
 
-    @commands.command(name="clear", brief="Clears all the messages in a channel")
+    @commands.command(name="clear", brief="Clears the messages in a channel")
     @commands.guild_only()
     @commands.has_permissions(administrator=True)
     async def _clear(self, ctx: commands.Context):
