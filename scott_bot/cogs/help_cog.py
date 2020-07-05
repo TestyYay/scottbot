@@ -1,20 +1,21 @@
 import os
+import typing as t
 
 import discord
 from discord.ext import commands
 from discord.ext.commands import Cog, Context, Group
 
-import scott_bot.util.constants
 from ..bot import ScottBot
 from ..converters import CommandConverter
-from ..util.messages import get_group_commands, bad_arg_error
+from ..util import constants
+from ..util.messages import get_cog_commands, get_group_commands, bad_arg_error
 from ..util.pagination import HelpPaginator
 
 
 def _get_code_lines():
     lines = 0
     py_files = []
-    for root, dirs, files in os.walk(scott_bot.util.constants.BOT_DIR):
+    for root, dirs, files in os.walk(constants.BOT_DIR):
         for file in files:
             if file.endswith(".py"):
                 py_files.append(os.path.join(root, file))
@@ -46,16 +47,25 @@ class HelpCog(Cog, name="Help"):
             {prefix}help config
         """
         if command is None:
-            embed = discord.Embed(title="Help Menu", color=scott_bot.util.constants.Bot.color)
-            cogs = [
-                cog for cog in self.bot.cogs.values()
-                if not getattr(cog, "hidden", False)
-                   and len([comm for comm in cog.get_commands() if not comm.hidden]) > 0
-            ]
+            other_commands = {}
+            pages = []
+            for cog in self.bot.cogs.values():
+                if not getattr(cog, "hidden", False):
+                    command_list = get_cog_commands(cog)
+                    if len(command_list) > 1:
+                        self.add_page(cog.qualified_name, pages, command_list)
+                    else:
+                        other_commands.update(command_list)
+            no_cog = {comm.name: comm for comm in self.bot.commands if comm.cog is None and not comm.hidden}
+            other_commands.update(no_cog)
+            if other_commands:
+                self.add_page("Other", pages, other_commands)
+
+            embed = discord.Embed(title="Help Menu", color=constants.Bot.color)
             await HelpPaginator.paginate(
                 ctx,
                 embed,
-                cogs=cogs,
+                pages=pages,
                 restrict_to_users=(ctx.author,)
             )
         else:
@@ -64,7 +74,7 @@ class HelpCog(Cog, name="Help"):
 {dashes}
 
 {help}```**"""
-            embed = discord.Embed(title="Help Menu", color=scott_bot.util.constants.Bot.color)
+            embed = discord.Embed(title="Help Menu", color=constants.Bot.color)
             comms = (
                 dict({command.name: command}, **get_group_commands(command))
                 if isinstance(command, Group)
@@ -81,6 +91,23 @@ class HelpCog(Cog, name="Help"):
                 restrict_to_users=(ctx.author,)
             )
 
+    def add_page(self, name: str, pages: list, command_list: t.Dict[str, commands.Command]):
+        help_page = f"""**```asciidoc
+{name}
+{'-' * len(name)}
+
+{self._get_help_list(command_list)}```**"""
+        pages.append(help_page)
+
+    def _get_help_list(self, commands):
+        if len(commands) <= 0:
+            return "[There are no commands under this category]"
+        i = max(len(x) for x in commands)
+        s = ""
+        for name, command in commands.items():
+            s += f"{name:{i}} : {command.brief}\n"
+        return s
+
     @commands.command(name="info", brief="Show info lol")
     async def _info(self, ctx: Context, guild: int = None, channel: int = None):
         """
@@ -90,7 +117,7 @@ class HelpCog(Cog, name="Help"):
         {prefix}info
         """
         invbot = 'https://bit.ly/3cuoNpo'
-        embed = discord.Embed(title="ScottBot", description="", color=scott_bot.util.constants.Bot.color)
+        embed = discord.Embed(title="ScottBot", description="", color=constants.Bot.color)
 
         embed.add_field(name="Author", value="@ScottBot10#7361")
         embed.add_field(name="Servers with ScottBot", value=f"{len(self.bot.guilds)}")

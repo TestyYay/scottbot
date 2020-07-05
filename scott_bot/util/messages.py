@@ -61,10 +61,11 @@ async def missing_perms_error(cog: Optional[Cog], ctx: Context, error: DiscordEx
         raise error
 
 
-def get_cog_commands(cog: Cog) -> Dict[str, Command]:
+def get_cog_commands(cog: Cog, include_hidden=False) -> Dict[str, Command]:
     commands = {}
     for command in cog.get_commands():
-        if not command.hidden:
+        hidden = command.hidden if not include_hidden else False
+        if not hidden:
             commands[command.name] = command
         if isinstance(command, Group):
             commands.update(get_group_commands(command))

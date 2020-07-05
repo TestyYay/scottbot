@@ -19,7 +19,7 @@ class OtherCog(commands.Cog, name="Other"):
 
     @commands.command(name="suggest", brief="Provide feedback")
     @commands.cooldown(2, 60, commands.BucketType.user)
-    async def _suggest(self, ctx: commands.Context, *suggestion: str):
+    async def _suggest(self, ctx: commands.Context, *, suggestion: str):
         """
         Send a suggestion to the maker of this bot.
 
@@ -29,7 +29,6 @@ class OtherCog(commands.Cog, name="Other"):
             {prefix}suggest git gud lol
         """
         if not ctx.guild:
-            suggestion = ' '.join(suggestion)
             if suggestion:
                 if self.bot.http_session is not None:
                     await ifttt_notify(self.bot.http_session, (suggestion, ctx.author.name), name=IFTTT.suggestion)

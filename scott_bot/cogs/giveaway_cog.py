@@ -13,8 +13,21 @@ class GiveawayCog(commands.Cog):
     def __init__(self, bot: ScottBot):
         self.bot = bot
 
-    @commands.command(name="giveaway", brief="Start a giveaway", hidden=True)
+    @commands.command(name="giveaway", brief="Start a giveaway")
     async def _giveaway(self, ctx: commands.Context, item: str, max_time: int = None, max_entries: int = None):
+        """
+        Start a giveaway!
+
+        Usage:
+            {prefix}giveaway <item>
+            {prefix}giveaway <item> <timeout (secs)>
+            {prefix}giveaway <item> <timeout (secs)> <max entries>
+
+        Example:
+            {prefix}giveaway "Discord Nitro"
+            {prefix}giveaway "Potato" 86400
+            {prefix}giveaway "death" 86400 14
+        """
         embed = discord.Embed(title="Giveaway Time! :tada:", color=Bot.color)
         embed.description = f"Enter to win **{item}**"
         if max_time is not None:
