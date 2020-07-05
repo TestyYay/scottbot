@@ -113,13 +113,13 @@ class HelpCog(Cog, name="Help"):
         Usage:
         {prefix}info
         """
-        invbot = 'https://bit.ly/3cuoNpo'
+        invbot = 'https://discord.com/oauth2/authorize?client_id=613098957228212224&permissions=8&scope=bot'
         embed = discord.Embed(title="ScottBot", description="", color=constants.Bot.color)
 
         embed.add_field(name="Author", value="@ScottBot10#7361")
         embed.add_field(name="Servers with ScottBot", value=f"{len(self.bot.guilds)}")
         embed.add_field(name="Lines of Code", value=str(_get_code_lines()))
-        embed.add_field(name="Invite Link", value=invbot)
+        embed.add_field(name="Invite Link", value=f"[Add the bot]({invbot})")
         embed.add_field(name='Any Suggestions?', value='DM the bot: //suggest <suggestion>')
 
         msg = 'Info'
