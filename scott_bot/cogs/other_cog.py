@@ -1,3 +1,5 @@
+import random
+
 import discord
 from discord.ext import commands
 
@@ -50,8 +52,15 @@ class OtherCog(commands.Cog, name="Other"):
             await ctx.send('Please send feedback via dm. Thank You!')
             await ctx.author.send('Please send feedback here. Thank You!')
 
+    @commands.command(name="ping", brief="Show the ping of the bot")
+    async def _ping(self, ctx: commands.Context):
+        if random.choice((True, False)):
+            await ctx.send("Pong!")
+        else:
+            await ctx.send(f"Ping: {self.bot.latency}ms")
+
     @_suggest.error
-    async def on_cooldown(self, ctx, error):
+    async def on_cooldown(self, ctx: commands.Context, error):
         print(error)
         if isinstance(error, commands.CommandOnCooldown):
             embed = discord.Embed(title="You are on cooldown", description="Please try this again later")
