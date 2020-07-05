@@ -153,8 +153,11 @@ class Reddit(metaclass=YAMLGetter):
     client_id: str
     client_secret: str
     user_agent: str
+
     username: str
     password: str
 
 
-BOT_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir))
+HOME_DIR = os.path.join(os.path.dirname(__file__), "..\\..")
+BOT_DIR = os.path.abspath(HOME_DIR)
+x = os.path.dirname(__file__)

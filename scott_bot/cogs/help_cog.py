@@ -1,3 +1,4 @@
+import glob
 import os
 import typing as t
 
@@ -12,13 +13,9 @@ from ..util.messages import get_cog_commands, get_group_commands, bad_arg_error
 from ..util.pagination import HelpPaginator
 
 
-def _get_code_lines():
+def _get_code_lines() -> int:
     lines = 0
-    py_files = []
-    for root, dirs, files in os.walk(constants.BOT_DIR):
-        for file in files:
-            if file.endswith(".py"):
-                py_files.append(os.path.join(root, file))
+    py_files = glob.glob(os.path.join(constants.HOME_DIR, "**/*.py"), recursive=True)
     for file in py_files:
         try:
             with open(file) as f:
@@ -91,7 +88,7 @@ class HelpCog(Cog, name="Help"):
                 restrict_to_users=(ctx.author,)
             )
 
-    def add_page(self, name: str, pages: list, command_list: t.Dict[str, commands.Command]):
+    def add_page(self, name: str, pages: list, command_list: t.Dict[str, commands.Command]) -> None:
         help_page = f"""**```asciidoc
 {name}
 {'-' * len(name)}
@@ -99,7 +96,7 @@ class HelpCog(Cog, name="Help"):
 {self._get_help_list(command_list)}```**"""
         pages.append(help_page)
 
-    def _get_help_list(self, commands):
+    def _get_help_list(self, commands) -> str:
         if len(commands) <= 0:
             return "[There are no commands under this category]"
         i = max(len(x) for x in commands)
