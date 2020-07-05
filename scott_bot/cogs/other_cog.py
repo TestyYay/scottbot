@@ -57,7 +57,7 @@ class OtherCog(commands.Cog, name="Other"):
         if random.choice((True, False)):
             await ctx.send("Pong!")
         else:
-            await ctx.send(f"Ping: {self.bot.latency}ms")
+            await ctx.send(f"Ping: {round(self.bot.latency, 2)}ms")
 
     @_suggest.error
     async def on_cooldown(self, ctx: commands.Context, error):
