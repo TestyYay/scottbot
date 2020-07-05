@@ -16,6 +16,7 @@ from ..util.pagination import HelpPaginator
 def _get_code_lines() -> int:
     lines = 0
     py_files = glob.glob(os.path.join(constants.HOME_DIR, "**/*.py"), recursive=True)
+    print(py_files)
     for file in py_files:
         try:
             with open(file) as f:
