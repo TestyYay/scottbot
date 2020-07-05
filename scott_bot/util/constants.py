@@ -158,6 +158,6 @@ class Reddit(metaclass=YAMLGetter):
     password: str
 
 
-HOME_DIR = os.path.join(os.path.dirname(__file__), "..\\..")
+HOME_DIR = os.path.join(os.path.dirname(__file__), "../..")
 BOT_DIR = os.path.abspath(HOME_DIR)
 x = os.path.dirname(__file__)
