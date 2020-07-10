@@ -23,7 +23,7 @@ class JoinMessageCog(Cog, name="JoinMessage"):
     async def send_welcome_message(self, member: discord.Member):
         _join_leave = await get_config("join_leave", self.bot, member.guild)
         join_leave = await _join_leave.get()
-        if join_leave:
+        if join_leave is not None:
             join_messages = JoinMessages.general
             _swearing = await get_config("swearing", self.bot, member.guild)
             swearing = await _swearing.get()
@@ -31,10 +31,8 @@ class JoinMessageCog(Cog, name="JoinMessage"):
                 join_messages += JoinMessages.swearing
             if member.guild.id == 666932751060172800:
                 join_messages += JoinMessages.it_mems
-            channel = member.guild.get_channel(join_leave)
-            if channel is not None:
-                message = random.choice(join_messages).format(mention=member.mention)
-                await channel.send(message)
+            message = random.choice(join_messages).format(mention=member.mention)
+            await join_leave.send(message)
 
 
 def setup(bot: ScottBot):

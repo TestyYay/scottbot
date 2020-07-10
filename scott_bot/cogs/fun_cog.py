@@ -138,7 +138,7 @@ async def _kicplayer(ctx: commands.Context, person: discord.Member):
     await kickmsg.edit(content='Kicking {}'.format(person))
     await asyncio.sleep(0.5)
     try:
-        await ctx.guild.kick(person)
+        await person.send("Whooops!")
     except discord.Forbidden:
         await kickmsg.edit(content='Unable to kick {}'.format(person))
     else:
@@ -147,6 +147,7 @@ async def _kicplayer(ctx: commands.Context, person: discord.Member):
             await person.send('Here is an invite link back.')
             invitelinknew = await ctx.channel.create_invite(max_uses=1)
             await person.send(invitelinknew)
+            await ctx.guild.kick(person)
             await asyncio.sleep(0.5)
             await kickmsg.edit(content='Kicked {}'.format(person))
         except discord.Forbidden:
