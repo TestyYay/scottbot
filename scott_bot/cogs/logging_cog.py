@@ -45,20 +45,21 @@ __`Guild`__: {guild}
 __`Member Count`__: {guild.member_count}
 __`Total Guild Count`__: {len(self.bot.guilds)}
 """
+                    print(msg)
                     await channel.send(msg)
 
-    @commands.Cog.listener("on_guild_leave")
-    async def log_guild_join(self, guild: discord.Guild):
+    @commands.Cog.listener("on_guild_remove")
+    async def log_guild_leave(self, guild: discord.Guild):
         if Logging.enabled:
             log_guild = self.bot.get_guild(Logging.guild_id)
             if log_guild is not None:
                 channel = log_guild.get_channel(Logging.Channels.guild_leave)
                 if channel is not None:
-                    msg = f""""__***Bot removed***__
-    __`Guild`__: {guild}
-    __`Member Count`__: {guild.member_count}
-    __`Total Guild Count`__: {len(self.bot.guilds)}
-    """
+                    msg = f"""__***Bot removed***__
+__`Guild`__: {guild}
+__`Total Guild Count`__: {len(self.bot.guilds)}
+"""
+                    print(msg)
                     await channel.send(msg)
 
 
