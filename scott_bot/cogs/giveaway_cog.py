@@ -19,14 +19,12 @@ class GiveawayCog(commands.Cog):
         Start a giveaway!
 
         Usage:
-            {prefix}giveaway <item>
             {prefix}giveaway <item> <timeout (secs)>
             {prefix}giveaway <item> <timeout (secs)> <max entries>
 
         Example:
-            {prefix}giveaway "Discord Nitro"
-            {prefix}giveaway "Potato" 86400
-            {prefix}giveaway "death" 86400 14
+            {prefix}giveaway "Discord Nitro" 86400
+            {prefix}giveaway "Potato" 86400 14
         """
         embed = discord.Embed(title="Giveaway Time! :tada:", color=Bot.color)
         embed.description = f"Enter to win **{item}**"

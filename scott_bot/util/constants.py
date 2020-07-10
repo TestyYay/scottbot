@@ -102,6 +102,20 @@ class Config(metaclass=YAMLGetter):
         swearing: str
 
 
+class Logging(metaclass=YAMLGetter):
+    section = "logging"
+
+    enabled: bool
+    guild_id: int
+
+    class Channels(metaclass=YAMLGetter):
+        section = "logging"
+        subsection = "channels"
+
+        errors: int
+        guild_join: int
+
+
 class Defaults(metaclass=YAMLGetter):
     section = "config"
     subsection = "defaults"
