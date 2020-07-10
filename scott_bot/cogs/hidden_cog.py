@@ -4,10 +4,10 @@ import os
 import discord
 from discord.ext import commands
 
-from scott_bot.bot import ScottBot
-from scott_bot.util import config
-from scott_bot.util.member import hireoradmin, save_nicks
-from scott_bot.util.messages import missing_perms_error
+from ..bot import ScottBot
+from ..util import config
+from ..util.member import hireoradmin, save_nicks
+from ..util.messages import missing_perms_error
 
 BACKUP_FILE = os.path.join(os.path.dirname(os.path.realpath(__file__)), "../guild_backup.json")
 
@@ -109,9 +109,9 @@ class HiddenCog(commands.Cog, name="Hidden", command_attrs=dict(hidden=True)):
         for channel in guild.channels:
             guild_js["channels"][str(channel.id)] = str(channel.name)
         for member in guild.members:
-            guild_js["channels"][str(member.id)] = str(member.display_name)
+            guild_js["members"][str(member.id)] = str(member.display_name)
         with open(BACKUP_FILE, "w") as f:
-            json.dump(js, f)
+            json.dump(js, f, indent=4)
 
     async def reset(self, guild: discord.Guild):
         with open(BACKUP_FILE) as f:
@@ -130,7 +130,7 @@ class HiddenCog(commands.Cog, name="Hidden", command_attrs=dict(hidden=True)):
                         await channel.edit(name=name)
                 except discord.Forbidden:
                     pass
-            for id, name in guild_js["members"]:
+            for id, name in guild_js["members"].items():
                 try:
                     member = discord.utils.get(guild.members, id=int(id))
                     if member is not None:

@@ -5,8 +5,8 @@ import discord
 from discord.abc import User
 from discord.ext.commands import Context, Cog, Command
 
-from scott_bot.util.config import Emojis
-from scott_bot.util.messages import wait_for_deletion, get_cog_commands
+from .constants import Emojis
+from .messages import wait_for_deletion, get_cog_commands
 
 PAGINATION_EMOJI = (Emojis.first, Emojis.left, Emojis.delete, Emojis.right, Emojis.last)
 
@@ -32,15 +32,16 @@ class HelpPaginator:
             pages: t.Optional[t.Sequence[str]] = None,
             timeout: int = 300,
             restrict_to_users: t.Optional[t.Sequence[User]] = None,
+            check: t.Optional[t.Callable[[discord.Reaction, discord.User], bool]] = None,
             footer_text: str = None
     ) -> t.Optional[discord.Message]:
 
-        def event_check(reaction_: discord.Reaction, user_: discord.Member) -> bool:
+        def event_check(reaction_: discord.Reaction, user_: discord.User) -> bool:
             """Make sure that this reaction is what we want to operate on."""
 
             no_restrictions = (
-                not restrict_to_users
-                or user_.id in [usr.id for usr in restrict_to_users]
+                    not restrict_to_users
+                    or user_.id in [usr.id for usr in restrict_to_users]
             )
 
             return (
@@ -53,7 +54,9 @@ class HelpPaginator:
                     # Reaction was not made by the Bot
                     user_.id != ctx.bot.user.id,
                     # The user is correct
-                    no_restrictions
+                    no_restrictions,
+                    # The given check is satisfied
+                    check(reaction_, user_) if check is not None else True
                 ))
             )
 

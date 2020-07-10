@@ -2,7 +2,7 @@ from typing import Optional
 
 from discord.ext.commands import Converter, Command, Context, BadArgument
 
-from scott_bot.util.config import _Config, get_config
+from .util.config import _Config, get_config
 
 
 class CommandConverter(Converter):

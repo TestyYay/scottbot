@@ -8,6 +8,7 @@ class StatusCog(commands.Cog, name="Status"):
 
     def __init__(self, bot):
         self.bot = bot
+        self.bot.loop.create_task(self.start_status_change())
 
     async def start_status_change(self):
         statuses = [
