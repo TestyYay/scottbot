@@ -49,8 +49,11 @@ class HelpCog(Cog, name="Help"):
             for cog in self.bot.cogs.values():
                 if not getattr(cog, "hidden", False):
                     command_list = get_cog_commands(cog)
-                    if len(command_list) > 1:
-                        self.add_page(cog.qualified_name, pages, command_list)
+                    if cog.qualified_name != "Other":
+                        if len(command_list) > 1:
+                            self.add_page(cog.qualified_name, pages, command_list)
+                        else:
+                            other_commands.update(command_list)
                     else:
                         other_commands.update(command_list)
             no_cog = {comm.name: comm for comm in self.bot.commands if comm.cog is None and not comm.hidden}
