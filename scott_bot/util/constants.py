@@ -114,6 +114,7 @@ class Logging(metaclass=YAMLGetter):
 
         errors: int
         guild_join: int
+        guild_leave: int
 
 
 class Defaults(metaclass=YAMLGetter):
