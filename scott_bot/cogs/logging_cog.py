@@ -26,6 +26,7 @@ class LoggingCog(commands.Cog, name="Logging"):
                 channel = log_guild.get_channel(Logging.Channels.errors)
                 if channel is not None:
                     msg = f"""__***Error***__
+
 __`Guild`__: {ctx.guild}
 __`Channel`__: {ctx.channel}
 __`Message`__: {ctx.message.content}
@@ -41,6 +42,7 @@ __`Error`__: **{error.__class__.__name__}**: {error}
                 channel = log_guild.get_channel(Logging.Channels.guild_join)
                 if channel is not None:
                     msg = f"""__***Bot added***__
+
 __`Guild`__: {guild}
 __`Member Count`__: {guild.member_count}
 __`Total Guild Count`__: {len(self.bot.guilds)}
@@ -56,6 +58,7 @@ __`Total Guild Count`__: {len(self.bot.guilds)}
                 channel = log_guild.get_channel(Logging.Channels.guild_leave)
                 if channel is not None:
                     msg = f"""__***Bot removed***__
+
 __`Guild`__: {guild}
 __`Total Guild Count`__: {len(self.bot.guilds)}
 """
