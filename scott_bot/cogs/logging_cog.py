@@ -39,7 +39,6 @@ class LoggingCog(commands.Cog, name="Logging"):
                         embed = discord.Embed(title="Error", color=Bot.color)
                         embed.set_author(name=self.bot.user.name, icon_url=self.bot.user.avatar_url)
                         embed.description = f"""
-
 __`Guild`__: {ctx.guild}
 __`Channel`__: {ctx.channel}
 __`Message`__: {ctx.message.content}
