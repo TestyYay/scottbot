@@ -1,63 +1,82 @@
 import asyncio
 import random
 import typing as t
+from datetime import datetime
 
 import discord
 from discord.ext import commands
 
 from ..bot import ScottBot
 from ..util.constants import Bot
+from ..util.converters import Expiry
 
 
 class GiveawayCog(commands.Cog):
     def __init__(self, bot: ScottBot):
         self.bot = bot
+        self.bot.loop.create_task(self.restart_giveaways())
+
+    async def restart_giveaways(self):
+        await self.bot.wait_until_ready()
+        if self.bot.db_conn is not None:
+            vals = await self.bot.db_conn.fetch(
+                "SELECT message_id, channel_id, text, timeout, max_entries FROM giveaways")
+            for val in vals:
+                self.bot.loop.create_task(
+                    self.restart_giveaway(val["message_id"], val["channel_id"], val["text"], val["timeout"]))
+
+    async def restart_giveaway(self, message_id: int, channel_id: int, text: str, timeout: datetime):
+        now = datetime.now()
+        if timeout > now:
+            await asyncio.sleep((timeout - now).total_seconds())
+        channel = self.bot.get_channel(channel_id)
+        await self.end_giveaway(text, channel, channel.members, message_id)
 
     @commands.command(name="giveaway", brief="Start a giveaway")
-    async def _giveaway(self, ctx: commands.Context, item: str, max_time: int = None, max_entries: int = None):
+    async def _giveaway(self, ctx: commands.Context, item: str, max_time: Expiry, max_entries: int = None):
         """
         Start a giveaway!
 
         Usage:
-            {prefix}giveaway <item> <timeout (secs)>
-            {prefix}giveaway <item> <timeout (secs)> <max entries>
+            {prefix}giveaway <item> <timeout>
+            {prefix}giveaway <item> <timeout> <max entries>
 
         Example:
-            {prefix}giveaway "Discord Nitro" 86400
-            {prefix}giveaway "Potato" 86400 14
+            {prefix}giveaway "Discord Nitro" 1d
+            {prefix}giveaway "Potato" 10 minutes 14
         """
+        now = datetime.now()
         embed = discord.Embed(title="Giveaway Time! :tada:", color=Bot.color)
-        embed.description = f"Enter to win **{item}**"
-        if max_time is not None:
-            embed.description += f"\nThis will end after {max_time} seconds"
-            if max_entries is not None:
-                embed.description += f" or {max_entries} entries"
-        elif max_entries is not None:
-            embed.description += f"\nThis will end after {max_entries} entries"
+        embed.description = f"Enter to win **```\n{item}```**\nThis will end at **{max_time}**"
+        if max_entries is not None:
+            embed.description += f",\n or after **{max_entries}** entries"
         embed.description += "\nReact with :tada: to enter"
-        if max_time is None and max_entries is None:
-            return await ctx.send("`Please specify either the timeout or the max entries`")
         message = await ctx.send(embed=embed)
         await message.add_reaction(u"\U0001F389")
         if self.bot.db_conn is not None:
             await self.bot.db_conn.execute("""
-                                           INSERT INTO giveaways (message_id, text, max_entries)
+                                           INSERT INTO giveaways (message_id, channel_id, text, timeout, max_entries)
                                            VALUES (
                                                $1,
                                                $2,
-                                               $3
+                                               $3,
+                                               $4,
+                                               $5
                                            )
                                            ON CONFLICT ON CONSTRAINT giveaways_pkey
                                            DO NOTHING;""",
                                            message.id,
+                                           ctx.channel.id,
                                            item,
+                                           max_time,
                                            max_entries)
-        if max_time is not None:
-            await asyncio.sleep(max_time)
-            await self.end_giveaway(item, ctx.channel, ctx.guild.members, message.id)
+        difference = max_time - now
+        await asyncio.sleep(difference.total_seconds())
+        await self.end_giveaway(item, ctx.channel, ctx.guild.members, message.id)
 
     @commands.Cog.listener("on_reaction_add")
     async def on_reaction_add(self, reaction: discord.Reaction, user: discord.Member):
+        print("reaction_add")
         if self.bot.db_conn is not None and user.id != self.bot.user.id:
             val = await self.bot.db_conn.fetchrow("""
                                                   SELECT message_id, text, max_entries FROM giveaways
@@ -87,6 +106,7 @@ class GiveawayCog(commands.Cog):
 
     @commands.Cog.listener("on_reaction_remove")
     async def on_reaction_remove(self, reaction: discord.Reaction, user: discord.Member):
+        print("reaction remove")
         if self.bot.db_conn is not None and user.id != self.bot.user.id:
             if self.bot.db_conn is not None and user.id != self.bot.user.id:
                 val = await self.bot.db_conn.fetchrow("""
