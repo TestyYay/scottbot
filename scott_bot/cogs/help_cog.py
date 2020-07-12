@@ -6,8 +6,8 @@ import discord
 from discord.ext import commands
 from discord.ext.commands import Cog, Context, Group
 
+from scott_bot.util.converters import CommandConverter
 from ..bot import ScottBot
-from ..converters import CommandConverter
 from ..util import constants
 from ..util.messages import get_cog_commands, get_group_commands, bad_arg_error
 from ..util.pagination import HelpPaginator

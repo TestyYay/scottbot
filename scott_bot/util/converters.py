@@ -2,7 +2,7 @@ from typing import Optional
 
 from discord.ext.commands import Converter, Command, Context, BadArgument
 
-from .util.config import _Config, get_config
+from scott_bot.util.config import _Config, get_config
 
 
 class CommandConverter(Converter):
@@ -20,3 +20,4 @@ class ConfigConverter(Converter):
         config = await get_config(option, ctx.bot, ctx.guild)
         if config is not None:
             return config
+        raise BadArgument("Unknown config option: {}".format(option))
