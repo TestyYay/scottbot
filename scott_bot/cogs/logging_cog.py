@@ -26,29 +26,28 @@ class LoggingCog(commands.Cog, name="Logging"):
 
     @commands.Cog.listener("on_command_error")
     async def log_error(self, ctx: commands.Context, error):
-        if hasattr(ctx.command, 'on_error'):
-            return
-        cog = ctx.cog
-        if cog:
-            if cog._get_overridden_method(cog.cog_command_error) is not None:
-                return
-        ignored = (commands.CommandNotFound,)
-        if isinstance(error, ignored):
-            return
-        if Logging.enabled:
-            log_guild = self.bot.get_guild(Logging.guild_id)
-            if log_guild is not None:
-                channel = log_guild.get_channel(Logging.Channels.errors)
-                if channel is not None:
-                    embed = discord.Embed(title="Error", color=Bot.color)
-                    embed.set_author(name=self.bot.user.name, icon_url=self.bot.user.avatar_url)
-                    embed.description = f"""
+        print("errored")
+        if not hasattr(ctx.command, 'on_error'):
+            cog = ctx.cog
+            if cog and cog._get_overridden_method(cog.cog_command_error) is None:
+                ignored = (commands.CommandNotFound,)
+                if isinstance(error, ignored):
+                    return
+                if Logging.enabled:
+                    log_guild = self.bot.get_guild(Logging.guild_id)
+                    if log_guild is not None:
+                        channel = log_guild.get_channel(Logging.Channels.errors)
+                        if channel is not None:
+                            embed = discord.Embed(title="Error", color=Bot.color)
+                            embed.set_author(name=self.bot.user.name, icon_url=self.bot.user.avatar_url)
+                            embed.description = f"""
 
 __`Guild`__: {ctx.guild}
 __`Channel`__: {ctx.channel}
 __`Message`__: {ctx.message.content}
 __`Error`__: **{error.__class__.__name__}**: {error}"""
-                    await channel.send(embed=embed)
+                            await channel.send(embed=embed)
+        raise error
 
     @commands.Cog.listener("on_guild_join")
     async def log_guild_join(self, guild: discord.Guild):
