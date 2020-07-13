@@ -6,7 +6,7 @@ import aiohttp
 from discord import Client, Member, Message, Reaction, User, DiscordException
 from discord.ext.commands import Context, BadArgument, Cog, Group, Command, MissingPermissions
 
-from scott_bot.util.config import Emojis, IFTTT
+from .constants import Emojis, IFTTT
 
 
 async def wait_for_deletion(
@@ -17,13 +17,6 @@ async def wait_for_deletion(
         attach_emojis: bool = True,
         client: Optional[Client] = None
 ) -> None:
-    """
-    Wait for up to `timeout` seconds for a reaction by any of the specified `user_ids` to delete the message.
-    An `attach_emojis` bool may be specified to determine whether to attach the given
-    `deletion_emojis` to the message in the given `context`
-    A `client` instance may be optionally specified, otherwise client will be taken from the
-    guild of the message.
-    """
     if message.guild is None and client is None:
         raise ValueError("Message must be sent on a guild")
 
@@ -61,10 +54,11 @@ async def missing_perms_error(cog: Optional[Cog], ctx: Context, error: DiscordEx
         raise error
 
 
-def get_cog_commands(cog: Cog) -> Dict[str, Command]:
+def get_cog_commands(cog: Cog, include_hidden=False) -> Dict[str, Command]:
     commands = {}
     for command in cog.get_commands():
-        if not command.hidden:
+        hidden = command.hidden if not include_hidden else False
+        if not hidden:
             commands[command.name] = command
         if isinstance(command, Group):
             commands.update(get_group_commands(command))

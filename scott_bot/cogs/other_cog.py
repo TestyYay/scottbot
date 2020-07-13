@@ -1,9 +1,11 @@
+import random
+
 import discord
 from discord.ext import commands
 
-from scott_bot.bot import ScottBot
-from scott_bot.util.config import IFTTT, DataBase
-from scott_bot.util.messages import ifttt_notify
+from ..bot import ScottBot
+from ..util.constants import DataBase, IFTTT
+from ..util.messages import ifttt_notify
 
 SUGGESTION_SQL = """INSERT INTO {tablename} (user_id, user_name, suggestion_text)
 VALUES (
@@ -19,7 +21,7 @@ class OtherCog(commands.Cog, name="Other"):
 
     @commands.command(name="suggest", brief="Provide feedback")
     @commands.cooldown(2, 60, commands.BucketType.user)
-    async def _suggest(self, ctx: commands.Context, *suggestion: str):
+    async def _suggest(self, ctx: commands.Context, *, suggestion: str):
         """
         Send a suggestion to the maker of this bot.
 
@@ -29,7 +31,6 @@ class OtherCog(commands.Cog, name="Other"):
             {prefix}suggest git gud lol
         """
         if not ctx.guild:
-            suggestion = ' '.join(suggestion)
             if suggestion:
                 if self.bot.http_session is not None:
                     await ifttt_notify(self.bot.http_session, (suggestion, ctx.author.name), name=IFTTT.suggestion)
@@ -51,8 +52,15 @@ class OtherCog(commands.Cog, name="Other"):
             await ctx.send('Please send feedback via dm. Thank You!')
             await ctx.author.send('Please send feedback here. Thank You!')
 
+    @commands.command(name="ping", brief="Show the ping of the bot")
+    async def _ping(self, ctx: commands.Context):
+        if random.choice((True, False)):
+            await ctx.send("Pong!")
+        else:
+            await ctx.send(f"Ping: {round(self.bot.latency, 2)}ms")
+
     @_suggest.error
-    async def on_cooldown(self, ctx, error):
+    async def on_cooldown(self, ctx: commands.Context, error):
         print(error)
         if isinstance(error, commands.CommandOnCooldown):
             embed = discord.Embed(title="You are on cooldown", description="Please try this again later")

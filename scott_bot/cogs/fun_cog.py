@@ -4,10 +4,10 @@ import random
 import discord
 from discord.ext import commands
 
-from scott_bot.bot import ScottBot
-from scott_bot.util.config import UwU
-from scott_bot.util.member import save_nicks, hireoradmin, get_latest_nicks
-from scott_bot.util.messages import missing_perms_error
+from ..bot import ScottBot
+from ..util.constants import UwU
+from ..util.member import save_nicks, hireoradmin, get_latest_nicks
+from ..util.messages import missing_perms_error
 
 
 class FunCog(commands.Cog, name="Fun"):
@@ -137,13 +137,21 @@ async def _kicplayer(ctx: commands.Context, person: discord.Member):
     await asyncio.sleep(10 / len(mems))
     await kickmsg.edit(content='Kicking {}'.format(person))
     await asyncio.sleep(0.5)
-    await person.send("You got randomly kicked from server \"{}\" by @{}.".format(ctx.guild.name, ctx.author))
-    await person.send('Here is an invite link back.')
-    invitelinknew = await ctx.channel.create_invite(max_uses=1, unique=True)
-    await person.send(invitelinknew)
-    await ctx.guild.kick(person)
-    await asyncio.sleep(0.5)
-    await kickmsg.edit(content='Kicked {}'.format(person))
+    try:
+        await person.send("Whooops!")
+    except discord.Forbidden:
+        await kickmsg.edit(content='Unable to kick {}'.format(person))
+    else:
+        try:
+            await person.send("You got randomly kicked from server \"{}\" by @{}.".format(ctx.guild.name, ctx.author))
+            await person.send('Here is an invite link back.')
+            invitelinknew = await ctx.channel.create_invite(max_uses=1)
+            await person.send(invitelinknew)
+            await ctx.guild.kick(person)
+            await asyncio.sleep(0.5)
+            await kickmsg.edit(content='Kicked {}'.format(person))
+        except discord.Forbidden:
+            await kickmsg.edit(content='Unable to kick {}'.format(person))
 
 
 async def _swap_nicks(person1: discord.Member, person2: discord.Member):
