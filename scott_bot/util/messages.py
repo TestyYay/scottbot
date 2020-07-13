@@ -17,13 +17,6 @@ async def wait_for_deletion(
         attach_emojis: bool = True,
         client: Optional[Client] = None
 ) -> None:
-    """
-    Wait for up to `timeout` seconds for a reaction by any of the specified `user_ids` to delete the message.
-    An `attach_emojis` bool may be specified to determine whether to attach the given
-    `deletion_emojis` to the message in the given `context`
-    A `client` instance may be optionally specified, otherwise client will be taken from the
-    guild of the message.
-    """
     if message.guild is None and client is None:
         raise ValueError("Message must be sent on a guild")
 

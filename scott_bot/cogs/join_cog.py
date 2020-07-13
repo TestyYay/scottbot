@@ -6,6 +6,7 @@ from discord.ext.commands import Cog
 from ..bot import ScottBot
 from ..util.config import get_config
 from ..util.constants import JoinMessages
+from ..util.messages import ifttt_notify
 
 
 class JoinMessageCog(Cog, name="JoinMessage"):
@@ -15,8 +16,8 @@ class JoinMessageCog(Cog, name="JoinMessage"):
     @Cog.listener("on_guild_join")
     async def on_guild_join(self, guild: discord.Guild):
         print("Bot added to server: " + guild.name)
-        await ifttt_notify((str(self.bot.user.name), guild.name,
-                            f"There are {len(self.bot.guilds)} servers with {self.bot.user.name} on them. {guild.name} has {guild.member_count} members"),
+        await ifttt_notify(self.bot.http_session, (str(self.bot.user.name), guild.name,
+                                                   f"There are {len(self.bot.guilds)} servers with {self.bot.user.name} on them. {guild.name} has {guild.member_count} members"),
                            name="bot_join_server")
 
     @Cog.listener("on_member_join")
