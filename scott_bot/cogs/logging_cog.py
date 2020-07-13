@@ -19,7 +19,7 @@ class LoggingCog(commands.Cog, name="Logging"):
             if log_guild is not None:
                 channel = log_guild.get_channel(Logging.Channels.bot_start)
                 if channel is not None:
-                    embed = discord.Embed(title="Bot started", color=Bot.color)
+                    embed = discord.Embed(title="Bot has started", color=Bot.color)
                     embed.set_footer(text=datetime.now().strftime("%Y-%m-%d %H:%M:%S:%f"))
                     embed.set_author(name=self.bot.user.name, icon_url=self.bot.user.avatar_url)
                     await channel.send(embed=embed)
