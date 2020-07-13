@@ -21,7 +21,6 @@ class ScottBot(commands.Bot):
         self.loop.create_task(self.load_all_extensions())
 
     async def on_ready(self):
-        print("new version")
         print('Logged in as:')
         print(self.user)
         print(self.user.id)
