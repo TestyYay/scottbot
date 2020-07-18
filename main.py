@@ -19,3 +19,6 @@ async def test(ctx: Context):
 
 if __name__ == "__main__":
     bot.run(Bot.token)
+"""
+yatyytyyy
+"""
